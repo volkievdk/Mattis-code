@@ -1,0 +1,135 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #fff7df;
+  color: #241a3f;
+}
+
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.hero {
+  text-align: center;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 42px;
+}
+
+.hero p {
+  font-size: 22px;
+}
+
+.playground {
+  background: #d9ee66;
+  border: 6px solid #241a3f;
+  border-radius: 24px;
+  padding: 16px;
+  margin: 24px 0;
+}
+
+.grid {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-image:
+    linear-gradient(#241a3f22 2px, transparent 2px),
+    linear-gradient(90deg, #241a3f22 2px, transparent 2px);
+  background-size: 20% 20%;
+  background-color: #fffbef;
+  border-radius: 18px;
+}
+
+.character,
+.apple {
+  position: absolute;
+  width: 20%;
+  height: 20%;
+  display: grid;
+  place-items: center;
+  font-size: 52px;
+  transition: transform 0.35s ease;
+}
+
+.character {
+  left: 0;
+  top: 0;
+}
+
+.apple {
+  left: 80%;
+  top: 80%;
+}
+
+.blocks {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+button {
+  border: 0;
+  border-radius: 16px;
+  padding: 18px;
+  font-size: 22px;
+  font-weight: 800;
+  cursor: pointer;
+  background: #e33a72;
+  color: white;
+  box-shadow: 0 5px 0 #241a3f;
+}
+
+button:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #241a3f;
+}
+
+.program {
+  margin-top: 24px;
+}
+
+.program h2 {
+  font-size: 24px;
+}
+
+.steps {
+  min-height: 72px;
+  background: white;
+  border: 4px dashed #241a3f;
+  border-radius: 18px;
+  padding: 12px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.step {
+  background: #241a3f;
+  color: white;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 22px;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.play {
+  background: #241a3f;
+}
+
+.reset {
+  background: #666;
+}
