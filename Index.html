@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mattís Code</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <h1>Mattís Code</h1>
+      <p>Laat de kat naar de appel lopen.</p>
+    </section>
+
+    <section class="playground" id="playground">
+      <div class="grid">
+        <div id="cat" class="character">🐱</div>
+        <div id="apple" class="apple">🍎</div>
+      </div>
+    </section>
+
+    <section class="blocks">
+      <button onclick="addStep('up')">⬆️ Omhoog</button>
+      <button onclick="addStep('down')">⬇️ Omlaag</button>
+      <button onclick="addStep('left')">⬅️ Links</button>
+      <button onclick="addStep('right')">➡️ Rechts</button>
+    </section>
+
+    <section class="program">
+      <h2>Jouw programma</h2>
+      <div id="steps" class="steps"></div>
+    </section>
+
+    <section class="actions">
+      <button class="play" onclick="playProgram()">▶️ Speel af</button>
+      <button class="reset" onclick="resetGame()">🔄 Opnieuw</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
