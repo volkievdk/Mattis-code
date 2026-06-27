@@ -9,14 +9,25 @@
 <body>
   <main class="app">
     <section class="hero">
-      <h1>Mattís Code</h1>
-      <p>Laat de kat naar de appel lopen.</p>
+      <p class="eyebrow">Missie 1</p>
+      <h1>Breng de kat naar de appel 🍎</h1>
+      <p>Maak je programma met plaatjes. Druk daarna op speel af.</p>
+    </section>
+
+    <section class="message hidden" id="successMessage">
+      <div class="message-card">
+        <div class="party">🎉</div>
+        <h2>Goed gedaan!</h2>
+        <p>Je hebt de kat naar de appel geprogrammeerd.</p>
+        <button onclick="nextMission()">Volgende missie</button>
+      </div>
     </section>
 
     <section class="playground" id="playground">
       <div class="grid">
         <div id="cat" class="character">🐱</div>
         <div id="apple" class="apple">🍎</div>
+        <div id="speechBubble" class="speech-bubble hidden">Miauw!</div>
       </div>
     </section>
 
@@ -25,11 +36,14 @@
       <button onclick="addStep('down')">⬇️ Omlaag</button>
       <button onclick="addStep('left')">⬅️ Links</button>
       <button onclick="addStep('right')">➡️ Rechts</button>
+      <button onclick="addStep('meow')" class="fun">🔊 Miauw</button>
     </section>
 
     <section class="program">
       <h2>Jouw programma</h2>
-      <div id="steps" class="steps"></div>
+      <div id="steps" class="steps">
+        <span class="empty-state">Kies plaatjes om je programma te maken.</span>
+      </div>
     </section>
 
     <section class="actions">
