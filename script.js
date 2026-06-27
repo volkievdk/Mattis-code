@@ -6,7 +6,8 @@ let isGameOver = false;
 
 const grid = document.getElementById("grid");
 const cat = document.getElementById("cat");
-const apple = document.getElementById("apple");
+const fish = document.getElementById("fish");
+const rock = document.getElementById("rock");
 const stepsElement = document.getElementById("steps");
 const successMessage = document.getElementById("successMessage");
 const dangerMessage = document.getElementById("dangerMessage");
@@ -15,7 +16,7 @@ const speechBubble = document.getElementById("speechBubble");
 const gridSize = 5;
 
 const startPosition = { x: 0, y: 0 };
-const applePosition = { x: 4, y: 4 };
+const fishPosition = { x: 4, y: 4 };
 
 const walls = [
   { x: 1, y: 0 },
@@ -25,14 +26,14 @@ const walls = [
   { x: 2, y: 3 }
 ];
 
-const lavaShooters = [
+const lavaTiles = [
   { x: 2, y: 1 },
   { x: 4, y: 2 }
 ];
 
 function setupGame() {
   drawMaze();
-  placeApple();
+  placeFish();
   resetGame();
 }
 
@@ -60,8 +61,8 @@ function drawMaze() {
   }
 }
 
-function placeApple() {
-  apple.style.transform = `translate(${applePosition.x * 100}%, ${applePosition.y * 100}%)`;
+function placeFish() {
+  fish.style.transform = `translate(${fishPosition.x * 100}%, ${fishPosition.y * 100}%)`;
 }
 
 function addStep(action) {
@@ -69,6 +70,7 @@ function addStep(action) {
 
   if (isGameOver) {
     clearMessages();
+    hideRock();
     isGameOver = false;
   }
 
@@ -112,6 +114,7 @@ async function playProgram() {
 
   clearMessages();
   hideSpeechBubble();
+  hideRock();
   resetCatPositionOnly();
 
   await wait(250);
@@ -124,9 +127,7 @@ async function playProgram() {
       await wait(420);
 
       if (isLava(catX, catY)) {
-        showDanger();
-        isPlaying = false;
-        isGameOver = true;
+        await failWithRock();
         return;
       }
     }
@@ -168,11 +169,54 @@ function updateCatPosition() {
 }
 
 function bumpCat() {
-  cat.classList.add("bump");
+  cat.animate(
+    [
+      { transform: `translate(${catX * 100}%, ${catY * 100}%) rotate(0deg)` },
+      { transform: `translate(${catX * 100}%, ${catY * 100}%) rotate(-8deg)` },
+      { transform: `translate(${catX * 100}%, ${catY * 100}%) rotate(8deg)` },
+      { transform: `translate(${catX * 100}%, ${catY * 100}%) rotate(0deg)` }
+    ],
+    {
+      duration: 220,
+      iterations: 1
+    }
+  );
+}
 
-  setTimeout(() => {
-    cat.classList.remove("bump");
-  }, 200);
+async function failWithRock() {
+  isGameOver = true;
+  showRockAtCat();
+  showDanger();
+
+  await wait(900);
+
+  steps = [];
+  renderSteps();
+  resetCatPositionOnly();
+
+  isPlaying = false;
+}
+
+function showRockAtCat() {
+  rock.classList.remove("hidden");
+  rock.classList.remove("falling");
+
+  const rockX = `${catX * 100}%`;
+  const rockY = `${catY * 100}%`;
+
+  rock.style.setProperty("--rock-x", rockX);
+  rock.style.setProperty("--rock-y", rockY);
+
+  rock.style.transform = `translate(${rockX}, -120%)`;
+
+  void rock.offsetWidth;
+
+  rock.classList.add("falling");
+}
+
+function hideRock() {
+  rock.classList.add("hidden");
+  rock.classList.remove("falling");
 }
 
 async function meow() {
@@ -208,7 +252,7 @@ function hideSpeechBubble() {
 }
 
 function checkWin() {
-  if (catX === applePosition.x && catY === applePosition.y) {
+  if (catX === fishPosition.x && catY === fishPosition.y) {
     successMessage.classList.remove("hidden");
   }
 }
@@ -237,6 +281,7 @@ function resetGame() {
   renderSteps();
   clearMessages();
   hideSpeechBubble();
+  hideRock();
   resetCatPositionOnly();
 }
 
@@ -245,7 +290,7 @@ function isWall(x, y) {
 }
 
 function isLava(x, y) {
-  return lavaShooters.some((lava) => lava.x === x && lava.y === y);
+  return lavaTiles.some((lava) => lava.x === x && lava.y === y);
 }
 
 function isOutsideGrid(x, y) {
