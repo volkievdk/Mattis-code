@@ -80,10 +80,25 @@ function moveCat(direction) {
 async function meow() {
   speechBubble.classList.remove("hidden");
   moveSpeechBubble();
+  playMeowSound();
 
-  await wait(700);
+  await wait(900);
 
   hideSpeechBubble();
+}
+
+function playMeowSound() {
+  if (!("speechSynthesis" in window)) return;
+
+  window.speechSynthesis.cancel();
+
+  const meow = new SpeechSynthesisUtterance("miauw");
+  meow.lang = "nl-NL";
+  meow.rate = 1.1;
+  meow.pitch = 1.6;
+  meow.volume = 1;
+
+  window.speechSynthesis.speak(meow);
 }
 
 function moveSpeechBubble() {
