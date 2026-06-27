@@ -8,47 +8,51 @@
 </head>
 <body>
   <main class="app">
-    <section class="hero">
-      <p class="eyebrow">Missie 1</p>
-      <h1>Breng de kat naar de appel 🍎</h1>
-      <p>Maak je programma met plaatjes. Druk daarna op speel af.</p>
-    </section>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Missie 2</p>
+        <h1>Ontsnap uit het lava-doolhof</h1>
+      </div>
+      <button class="small-reset" onclick="resetGame()">🔄</button>
+    </header>
 
     <section class="message hidden" id="successMessage">
-      <div class="message-card">
+      <div class="message-card success">
         <div class="party">🎉</div>
-        <h2>Goed gedaan!</h2>
-        <p>Je hebt de kat naar de appel geprogrammeerd.</p>
-        <button onclick="nextMission()">Volgende missie</button>
+        <h2>Gelukt!</h2>
+        <p>De kat heeft de appel gevonden.</p>
       </div>
     </section>
 
-    <section class="playground" id="playground">
-      <div class="grid">
+    <section class="message hidden" id="dangerMessage">
+      <div class="message-card danger">
+        <div class="party">🔥</div>
+        <h2>Oeps!</h2>
+        <p>De kat kwam bij de lava. Probeer opnieuw.</p>
+      </div>
+    </section>
+
+    <section class="playground">
+      <div class="grid" id="grid">
         <div id="cat" class="character">🐱</div>
         <div id="apple" class="apple">🍎</div>
         <div id="speechBubble" class="speech-bubble hidden">Miauw!</div>
       </div>
     </section>
 
-    <section class="blocks">
-      <button onclick="addStep('up')">⬆️ Omhoog</button>
-      <button onclick="addStep('down')">⬇️ Omlaag</button>
-      <button onclick="addStep('left')">⬅️ Links</button>
-      <button onclick="addStep('right')">➡️ Rechts</button>
-      <button onclick="addStep('meow')" class="fun">🔊 Miauw</button>
-    </section>
-
     <section class="program">
-      <h2>Jouw programma</h2>
       <div id="steps" class="steps">
-        <span class="empty-state">Kies plaatjes om je programma te maken.</span>
+        <span class="empty-state">Kies je plaatjes.</span>
       </div>
     </section>
 
-    <section class="actions">
-      <button class="play" onclick="playProgram()">▶️ Speel af</button>
-      <button class="reset" onclick="resetGame()">🔄 Opnieuw</button>
+    <section class="blocks">
+      <button onclick="addStep('up')">⬆️</button>
+      <button onclick="addStep('down')">⬇️</button>
+      <button onclick="addStep('left')">⬅️</button>
+      <button onclick="addStep('right')">➡️</button>
+      <button onclick="addStep('meow')" class="fun">🔊</button>
+      <button onclick="playProgram()" class="play">▶️</button>
     </section>
   </main>
 
