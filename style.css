@@ -17,8 +17,8 @@ body {
   margin: 0 auto;
   padding: 10px;
   display: grid;
-  grid-template-rows: auto auto 1fr auto auto;
-  gap: 8px;
+  grid-template-rows: auto auto auto 1fr auto auto;
+  gap: 7px;
 }
 
 .topbar {
@@ -42,8 +42,27 @@ body {
 
 h1 {
   margin: 0;
-  font-size: 22px;
+  font-size: 21px;
   line-height: 1.05;
+}
+
+.mission-picker {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.mission-picker button {
+  padding: 6px;
+  font-size: 16px;
+  background: white;
+  color: #241a3f;
+  border: 2px solid #241a3f;
+  box-shadow: 0 3px 0 #241a3f;
+}
+
+.mission-picker button.active {
+  background: #d9ee66;
 }
 
 .message {
@@ -59,18 +78,18 @@ h1 {
   background: white;
   border: 4px solid #241a3f;
   border-radius: 16px;
-  padding: 8px;
+  padding: 7px;
   box-shadow: 0 4px 0 #241a3f;
 }
 
 .message-card h2 {
   margin: 0;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .message-card p {
   margin: 2px 0 0;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
 }
 
@@ -82,9 +101,21 @@ h1 {
   background: #ff9f1c;
 }
 
+.message-card.swamp {
+  background: #8de3ff;
+}
+
 .party {
-  font-size: 24px;
+  font-size: 22px;
   line-height: 1;
+}
+
+.next-button {
+  margin-top: 6px;
+  padding: 7px 10px;
+  font-size: 14px;
+  background: #241a3f;
+  color: white;
 }
 
 .playground {
@@ -99,7 +130,7 @@ h1 {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 260px;
+  min-height: 245px;
   background-color: #fffbef;
   border-radius: 12px;
   overflow: hidden;
@@ -139,6 +170,15 @@ h1 {
   content: "🔥";
 }
 
+.swamp-visible {
+  background: #8de3ff;
+  animation: swampBubble 0.7s infinite alternate;
+}
+
+.swamp-visible::after {
+  content: "🫧";
+}
+
 .character,
 .fish,
 .rock {
@@ -155,6 +195,10 @@ h1 {
   font-size: 38px;
   transition: transform 0.32s ease;
   z-index: 5;
+}
+
+.character.sunk {
+  animation: sinkCat 0.7s ease-in-out;
 }
 
 .fish {
@@ -188,17 +232,17 @@ h1 {
 }
 
 .program {
-  min-height: 48px;
+  min-height: 46px;
 }
 
 .steps {
-  min-height: 48px;
-  max-height: 64px;
+  min-height: 46px;
+  max-height: 58px;
   overflow: hidden;
   background: white;
   border: 3px dashed #241a3f;
   border-radius: 14px;
-  padding: 6px;
+  padding: 5px;
   display: flex;
   gap: 5px;
   flex-wrap: wrap;
@@ -216,7 +260,7 @@ h1 {
   color: white;
   border-radius: 10px;
   padding: 5px 8px;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 900;
 }
 
@@ -229,8 +273,8 @@ h1 {
 button {
   border: 0;
   border-radius: 12px;
-  padding: 12px 6px;
-  font-size: 24px;
+  padding: 11px 6px;
+  font-size: 23px;
   font-weight: 900;
   cursor: pointer;
   background: #e33a72;
@@ -244,8 +288,8 @@ button:active {
 }
 
 .small-reset {
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   padding: 0;
   background: #666;
 }
@@ -269,6 +313,16 @@ button:active {
   }
 }
 
+@keyframes swampBubble {
+  from {
+    filter: brightness(1);
+  }
+
+  to {
+    filter: brightness(1.2);
+  }
+}
+
 @keyframes rockFall {
   0% {
     transform: translate(var(--rock-x), -120%);
@@ -283,38 +337,67 @@ button:active {
   }
 }
 
-@media (max-height: 700px) {
+@keyframes sinkCat {
+  0% {
+    opacity: 1;
+    scale: 1;
+  }
+
+  50% {
+    opacity: 0.45;
+    scale: 0.7;
+  }
+
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@media (max-height: 720px) {
   h1 {
-    font-size: 19px;
+    font-size: 18px;
   }
 
   .grid {
-    min-height: 220px;
+    min-height: 210px;
   }
 
   .character {
-    font-size: 32px;
+    font-size: 31px;
   }
 
   .fish {
-    font-size: 34px;
+    font-size: 33px;
   }
 
   .rock {
-    font-size: 36px;
+    font-size: 35px;
   }
 
   .cell {
-    font-size: 25px;
+    font-size: 24px;
   }
 
   button {
-    font-size: 21px;
-    padding: 9px 4px;
+    font-size: 20px;
+    padding: 8px 4px;
   }
 
   .steps {
-    min-height: 42px;
-    max-height: 48px;
+    min-height: 40px;
+    max-height: 45px;
+  }
+
+  .message-card {
+    padding: 5px;
+  }
+
+  .message-card h2 {
+    font-size: 16px;
+  }
+
+  .message-card p {
+    font-size: 12px;
   }
 }

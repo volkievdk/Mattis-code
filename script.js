@@ -3,6 +3,9 @@ let catX = 0;
 let catY = 0;
 let isPlaying = false;
 let isGameOver = false;
+let currentMissionIndex = 0;
+let controlsInverted = false;
+let swampTriggered = false;
 
 const grid = document.getElementById("grid");
 const cat = document.getElementById("cat");
@@ -11,35 +14,105 @@ const rock = document.getElementById("rock");
 const stepsElement = document.getElementById("steps");
 const successMessage = document.getElementById("successMessage");
 const dangerMessage = document.getElementById("dangerMessage");
+const swampMessage = document.getElementById("swampMessage");
+const successText = document.getElementById("successText");
+const dangerText = document.getElementById("dangerText");
 const speechBubble = document.getElementById("speechBubble");
+const missionLabel = document.getElementById("missionLabel");
+const missionTitle = document.getElementById("missionTitle");
 
 const gridSize = 5;
 
-const startPosition = { x: 0, y: 0 };
-const fishPosition = { x: 4, y: 4 };
-
-const walls = [
-  { x: 1, y: 0 },
-  { x: 1, y: 1 },
-  { x: 4, y: 1 },
-  { x: 1, y: 3 },
-  { x: 2, y: 3 }
-];
-
-const lavaTiles = [
-  { x: 2, y: 1 },
-  { x: 4, y: 2 }
+const missions = [
+  {
+    label: "Missie 1",
+    title: "Breng de kat naar de vis 🐟",
+    success: "De kat heeft de vis gevonden.",
+    start: { x: 0, y: 0 },
+    fish: { x: 4, y: 4 },
+    walls: [],
+    lava: [],
+    swamp: null,
+    showSwampAfterTrigger: false
+  },
+  {
+    label: "Missie 2",
+    title: "Ontsnap uit het lava-doolhof 🔥",
+    success: "De kat is veilig bij de vis.",
+    start: { x: 0, y: 0 },
+    fish: { x: 4, y: 4 },
+    walls: [
+      { x: 1, y: 0 },
+      { x: 1, y: 1 },
+      { x: 4, y: 1 },
+      { x: 1, y: 3 },
+      { x: 2, y: 3 }
+    ],
+    lava: [
+      { x: 2, y: 1 },
+      { x: 4, y: 2 }
+    ],
+    swamp: null,
+    showSwampAfterTrigger: false
+  },
+  {
+    label: "Missie 3",
+    title: "Pas op voor het geheime moeras 🫧",
+    success: "De kat vond de vis, zelfs met omgekeerde knoppen.",
+    start: { x: 0, y: 0 },
+    fish: { x: 4, y: 4 },
+    walls: [
+      { x: 0, y: 1 },
+      { x: 1, y: 1 },
+      { x: 3, y: 1 },
+      { x: 0, y: 3 },
+      { x: 1, y: 3 },
+      { x: 2, y: 3 }
+    ],
+    lava: [
+      { x: 3, y: 2 }
+    ],
+    swamp: { x: 2, y: 0 },
+    showSwampAfterTrigger: true
+  }
 ];
 
 function setupGame() {
+  loadMission(0);
+}
+
+function loadMission(index) {
+  if (isPlaying) return;
+
+  currentMissionIndex = index;
+  const mission = getCurrentMission();
+
+  missionLabel.textContent = mission.label;
+  missionTitle.textContent = mission.title;
+  successText.textContent = mission.success;
+
+  updateMissionButtons();
   drawMaze();
   placeFish();
   resetGame();
 }
 
+function getCurrentMission() {
+  return missions[currentMissionIndex];
+}
+
+function updateMissionButtons() {
+  for (let i = 0; i < missions.length; i++) {
+    const button = document.getElementById(`missionButton${i}`);
+    button.classList.toggle("active", i === currentMissionIndex);
+  }
+}
+
 function drawMaze() {
   const oldCells = document.querySelectorAll(".cell");
   oldCells.forEach((cell) => cell.remove());
+
+  const mission = getCurrentMission();
 
   for (let y = 0; y < gridSize; y++) {
     for (let x = 0; x < gridSize; x++) {
@@ -47,6 +120,8 @@ function drawMaze() {
       cell.className = "cell path";
       cell.style.left = `${x * 20}%`;
       cell.style.top = `${y * 20}%`;
+      cell.dataset.x = x;
+      cell.dataset.y = y;
 
       if (isWall(x, y)) {
         cell.className = "cell wall";
@@ -56,13 +131,22 @@ function drawMaze() {
         cell.className = "cell lava";
       }
 
+      if (
+        mission.showSwampAfterTrigger &&
+        swampTriggered &&
+        isSwamp(x, y)
+      ) {
+        cell.className = "cell swamp-visible";
+      }
+
       grid.appendChild(cell);
     }
   }
 }
 
 function placeFish() {
-  fish.style.transform = `translate(${fishPosition.x * 100}%, ${fishPosition.y * 100}%)`;
+  const mission = getCurrentMission();
+  fish.style.transform = `translate(${mission.fish.x * 100}%, ${mission.fish.y * 100}%)`;
 }
 
 function addStep(action) {
@@ -111,11 +195,14 @@ async function playProgram() {
 
   isPlaying = true;
   isGameOver = false;
+  controlsInverted = false;
+  swampTriggered = false;
 
   clearMessages();
   hideSpeechBubble();
   hideRock();
   resetCatPositionOnly();
+  drawMaze();
 
   await wait(250);
 
@@ -123,12 +210,17 @@ async function playProgram() {
     if (step === "meow") {
       await meow();
     } else {
-      moveCat(step);
+      const direction = getActualDirection(step);
+      moveCat(direction);
       await wait(420);
 
       if (isLava(catX, catY)) {
-        await failWithRock();
+        await failWithRock("Rotsblok! Probeer opnieuw.");
         return;
+      }
+
+      if (isSwamp(catX, catY) && !swampTriggered) {
+        await triggerSwamp();
       }
     }
   }
@@ -136,6 +228,17 @@ async function playProgram() {
   checkWin();
 
   isPlaying = false;
+}
+
+function getActualDirection(direction) {
+  if (!controlsInverted) return direction;
+
+  if (direction === "left") return "right";
+  if (direction === "right") return "left";
+  if (direction === "up") return "down";
+  if (direction === "down") return "up";
+
+  return direction;
 }
 
 function moveCat(direction) {
@@ -183,16 +286,35 @@ function bumpCat() {
   );
 }
 
-async function failWithRock() {
+async function triggerSwamp() {
+  swampTriggered = true;
+  controlsInverted = true;
+
+  cat.classList.add("sunk");
+  swampMessage.classList.remove("hidden");
+  drawMaze();
+
+  await wait(900);
+
+  cat.classList.remove("sunk");
+}
+
+async function failWithRock(message) {
   isGameOver = true;
+  dangerText.textContent = message;
+
   showRockAtCat();
   showDanger();
 
   await wait(900);
 
   steps = [];
+  controlsInverted = false;
+  swampTriggered = false;
+
   renderSteps();
   resetCatPositionOnly();
+  drawMaze();
 
   isPlaying = false;
 }
@@ -252,7 +374,9 @@ function hideSpeechBubble() {
 }
 
 function checkWin() {
-  if (catX === fishPosition.x && catY === fishPosition.y) {
+  const mission = getCurrentMission();
+
+  if (catX === mission.fish.x && catY === mission.fish.y) {
     successMessage.classList.remove("hidden");
   }
 }
@@ -264,11 +388,15 @@ function showDanger() {
 function clearMessages() {
   successMessage.classList.add("hidden");
   dangerMessage.classList.add("hidden");
+  swampMessage.classList.add("hidden");
 }
 
 function resetCatPositionOnly() {
-  catX = startPosition.x;
-  catY = startPosition.y;
+  const mission = getCurrentMission();
+
+  catX = mission.start.x;
+  catY = mission.start.y;
+
   updateCatPosition();
 }
 
@@ -277,20 +405,43 @@ function resetGame() {
 
   steps = [];
   isGameOver = false;
+  controlsInverted = false;
+  swampTriggered = false;
 
   renderSteps();
   clearMessages();
   hideSpeechBubble();
   hideRock();
   resetCatPositionOnly();
+  drawMaze();
+}
+
+function nextMission() {
+  const nextIndex = currentMissionIndex + 1;
+
+  if (nextIndex < missions.length) {
+    loadMission(nextIndex);
+  } else {
+    loadMission(0);
+  }
 }
 
 function isWall(x, y) {
-  return walls.some((wall) => wall.x === x && wall.y === y);
+  const mission = getCurrentMission();
+  return mission.walls.some((wall) => wall.x === x && wall.y === y);
 }
 
 function isLava(x, y) {
-  return lavaTiles.some((lava) => lava.x === x && lava.y === y);
+  const mission = getCurrentMission();
+  return mission.lava.some((lava) => lava.x === x && lava.y === y);
+}
+
+function isSwamp(x, y) {
+  const mission = getCurrentMission();
+
+  if (!mission.swamp) return false;
+
+  return mission.swamp.x === x && mission.swamp.y === y;
 }
 
 function isOutsideGrid(x, y) {

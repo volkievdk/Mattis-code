@@ -10,17 +10,24 @@
   <main class="app">
     <header class="topbar">
       <div>
-        <p class="eyebrow">Missie 2</p>
-        <h1>Breng de kat naar de vis 🐟</h1>
+        <p class="eyebrow" id="missionLabel">Missie 1</p>
+        <h1 id="missionTitle">Breng de kat naar de vis 🐟</h1>
       </div>
       <button class="small-reset" onclick="resetGame()">🔄</button>
     </header>
+
+    <section class="mission-picker">
+      <button onclick="loadMission(0)" id="missionButton0">1</button>
+      <button onclick="loadMission(1)" id="missionButton1">2</button>
+      <button onclick="loadMission(2)" id="missionButton2">3</button>
+    </section>
 
     <section class="message hidden" id="successMessage">
       <div class="message-card success">
         <div class="party">🎉</div>
         <h2>Gelukt!</h2>
-        <p>De kat heeft de vis gevonden.</p>
+        <p id="successText">De kat heeft de vis gevonden.</p>
+        <button class="next-button" onclick="nextMission()">Volgende missie</button>
       </div>
     </section>
 
@@ -28,7 +35,15 @@
       <div class="message-card danger">
         <div class="party">🪨</div>
         <h2>Oeps!</h2>
-        <p>Rotsblok! Probeer opnieuw.</p>
+        <p id="dangerText">Rotsblok! Probeer opnieuw.</p>
+      </div>
+    </section>
+
+    <section class="message hidden" id="swampMessage">
+      <div class="message-card swamp">
+        <div class="party">🫧</div>
+        <h2>Moeras!</h2>
+        <p>Alles is nu omgedraaid.</p>
       </div>
     </section>
 
