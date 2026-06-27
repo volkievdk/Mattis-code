@@ -7,42 +7,47 @@ body {
   font-family: system-ui, sans-serif;
   background: #fff7df;
   color: #241a3f;
+  height: 100svh;
+  overflow: hidden;
 }
 
 .app {
-  max-width: 720px;
+  height: 100svh;
+  max-width: 520px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 10px;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto auto;
+  gap: 8px;
 }
 
-.hero {
-  text-align: center;
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 }
 
 .eyebrow {
   display: inline-block;
-  margin: 0 0 10px;
-  padding: 8px 14px;
+  margin: 0 0 4px;
+  padding: 4px 10px;
   background: #d9ee66;
   color: #241a3f;
-  border: 3px solid #241a3f;
+  border: 2px solid #241a3f;
   border-radius: 999px;
-  font-size: 18px;
+  font-size: 13px;
   font-weight: 900;
 }
 
-.hero h1 {
+h1 {
   margin: 0;
-  font-size: 42px;
+  font-size: 22px;
   line-height: 1.05;
 }
 
-.hero p {
-  font-size: 22px;
-}
-
 .message {
-  margin: 20px 0;
+  margin: 0;
 }
 
 .hidden {
@@ -52,44 +57,85 @@ body {
 .message-card {
   text-align: center;
   background: white;
-  border: 6px solid #241a3f;
-  border-radius: 24px;
-  padding: 24px;
-  box-shadow: 0 8px 0 #241a3f;
+  border: 4px solid #241a3f;
+  border-radius: 16px;
+  padding: 8px;
+  box-shadow: 0 4px 0 #241a3f;
 }
 
 .message-card h2 {
   margin: 0;
-  font-size: 36px;
+  font-size: 20px;
 }
 
 .message-card p {
-  font-size: 22px;
+  margin: 2px 0 0;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.message-card.success {
+  background: #d9ee66;
+}
+
+.message-card.danger {
+  background: #ff9f1c;
 }
 
 .party {
-  font-size: 56px;
+  font-size: 24px;
+  line-height: 1;
 }
 
 .playground {
+  min-height: 0;
   background: #d9ee66;
-  border: 6px solid #241a3f;
-  border-radius: 24px;
-  padding: 16px;
-  margin: 24px 0;
+  border: 4px solid #241a3f;
+  border-radius: 18px;
+  padding: 8px;
 }
 
 .grid {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  height: 100%;
+  min-height: 260px;
+  background-color: #fffbef;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.cell {
+  position: absolute;
+  width: 20%;
+  height: 20%;
+  display: grid;
+  place-items: center;
+  font-size: 30px;
+}
+
+.wall {
+  background: #241a3f;
+}
+
+.wall::after {
+  content: "🧱";
+}
+
+.lava {
+  background: #ff9f1c;
+  animation: lavaPulse 0.8s infinite alternate;
+}
+
+.lava::after {
+  content: "🌋";
+}
+
+.path {
   background-image:
     linear-gradient(#241a3f22 2px, transparent 2px),
     linear-gradient(90deg, #241a3f22 2px, transparent 2px);
-  background-size: 20% 20%;
-  background-color: #fffbef;
-  border-radius: 18px;
-  overflow: hidden;
+  background-size: 100% 100%;
 }
 
 .character,
@@ -99,135 +145,142 @@ body {
   height: 20%;
   display: grid;
   place-items: center;
-  font-size: 52px;
-  transition: transform 0.35s ease;
+  font-size: 38px;
+  transition: transform 0.32s ease;
+  z-index: 5;
 }
 
 .character {
   left: 0;
   top: 0;
-  z-index: 2;
 }
 
 .apple {
   left: 80%;
   top: 80%;
-  z-index: 1;
 }
 
 .speech-bubble {
   position: absolute;
-  left: 11%;
-  top: 1%;
-  z-index: 3;
+  left: 9%;
+  top: 0%;
+  z-index: 8;
   background: white;
-  border: 4px solid #241a3f;
-  border-radius: 18px;
-  padding: 10px 14px;
-  font-size: 22px;
+  border: 3px solid #241a3f;
+  border-radius: 12px;
+  padding: 5px 8px;
+  font-size: 14px;
   font-weight: 900;
-  box-shadow: 0 4px 0 #241a3f;
-}
-
-.blocks {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-
-button {
-  border: 0;
-  border-radius: 16px;
-  padding: 18px;
-  font-size: 22px;
-  font-weight: 900;
-  cursor: pointer;
-  background: #e33a72;
-  color: white;
-  box-shadow: 0 5px 0 #241a3f;
-}
-
-button:active {
-  transform: translateY(3px);
-  box-shadow: 0 2px 0 #241a3f;
-}
-
-button.fun {
-  grid-column: span 2;
-  background: #ff9f1c;
-  color: #241a3f;
+  box-shadow: 0 3px 0 #241a3f;
 }
 
 .program {
-  margin-top: 24px;
-}
-
-.program h2 {
-  font-size: 24px;
+  min-height: 48px;
 }
 
 .steps {
-  min-height: 72px;
+  min-height: 48px;
+  max-height: 64px;
+  overflow: hidden;
   background: white;
-  border: 4px dashed #241a3f;
-  border-radius: 18px;
-  padding: 12px;
+  border: 3px dashed #241a3f;
+  border-radius: 14px;
+  padding: 6px;
   display: flex;
-  gap: 8px;
+  gap: 5px;
   flex-wrap: wrap;
   align-items: center;
 }
 
 .empty-state {
-  font-size: 18px;
-  font-weight: 800;
+  font-size: 15px;
+  font-weight: 900;
   opacity: 0.55;
 }
 
 .step {
   background: #241a3f;
   color: white;
-  border-radius: 12px;
-  padding: 10px 14px;
-  font-size: 22px;
+  border-radius: 10px;
+  padding: 5px 8px;
+  font-size: 18px;
   font-weight: 900;
 }
 
-.actions {
+.blocks {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 24px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+
+button {
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 6px;
+  font-size: 24px;
+  font-weight: 900;
+  cursor: pointer;
+  background: #e33a72;
+  color: white;
+  box-shadow: 0 4px 0 #241a3f;
+}
+
+button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #241a3f;
+}
+
+.small-reset {
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  background: #666;
+}
+
+.fun {
+  background: #ff9f1c;
+  color: #241a3f;
 }
 
 .play {
   background: #241a3f;
 }
 
-.reset {
-  background: #666;
+@keyframes lavaPulse {
+  from {
+    filter: brightness(1);
+  }
+
+  to {
+    filter: brightness(1.25);
+  }
 }
 
-@media (max-width: 520px) {
-  .app {
-    padding: 16px;
-  }
-
-  .hero h1 {
-    font-size: 34px;
-  }
-
-  .hero p {
+@media (max-height: 700px) {
+  h1 {
     font-size: 19px;
+  }
+
+  .grid {
+    min-height: 220px;
   }
 
   .character,
   .apple {
-    font-size: 42px;
+    font-size: 32px;
+  }
+
+  .cell {
+    font-size: 25px;
   }
 
   button {
-    font-size: 19px;
-    padding: 16px;
+    font-size: 21px;
+    padding: 9px 4px;
+  }
+
+  .steps {
+    min-height: 42px;
+    max-height: 48px;
   }
 }
