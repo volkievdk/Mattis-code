@@ -112,6 +112,14 @@ h1 {
   display: grid;
   place-items: center;
   font-size: 30px;
+  z-index: 1;
+}
+
+.path {
+  background-image:
+    linear-gradient(#241a3f22 2px, transparent 2px),
+    linear-gradient(90deg, #241a3f22 2px, transparent 2px);
+  background-size: 100% 100%;
 }
 
 .wall {
@@ -128,36 +136,41 @@ h1 {
 }
 
 .lava::after {
-  content: "🌋";
-}
-
-.path {
-  background-image:
-    linear-gradient(#241a3f22 2px, transparent 2px),
-    linear-gradient(90deg, #241a3f22 2px, transparent 2px);
-  background-size: 100% 100%;
+  content: "🔥";
 }
 
 .character,
-.apple {
+.fish,
+.rock {
   position: absolute;
+  left: 0;
+  top: 0;
   width: 20%;
   height: 20%;
   display: grid;
   place-items: center;
+}
+
+.character {
   font-size: 38px;
   transition: transform 0.32s ease;
   z-index: 5;
 }
 
-.character {
-  left: 0;
-  top: 0;
+.fish {
+  font-size: 40px;
+  z-index: 4;
+  filter: drop-shadow(0 4px 0 #241a3f33);
 }
 
-.apple {
-  left: 80%;
-  top: 80%;
+.rock {
+  font-size: 44px;
+  z-index: 9;
+  pointer-events: none;
+}
+
+.rock.falling {
+  animation: rockFall 0.55s ease-in forwards;
 }
 
 .speech-bubble {
@@ -256,6 +269,20 @@ button:active {
   }
 }
 
+@keyframes rockFall {
+  0% {
+    transform: translate(var(--rock-x), -120%);
+  }
+
+  75% {
+    transform: translate(var(--rock-x), var(--rock-y));
+  }
+
+  100% {
+    transform: translate(var(--rock-x), var(--rock-y)) scale(1.08);
+  }
+}
+
 @media (max-height: 700px) {
   h1 {
     font-size: 19px;
@@ -265,9 +292,16 @@ button:active {
     min-height: 220px;
   }
 
-  .character,
-  .apple {
+  .character {
     font-size: 32px;
+  }
+
+  .fish {
+    font-size: 34px;
+  }
+
+  .rock {
+    font-size: 36px;
   }
 
   .cell {
