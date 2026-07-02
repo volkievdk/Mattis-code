@@ -4,8 +4,6 @@ let catY = 0;
 let isPlaying = false;
 let isGameOver = false;
 let currentWorldIndex = 0;
-let controlsInverted = false;
-let swampTriggered = false;
 let switchOn = false;
 
 const grid = document.getElementById("grid");
@@ -15,7 +13,6 @@ const rock = document.getElementById("rock");
 const stepsElement = document.getElementById("steps");
 const successMessage = document.getElementById("successMessage");
 const dangerMessage = document.getElementById("dangerMessage");
-const swampMessage = document.getElementById("swampMessage");
 const successText = document.getElementById("successText");
 const dangerText = document.getElementById("dangerText");
 const dangerIcon = document.getElementById("dangerIcon");
@@ -33,14 +30,14 @@ const worlds = [
     label: "Wereld 1",
     name: "Bewegen",
     title: "Breng de kat naar de vis 🐟",
-    lesson: "Les: zet stappen achter elkaar.",
+    lesson: "Zet stappen achter elkaar. Gebruik 🔁 om minder blokjes te gebruiken.",
     success: "Je eerste programma werkt.",
     start: { x: 0, y: 0 },
     fish: { x: 4, y: 4 },
     walls: [],
     lava: [],
-    swamp: null,
     switchTile: null,
+    door: null,
     maxSteps: 8,
     blocks: ["up", "down", "left", "right", "repeatRight", "play"]
   },
@@ -48,14 +45,14 @@ const worlds = [
     label: "Wereld 2",
     name: "Verhalen",
     title: "Maak een kattenverhaal 🎭",
-    lesson: "Les: code kan ook iets laten gebeuren.",
+    lesson: "Code kan bewegen, praten en dansen.",
     success: "De kat heeft een mini-verhaal gemaakt.",
     start: { x: 0, y: 0 },
     fish: { x: 4, y: 4 },
     walls: [],
     lava: [],
-    swamp: null,
     switchTile: null,
+    door: null,
     maxSteps: 10,
     blocks: ["right", "down", "meow", "dance", "repeatRight", "play"],
     requiredActions: ["meow", "dance"]
@@ -63,26 +60,26 @@ const worlds = [
   {
     label: "Wereld 3",
     name: "Slimme regels",
-    title: "Het slimme moeras-doolhof 🧠",
-    lesson: "Les: regels kunnen veranderen tijdens je programma.",
-    success: "Je programma werkte met een veranderende regel.",
+    title: "Open de deur met een regel 🔘",
+    lesson: "Als de schakelaar aan is, mag de kat door de deur.",
+    success: "Je hebt een als-dan-regel gebruikt.",
     start: { x: 0, y: 0 },
     fish: { x: 4, y: 4 },
     walls: [
-      { x: 0, y: 1 },
+      { x: 1, y: 0 },
       { x: 1, y: 1 },
       { x: 3, y: 1 },
       { x: 0, y: 3 },
       { x: 1, y: 3 },
-      { x: 2, y: 3 }
+      { x: 3, y: 3 }
     ],
     lava: [
-      { x: 3, y: 2 }
+      { x: 2, y: 3 }
     ],
-    swamp: { x: 2, y: 0 },
-    switchTile: { x: 4, y: 2 },
+    switchTile: { x: 2, y: 1 },
+    door: { x: 3, y: 2 },
     maxSteps: 10,
-    blocks: ["up", "down", "left", "right", "meow", "ifSwitchMeow", "play"]
+    blocks: ["up", "down", "left", "right", "ifSwitchOpen", "meow", "play"]
   }
 ];
 
@@ -103,8 +100,6 @@ function loadWorld(index) {
 
   updateWorldButtons();
   renderBlockButtons();
-  drawMaze();
-  placeFish();
   resetGame();
 }
 
@@ -135,7 +130,7 @@ function renderBlockButtons() {
       button.onclick = () => addStep(blockName);
 
       if (["meow", "dance"].includes(blockName)) button.className = "fun";
-      if (["repeatRight", "ifSwitchMeow"].includes(blockName)) button.className = "smart";
+      if (["repeatRight", "ifSwitchOpen"].includes(blockName)) button.className = "smart";
     }
 
     blocks.appendChild(button);
@@ -150,7 +145,7 @@ function getBlockButtonLabel(blockName) {
   if (blockName === "meow") return "🔊";
   if (blockName === "dance") return "💃";
   if (blockName === "repeatRight") return "🔁➡️";
-  if (blockName === "ifSwitchMeow") return "🔘?🔊";
+  if (blockName === "ifSwitchOpen") return "🔘?🚪";
   return "❓";
 }
 
@@ -168,7 +163,7 @@ function drawMaze() {
       if (isWall(x, y)) cell.className = "cell wall";
       if (isLava(x, y)) cell.className = "cell lava";
       if (isSwitchTile(x, y)) cell.className = "cell switch-tile";
-      if (swampTriggered && isSwamp(x, y)) cell.className = "cell swamp-visible";
+      if (isDoor(x, y) && !switchOn) cell.className = "cell door";
 
       grid.appendChild(cell);
     }
@@ -177,7 +172,12 @@ function drawMaze() {
 
 function placeFish() {
   const world = getCurrentWorld();
-  fish.style.transform = `translate(${world.fish.x * 100}%, ${world.fish.y * 100}%)`;
+  const fishX = `${world.fish.x * 100}%`;
+  const fishY = `${world.fish.y * 100}%`;
+
+  fish.style.setProperty("--fish-x", fishX);
+  fish.style.setProperty("--fish-y", fishY);
+  fish.style.transform = `translate(${fishX}, ${fishY})`;
 }
 
 function addStep(action) {
@@ -200,6 +200,13 @@ function addStep(action) {
   renderSteps();
 }
 
+function clearProgram() {
+  if (isPlaying) return;
+  steps = [];
+  renderSteps();
+  clearMessages();
+}
+
 function renderSteps() {
   const world = getCurrentWorld();
   stepCounter.textContent = `${steps.length}/${world.maxSteps}`;
@@ -208,7 +215,7 @@ function renderSteps() {
   if (steps.length === 0) {
     const emptyState = document.createElement("span");
     emptyState.className = "empty-state";
-    emptyState.textContent = "Kies je plaatjes.";
+    emptyState.textContent = "Kies blokjes.";
     stepsElement.appendChild(emptyState);
     return;
   }
@@ -229,7 +236,7 @@ function getStepIcon(step) {
   if (step === "meow") return "🔊";
   if (step === "dance") return "💃";
   if (step === "repeatRight") return "🔁➡️";
-  if (step === "ifSwitchMeow") return "🔘?🔊";
+  if (step === "ifSwitchOpen") return "🔘?🚪";
   return "❓";
 }
 
@@ -238,8 +245,6 @@ async function playProgram() {
 
   isPlaying = true;
   isGameOver = false;
-  controlsInverted = false;
-  swampTriggered = false;
   switchOn = false;
 
   clearMessages();
@@ -248,7 +253,7 @@ async function playProgram() {
   resetCatPositionOnly();
   drawMaze();
 
-  await wait(250);
+  await wait(220);
 
   for (const step of steps) {
     if (hasWon()) {
@@ -259,16 +264,13 @@ async function playProgram() {
     await runStep(step);
 
     if (isLava(catX, catY)) {
-      await failWithRock("Rotsblok! Probeer opnieuw.");
+      await failWithRock("Lava! Probeer opnieuw.");
       return;
-    }
-
-    if (isSwamp(catX, catY) && !swampTriggered) {
-      await triggerSwamp();
     }
 
     if (isSwitchTile(catX, catY)) {
       switchOn = true;
+      drawMaze();
       await say("Klik!");
     }
 
@@ -298,25 +300,30 @@ async function runStep(step) {
 
   if (step === "repeatRight") {
     for (let i = 0; i < 4; i++) {
-      moveCat(getActualDirection("right"));
-      await wait(360);
+      moveCat("right");
+      await wait(330);
       if (isLava(catX, catY) || hasWon()) return;
+      if (isSwitchTile(catX, catY)) {
+        switchOn = true;
+        drawMaze();
+        await say("Klik!");
+      }
     }
     return;
   }
 
-  if (step === "ifSwitchMeow") {
+  if (step === "ifSwitchOpen") {
     if (switchOn) {
-      await meow();
+      await say("Deur open!");
+      drawMaze();
     } else {
-      await say("Nog niet!");
+      await say("Eerst knop!");
     }
     return;
   }
 
-  const direction = getActualDirection(step);
-  moveCat(direction);
-  await wait(420);
+  moveCat(step);
+  await wait(390);
 }
 
 async function finishWorld() {
@@ -326,7 +333,7 @@ async function finishWorld() {
     const allDone = world.requiredActions.every((action) => steps.includes(action));
 
     if (!allDone) {
-      showSoftWarning("Maak eerst ook een verhaal met geluid en dans.", "🎭");
+      showSoftWarning("Maak ook geluid én dans.", "🎭");
       isPlaying = false;
       return;
     }
@@ -334,17 +341,6 @@ async function finishWorld() {
 
   showSuccess();
   isPlaying = false;
-}
-
-function getActualDirection(direction) {
-  if (!controlsInverted) return direction;
-
-  if (direction === "left") return "right";
-  if (direction === "right") return "left";
-  if (direction === "up") return "down";
-  if (direction === "down") return "up";
-
-  return direction;
 }
 
 function moveCat(direction) {
@@ -362,6 +358,11 @@ function moveCat(direction) {
   }
 
   if (isWall(nextX, nextY)) {
+    bumpCat();
+    return;
+  }
+
+  if (isDoor(nextX, nextY) && !switchOn) {
     bumpCat();
     return;
   }
@@ -392,19 +393,6 @@ function bumpCat() {
   );
 }
 
-async function triggerSwamp() {
-  swampTriggered = true;
-  controlsInverted = true;
-
-  cat.classList.add("sunk");
-  swampMessage.classList.remove("hidden");
-  drawMaze();
-
-  await wait(900);
-
-  cat.classList.remove("sunk");
-}
-
 async function failWithRock(message) {
   isGameOver = true;
   dangerText.textContent = message;
@@ -413,11 +401,9 @@ async function failWithRock(message) {
   showRockAtCat();
   showDanger();
 
-  await wait(900);
+  await wait(850);
 
   steps = [];
-  controlsInverted = false;
-  swampTriggered = false;
   switchOn = false;
 
   renderSteps();
@@ -442,7 +428,6 @@ function showRockAtCat() {
 
   rock.style.setProperty("--rock-x", rockX);
   rock.style.setProperty("--rock-y", rockY);
-
   rock.style.transform = `translate(${rockX}, -120%)`;
 
   void rock.offsetWidth;
@@ -465,7 +450,7 @@ async function say(text) {
   speechBubble.classList.remove("hidden");
   moveSpeechBubble();
 
-  await wait(700);
+  await wait(680);
 
   hideSpeechBubble();
 }
@@ -514,7 +499,6 @@ function showDanger() {
 function clearMessages() {
   successMessage.classList.add("hidden");
   dangerMessage.classList.add("hidden");
-  swampMessage.classList.add("hidden");
 }
 
 function resetCatPositionOnly() {
@@ -531,8 +515,6 @@ function resetGame() {
 
   steps = [];
   isGameOver = false;
-  controlsInverted = false;
-  swampTriggered = false;
   switchOn = false;
 
   renderSteps();
@@ -540,6 +522,7 @@ function resetGame() {
   hideSpeechBubble();
   hideRock();
   resetCatPositionOnly();
+  placeFish();
   drawMaze();
 }
 
@@ -563,20 +546,20 @@ function isLava(x, y) {
   return world.lava.some((lava) => lava.x === x && lava.y === y);
 }
 
-function isSwamp(x, y) {
-  const world = getCurrentWorld();
-
-  if (!world.swamp) return false;
-
-  return world.swamp.x === x && world.swamp.y === y;
-}
-
 function isSwitchTile(x, y) {
   const world = getCurrentWorld();
 
   if (!world.switchTile) return false;
 
   return world.switchTile.x === x && world.switchTile.y === y;
+}
+
+function isDoor(x, y) {
+  const world = getCurrentWorld();
+
+  if (!world.door) return false;
+
+  return world.door.x === x && world.door.y === y;
 }
 
 function isOutsideGrid(x, y) {

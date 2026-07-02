@@ -4,53 +4,58 @@ Een programmeerwebsite voor kinderen die werken met plaatjes in plaats van tekst
 
 ## Versie
 
-v0.6
+v0.7
 
-## Grote verandering
+## Grote keuzes
 
-Mattís Code is nu geen los kattenspel meer, maar een klein platform met 3 werelden.
+- Het moeras is verwijderd. Het was leuk, maar maakte de programmeerles te rommelig.
+- De visuele stijl is moderner gemaakt: meer diepte, glas-effecten, gradients, animatie en duidelijke kaarten.
+- Wereld 3 is nu een echte programmeerles: een schakelaar opent een deur via een als-dan-blok.
 
 ## De 3 werelden
 
 ### Wereld 1: Bewegen
 
-Kinderen leren dat een programma bestaat uit stappen achter elkaar.
+Kinderen leren volgorde en herhaling.
 
-Concepten:
+Blokken:
 
-- volgorde
-- richting
-- uitvoeren met play
-- herhalen met een simpel herhaalblok
+- omhoog
+- omlaag
+- links
+- rechts
+- herhaal rechts
+- play
 
-### Wereld 2: Verhalen maken
+### Wereld 2: Verhalen
 
-Kinderen leren dat code niet alleen verplaatst, maar ook dingen laat gebeuren.
+Kinderen leren dat code ook acties kan starten.
 
-Concepten:
+Blokken:
 
-- actieblokken
-- geluid
-- animatie
-- creatief programmeren
+- rechts
+- omlaag
+- miauw
+- dans
+- herhaal rechts
+- play
 
 ### Wereld 3: Slimme regels
 
-Kinderen leren dat programma's kunnen reageren op veranderingen in de wereld.
+Kinderen leren if/then-denken.
 
-Concepten:
+Blokken:
 
-- veranderende regels
-- moeras draait de besturing om
-- schakelaar
-- als-dan blok
+- bewegen
+- miauw
+- als schakelaar aan is, open deur
+- play
 
-## Bestanden
+## Deploy
+
+Upload deze bestanden naar GitHub en Vercel deployt opnieuw:
 
 - `index.html`
 - `style.css`
 - `script.js`
-
-## Deploy
-
-Deze statische site kan direct op Vercel draaien.
+- `README.md`

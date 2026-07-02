@@ -8,47 +8,58 @@
 </head>
 <body>
   <main class="app">
+    <div class="background-orb orb-one"></div>
+    <div class="background-orb orb-two"></div>
+
     <header class="topbar">
       <div>
         <p class="eyebrow" id="worldLabel">Wereld 1</p>
-        <h1 id="missionTitle">Breng de kat naar de vis 🐟</h1>
+        <h1 id="missionTitle">Breng de kat naar de vis</h1>
       </div>
-      <button class="small-reset" onclick="resetGame()">🔄</button>
+      <button class="icon-button" onclick="resetGame()" aria-label="Opnieuw">↻</button>
     </header>
 
     <section class="world-picker">
-      <button onclick="loadWorld(0)" id="worldButton0">1<br><span>Bewegen</span></button>
-      <button onclick="loadWorld(1)" id="worldButton1">2<br><span>Verhaal</span></button>
-      <button onclick="loadWorld(2)" id="worldButton2">3<br><span>Slim</span></button>
+      <button onclick="loadWorld(0)" id="worldButton0">
+        <strong>1</strong>
+        <span>Bewegen</span>
+      </button>
+      <button onclick="loadWorld(1)" id="worldButton1">
+        <strong>2</strong>
+        <span>Verhaal</span>
+      </button>
+      <button onclick="loadWorld(2)" id="worldButton2">
+        <strong>3</strong>
+        <span>Slim</span>
+      </button>
     </section>
 
-    <section class="lesson-bar">
-      <span id="lessonText">Les: zet stappen achter elkaar.</span>
+    <section class="lesson-card">
+      <div>
+        <span class="lesson-label">Wat leer je?</span>
+        <p id="lessonText">Zet stappen achter elkaar.</p>
+      </div>
       <strong id="stepCounter">0/8</strong>
     </section>
 
     <section class="message hidden" id="successMessage">
       <div class="message-card success">
-        <div class="party">🎉</div>
-        <h2>Gelukt!</h2>
-        <p id="successText">De kat heeft de vis gevonden.</p>
-        <button class="next-button" onclick="nextWorld()">Volgende wereld</button>
+        <div class="party">✨</div>
+        <div>
+          <h2>Gelukt!</h2>
+          <p id="successText">Je programma werkt.</p>
+        </div>
+        <button class="next-button" onclick="nextWorld()">Verder</button>
       </div>
     </section>
 
     <section class="message hidden" id="dangerMessage">
       <div class="message-card danger">
         <div class="party" id="dangerIcon">🪨</div>
-        <h2>Oeps!</h2>
-        <p id="dangerText">Probeer opnieuw.</p>
-      </div>
-    </section>
-
-    <section class="message hidden" id="swampMessage">
-      <div class="message-card swamp">
-        <div class="party">🫧</div>
-        <h2>Moeras!</h2>
-        <p>De knoppen zijn nu omgedraaid.</p>
+        <div>
+          <h2>Oeps!</h2>
+          <p id="dangerText">Probeer opnieuw.</p>
+        </div>
       </div>
     </section>
 
@@ -61,9 +72,13 @@
       </div>
     </section>
 
-    <section class="program">
+    <section class="program-panel">
+      <div class="program-header">
+        <span>Mijn programma</span>
+        <button class="mini-button" onclick="clearProgram()">Leeg</button>
+      </div>
       <div id="steps" class="steps">
-        <span class="empty-state">Kies je plaatjes.</span>
+        <span class="empty-state">Kies blokjes.</span>
       </div>
     </section>
 
