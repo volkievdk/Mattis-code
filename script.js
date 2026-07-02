@@ -3,9 +3,10 @@ let catX = 0;
 let catY = 0;
 let isPlaying = false;
 let isGameOver = false;
-let currentMissionIndex = 0;
+let currentWorldIndex = 0;
 let controlsInverted = false;
 let swampTriggered = false;
+let switchOn = false;
 
 const grid = document.getElementById("grid");
 const cat = document.getElementById("cat");
@@ -17,48 +18,54 @@ const dangerMessage = document.getElementById("dangerMessage");
 const swampMessage = document.getElementById("swampMessage");
 const successText = document.getElementById("successText");
 const dangerText = document.getElementById("dangerText");
+const dangerIcon = document.getElementById("dangerIcon");
 const speechBubble = document.getElementById("speechBubble");
-const missionLabel = document.getElementById("missionLabel");
+const worldLabel = document.getElementById("worldLabel");
 const missionTitle = document.getElementById("missionTitle");
+const lessonText = document.getElementById("lessonText");
+const stepCounter = document.getElementById("stepCounter");
+const blocks = document.getElementById("blocks");
 
 const gridSize = 5;
 
-const missions = [
+const worlds = [
   {
-    label: "Missie 1",
+    label: "Wereld 1",
+    name: "Bewegen",
     title: "Breng de kat naar de vis 🐟",
-    success: "De kat heeft de vis gevonden.",
+    lesson: "Les: zet stappen achter elkaar.",
+    success: "Je eerste programma werkt.",
     start: { x: 0, y: 0 },
     fish: { x: 4, y: 4 },
     walls: [],
     lava: [],
     swamp: null,
-    showSwampAfterTrigger: false
+    switchTile: null,
+    maxSteps: 8,
+    blocks: ["up", "down", "left", "right", "repeatRight", "play"]
   },
   {
-    label: "Missie 2",
-    title: "Ontsnap uit het lava-doolhof 🔥",
-    success: "De kat is veilig bij de vis.",
+    label: "Wereld 2",
+    name: "Verhalen",
+    title: "Maak een kattenverhaal 🎭",
+    lesson: "Les: code kan ook iets laten gebeuren.",
+    success: "De kat heeft een mini-verhaal gemaakt.",
     start: { x: 0, y: 0 },
     fish: { x: 4, y: 4 },
-    walls: [
-      { x: 1, y: 0 },
-      { x: 1, y: 1 },
-      { x: 4, y: 1 },
-      { x: 1, y: 3 },
-      { x: 2, y: 3 }
-    ],
-    lava: [
-      { x: 2, y: 1 },
-      { x: 4, y: 2 }
-    ],
+    walls: [],
+    lava: [],
     swamp: null,
-    showSwampAfterTrigger: false
+    switchTile: null,
+    maxSteps: 10,
+    blocks: ["right", "down", "meow", "dance", "repeatRight", "play"],
+    requiredActions: ["meow", "dance"]
   },
   {
-    label: "Missie 3",
-    title: "Pas op voor het geheime moeras 🫧",
-    success: "De kat vond de vis, zelfs met omgekeerde knoppen.",
+    label: "Wereld 3",
+    name: "Slimme regels",
+    title: "Het slimme moeras-doolhof 🧠",
+    lesson: "Les: regels kunnen veranderen tijdens je programma.",
+    success: "Je programma werkte met een veranderende regel.",
     start: { x: 0, y: 0 },
     fish: { x: 4, y: 4 },
     walls: [
@@ -73,46 +80,83 @@ const missions = [
       { x: 3, y: 2 }
     ],
     swamp: { x: 2, y: 0 },
-    showSwampAfterTrigger: true
+    switchTile: { x: 4, y: 2 },
+    maxSteps: 10,
+    blocks: ["up", "down", "left", "right", "meow", "ifSwitchMeow", "play"]
   }
 ];
 
 function setupGame() {
-  loadMission(0);
+  loadWorld(0);
 }
 
-function loadMission(index) {
+function loadWorld(index) {
   if (isPlaying) return;
 
-  currentMissionIndex = index;
-  const mission = getCurrentMission();
+  currentWorldIndex = index;
+  const world = getCurrentWorld();
 
-  missionLabel.textContent = mission.label;
-  missionTitle.textContent = mission.title;
-  successText.textContent = mission.success;
+  worldLabel.textContent = `${world.label}: ${world.name}`;
+  missionTitle.textContent = world.title;
+  lessonText.textContent = world.lesson;
+  successText.textContent = world.success;
 
-  updateMissionButtons();
+  updateWorldButtons();
+  renderBlockButtons();
   drawMaze();
   placeFish();
   resetGame();
 }
 
-function getCurrentMission() {
-  return missions[currentMissionIndex];
+function getCurrentWorld() {
+  return worlds[currentWorldIndex];
 }
 
-function updateMissionButtons() {
-  for (let i = 0; i < missions.length; i++) {
-    const button = document.getElementById(`missionButton${i}`);
-    button.classList.toggle("active", i === currentMissionIndex);
+function updateWorldButtons() {
+  for (let i = 0; i < worlds.length; i++) {
+    const button = document.getElementById(`worldButton${i}`);
+    button.classList.toggle("active", i === currentWorldIndex);
   }
+}
+
+function renderBlockButtons() {
+  const world = getCurrentWorld();
+  blocks.innerHTML = "";
+
+  world.blocks.forEach((blockName) => {
+    const button = document.createElement("button");
+
+    if (blockName === "play") {
+      button.textContent = "▶️";
+      button.className = "play";
+      button.onclick = playProgram;
+    } else {
+      button.textContent = getBlockButtonLabel(blockName);
+      button.onclick = () => addStep(blockName);
+
+      if (["meow", "dance"].includes(blockName)) button.className = "fun";
+      if (["repeatRight", "ifSwitchMeow"].includes(blockName)) button.className = "smart";
+    }
+
+    blocks.appendChild(button);
+  });
+}
+
+function getBlockButtonLabel(blockName) {
+  if (blockName === "up") return "⬆️";
+  if (blockName === "down") return "⬇️";
+  if (blockName === "left") return "⬅️";
+  if (blockName === "right") return "➡️";
+  if (blockName === "meow") return "🔊";
+  if (blockName === "dance") return "💃";
+  if (blockName === "repeatRight") return "🔁➡️";
+  if (blockName === "ifSwitchMeow") return "🔘?🔊";
+  return "❓";
 }
 
 function drawMaze() {
   const oldCells = document.querySelectorAll(".cell");
   oldCells.forEach((cell) => cell.remove());
-
-  const mission = getCurrentMission();
 
   for (let y = 0; y < gridSize; y++) {
     for (let x = 0; x < gridSize; x++) {
@@ -120,24 +164,11 @@ function drawMaze() {
       cell.className = "cell path";
       cell.style.left = `${x * 20}%`;
       cell.style.top = `${y * 20}%`;
-      cell.dataset.x = x;
-      cell.dataset.y = y;
 
-      if (isWall(x, y)) {
-        cell.className = "cell wall";
-      }
-
-      if (isLava(x, y)) {
-        cell.className = "cell lava";
-      }
-
-      if (
-        mission.showSwampAfterTrigger &&
-        swampTriggered &&
-        isSwamp(x, y)
-      ) {
-        cell.className = "cell swamp-visible";
-      }
+      if (isWall(x, y)) cell.className = "cell wall";
+      if (isLava(x, y)) cell.className = "cell lava";
+      if (isSwitchTile(x, y)) cell.className = "cell switch-tile";
+      if (swampTriggered && isSwamp(x, y)) cell.className = "cell swamp-visible";
 
       grid.appendChild(cell);
     }
@@ -145,8 +176,8 @@ function drawMaze() {
 }
 
 function placeFish() {
-  const mission = getCurrentMission();
-  fish.style.transform = `translate(${mission.fish.x * 100}%, ${mission.fish.y * 100}%)`;
+  const world = getCurrentWorld();
+  fish.style.transform = `translate(${world.fish.x * 100}%, ${world.fish.y * 100}%)`;
 }
 
 function addStep(action) {
@@ -158,11 +189,20 @@ function addStep(action) {
     isGameOver = false;
   }
 
+  const world = getCurrentWorld();
+
+  if (steps.length >= world.maxSteps) {
+    showSoftWarning("Maximaal aantal blokjes bereikt.", "✋");
+    return;
+  }
+
   steps.push(action);
   renderSteps();
 }
 
 function renderSteps() {
+  const world = getCurrentWorld();
+  stepCounter.textContent = `${steps.length}/${world.maxSteps}`;
   stepsElement.innerHTML = "";
 
   if (steps.length === 0) {
@@ -187,6 +227,9 @@ function getStepIcon(step) {
   if (step === "left") return "⬅️";
   if (step === "right") return "➡️";
   if (step === "meow") return "🔊";
+  if (step === "dance") return "💃";
+  if (step === "repeatRight") return "🔁➡️";
+  if (step === "ifSwitchMeow") return "🔘?🔊";
   return "❓";
 }
 
@@ -197,6 +240,7 @@ async function playProgram() {
   isGameOver = false;
   controlsInverted = false;
   swampTriggered = false;
+  switchOn = false;
 
   clearMessages();
   hideSpeechBubble();
@@ -207,26 +251,88 @@ async function playProgram() {
   await wait(250);
 
   for (const step of steps) {
-    if (step === "meow") {
-      await meow();
-    } else {
-      const direction = getActualDirection(step);
-      moveCat(direction);
-      await wait(420);
+    if (hasWon()) {
+      await finishWorld();
+      return;
+    }
 
-      if (isLava(catX, catY)) {
-        await failWithRock("Rotsblok! Probeer opnieuw.");
-        return;
-      }
+    await runStep(step);
 
-      if (isSwamp(catX, catY) && !swampTriggered) {
-        await triggerSwamp();
-      }
+    if (isLava(catX, catY)) {
+      await failWithRock("Rotsblok! Probeer opnieuw.");
+      return;
+    }
+
+    if (isSwamp(catX, catY) && !swampTriggered) {
+      await triggerSwamp();
+    }
+
+    if (isSwitchTile(catX, catY)) {
+      switchOn = true;
+      await say("Klik!");
+    }
+
+    if (hasWon()) {
+      await finishWorld();
+      return;
     }
   }
 
-  checkWin();
+  if (!hasWon()) {
+    showSoftWarning("Nog niet klaar. Verbeter je programma.", "🐟");
+  }
 
+  isPlaying = false;
+}
+
+async function runStep(step) {
+  if (step === "meow") {
+    await meow();
+    return;
+  }
+
+  if (step === "dance") {
+    await dance();
+    return;
+  }
+
+  if (step === "repeatRight") {
+    for (let i = 0; i < 4; i++) {
+      moveCat(getActualDirection("right"));
+      await wait(360);
+      if (isLava(catX, catY) || hasWon()) return;
+    }
+    return;
+  }
+
+  if (step === "ifSwitchMeow") {
+    if (switchOn) {
+      await meow();
+    } else {
+      await say("Nog niet!");
+    }
+    return;
+  }
+
+  const direction = getActualDirection(step);
+  moveCat(direction);
+  await wait(420);
+}
+
+async function finishWorld() {
+  const world = getCurrentWorld();
+
+  if (world.requiredActions) {
+    const allDone = world.requiredActions.every((action) => steps.includes(action));
+
+    if (!allDone) {
+      showSoftWarning("Maak eerst ook een verhaal met geluid en dans.", "🎭");
+      isPlaying = false;
+      return;
+    }
+  }
+
+  showSuccess();
   isPlaying = false;
 }
 
@@ -302,6 +408,7 @@ async function triggerSwamp() {
 async function failWithRock(message) {
   isGameOver = true;
   dangerText.textContent = message;
+  dangerIcon.textContent = "🪨";
 
   showRockAtCat();
   showDanger();
@@ -311,12 +418,19 @@ async function failWithRock(message) {
   steps = [];
   controlsInverted = false;
   swampTriggered = false;
+  switchOn = false;
 
   renderSteps();
   resetCatPositionOnly();
   drawMaze();
 
   isPlaying = false;
+}
+
+function showSoftWarning(message, icon) {
+  dangerIcon.textContent = icon;
+  dangerText.textContent = message;
+  dangerMessage.classList.remove("hidden");
 }
 
 function showRockAtCat() {
@@ -342,13 +456,24 @@ function hideRock() {
 }
 
 async function meow() {
+  await say("Miauw!");
+  playMeowSound();
+}
+
+async function say(text) {
+  speechBubble.textContent = text;
   speechBubble.classList.remove("hidden");
   moveSpeechBubble();
-  playMeowSound();
 
-  await wait(800);
+  await wait(700);
 
   hideSpeechBubble();
+}
+
+async function dance() {
+  cat.classList.add("dance");
+  await wait(600);
+  cat.classList.remove("dance");
 }
 
 function playMeowSound() {
@@ -373,12 +498,13 @@ function hideSpeechBubble() {
   speechBubble.classList.add("hidden");
 }
 
-function checkWin() {
-  const mission = getCurrentMission();
+function hasWon() {
+  const world = getCurrentWorld();
+  return catX === world.fish.x && catY === world.fish.y;
+}
 
-  if (catX === mission.fish.x && catY === mission.fish.y) {
-    successMessage.classList.remove("hidden");
-  }
+function showSuccess() {
+  successMessage.classList.remove("hidden");
 }
 
 function showDanger() {
@@ -392,10 +518,10 @@ function clearMessages() {
 }
 
 function resetCatPositionOnly() {
-  const mission = getCurrentMission();
+  const world = getCurrentWorld();
 
-  catX = mission.start.x;
-  catY = mission.start.y;
+  catX = world.start.x;
+  catY = world.start.y;
 
   updateCatPosition();
 }
@@ -407,6 +533,7 @@ function resetGame() {
   isGameOver = false;
   controlsInverted = false;
   swampTriggered = false;
+  switchOn = false;
 
   renderSteps();
   clearMessages();
@@ -416,32 +543,40 @@ function resetGame() {
   drawMaze();
 }
 
-function nextMission() {
-  const nextIndex = currentMissionIndex + 1;
+function nextWorld() {
+  const nextIndex = currentWorldIndex + 1;
 
-  if (nextIndex < missions.length) {
-    loadMission(nextIndex);
+  if (nextIndex < worlds.length) {
+    loadWorld(nextIndex);
   } else {
-    loadMission(0);
+    loadWorld(0);
   }
 }
 
 function isWall(x, y) {
-  const mission = getCurrentMission();
-  return mission.walls.some((wall) => wall.x === x && wall.y === y);
+  const world = getCurrentWorld();
+  return world.walls.some((wall) => wall.x === x && wall.y === y);
 }
 
 function isLava(x, y) {
-  const mission = getCurrentMission();
-  return mission.lava.some((lava) => lava.x === x && lava.y === y);
+  const world = getCurrentWorld();
+  return world.lava.some((lava) => lava.x === x && lava.y === y);
 }
 
 function isSwamp(x, y) {
-  const mission = getCurrentMission();
+  const world = getCurrentWorld();
 
-  if (!mission.swamp) return false;
+  if (!world.swamp) return false;
 
-  return mission.swamp.x === x && mission.swamp.y === y;
+  return world.swamp.x === x && world.swamp.y === y;
+}
+
+function isSwitchTile(x, y) {
+  const world = getCurrentWorld();
+
+  if (!world.switchTile) return false;
+
+  return world.switchTile.x === x && world.switchTile.y === y;
 }
 
 function isOutsideGrid(x, y) {

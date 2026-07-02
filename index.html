@@ -10,16 +10,21 @@
   <main class="app">
     <header class="topbar">
       <div>
-        <p class="eyebrow" id="missionLabel">Missie 1</p>
+        <p class="eyebrow" id="worldLabel">Wereld 1</p>
         <h1 id="missionTitle">Breng de kat naar de vis 🐟</h1>
       </div>
       <button class="small-reset" onclick="resetGame()">🔄</button>
     </header>
 
-    <section class="mission-picker">
-      <button onclick="loadMission(0)" id="missionButton0">1</button>
-      <button onclick="loadMission(1)" id="missionButton1">2</button>
-      <button onclick="loadMission(2)" id="missionButton2">3</button>
+    <section class="world-picker">
+      <button onclick="loadWorld(0)" id="worldButton0">1<br><span>Bewegen</span></button>
+      <button onclick="loadWorld(1)" id="worldButton1">2<br><span>Verhaal</span></button>
+      <button onclick="loadWorld(2)" id="worldButton2">3<br><span>Slim</span></button>
+    </section>
+
+    <section class="lesson-bar">
+      <span id="lessonText">Les: zet stappen achter elkaar.</span>
+      <strong id="stepCounter">0/8</strong>
     </section>
 
     <section class="message hidden" id="successMessage">
@@ -27,15 +32,15 @@
         <div class="party">🎉</div>
         <h2>Gelukt!</h2>
         <p id="successText">De kat heeft de vis gevonden.</p>
-        <button class="next-button" onclick="nextMission()">Volgende missie</button>
+        <button class="next-button" onclick="nextWorld()">Volgende wereld</button>
       </div>
     </section>
 
     <section class="message hidden" id="dangerMessage">
       <div class="message-card danger">
-        <div class="party">🪨</div>
+        <div class="party" id="dangerIcon">🪨</div>
         <h2>Oeps!</h2>
-        <p id="dangerText">Rotsblok! Probeer opnieuw.</p>
+        <p id="dangerText">Probeer opnieuw.</p>
       </div>
     </section>
 
@@ -43,7 +48,7 @@
       <div class="message-card swamp">
         <div class="party">🫧</div>
         <h2>Moeras!</h2>
-        <p>Alles is nu omgedraaid.</p>
+        <p>De knoppen zijn nu omgedraaid.</p>
       </div>
     </section>
 
@@ -62,14 +67,7 @@
       </div>
     </section>
 
-    <section class="blocks">
-      <button onclick="addStep('up')">⬆️</button>
-      <button onclick="addStep('down')">⬇️</button>
-      <button onclick="addStep('left')">⬅️</button>
-      <button onclick="addStep('right')">➡️</button>
-      <button onclick="addStep('meow')" class="fun">🔊</button>
-      <button onclick="playProgram()" class="play">▶️</button>
-    </section>
+    <section class="blocks" id="blocks"></section>
   </main>
 
   <script src="script.js"></script>

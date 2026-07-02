@@ -13,19 +13,19 @@ body {
 
 .app {
   height: 100svh;
-  max-width: 520px;
+  max-width: 540px;
   margin: 0 auto;
-  padding: 10px;
+  padding: 8px;
   display: grid;
-  grid-template-rows: auto auto auto 1fr auto auto;
-  gap: 7px;
+  grid-template-rows: auto auto auto auto 1fr auto auto;
+  gap: 6px;
 }
 
 .topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .eyebrow {
@@ -42,31 +42,53 @@ body {
 
 h1 {
   margin: 0;
-  font-size: 21px;
+  font-size: 19px;
   line-height: 1.05;
 }
 
-.mission-picker {
+.world-picker {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 6px;
 }
 
-.mission-picker button {
-  padding: 6px;
-  font-size: 16px;
+.world-picker button {
+  padding: 6px 4px;
+  font-size: 15px;
+  line-height: 1.05;
   background: white;
   color: #241a3f;
   border: 2px solid #241a3f;
   box-shadow: 0 3px 0 #241a3f;
 }
 
-.mission-picker button.active {
+.world-picker button span {
+  font-size: 11px;
+}
+
+.world-picker button.active {
   background: #d9ee66;
 }
 
-.message {
-  margin: 0;
+.lesson-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+  background: white;
+  border: 2px solid #241a3f;
+  border-radius: 12px;
+  padding: 5px 8px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.lesson-bar strong {
+  white-space: nowrap;
+  background: #241a3f;
+  color: white;
+  border-radius: 999px;
+  padding: 3px 8px;
 }
 
 .hidden {
@@ -78,18 +100,18 @@ h1 {
   background: white;
   border: 4px solid #241a3f;
   border-radius: 16px;
-  padding: 7px;
+  padding: 5px;
   box-shadow: 0 4px 0 #241a3f;
 }
 
 .message-card h2 {
   margin: 0;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .message-card p {
   margin: 2px 0 0;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 800;
 }
 
@@ -106,14 +128,14 @@ h1 {
 }
 
 .party {
-  font-size: 22px;
+  font-size: 18px;
   line-height: 1;
 }
 
 .next-button {
-  margin-top: 6px;
-  padding: 7px 10px;
-  font-size: 14px;
+  margin-top: 5px;
+  padding: 6px 10px;
+  font-size: 13px;
   background: #241a3f;
   color: white;
 }
@@ -123,14 +145,14 @@ h1 {
   background: #d9ee66;
   border: 4px solid #241a3f;
   border-radius: 18px;
-  padding: 8px;
+  padding: 7px;
 }
 
 .grid {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 245px;
+  min-height: 225px;
   background-color: #fffbef;
   border-radius: 12px;
   overflow: hidden;
@@ -142,7 +164,7 @@ h1 {
   height: 20%;
   display: grid;
   place-items: center;
-  font-size: 30px;
+  font-size: 28px;
   z-index: 1;
 }
 
@@ -179,6 +201,14 @@ h1 {
   content: "🫧";
 }
 
+.switch-tile {
+  background: #ffd166;
+}
+
+.switch-tile::after {
+  content: "🔘";
+}
+
 .character,
 .fish,
 .rock {
@@ -192,7 +222,7 @@ h1 {
 }
 
 .character {
-  font-size: 38px;
+  font-size: 36px;
   transition: transform 0.32s ease;
   z-index: 5;
 }
@@ -201,14 +231,18 @@ h1 {
   animation: sinkCat 0.7s ease-in-out;
 }
 
+.character.dance {
+  animation: danceCat 0.55s ease-in-out;
+}
+
 .fish {
-  font-size: 40px;
+  font-size: 38px;
   z-index: 4;
   filter: drop-shadow(0 4px 0 #241a3f33);
 }
 
 .rock {
-  font-size: 44px;
+  font-size: 42px;
   z-index: 9;
   pointer-events: none;
 }
@@ -226,18 +260,18 @@ h1 {
   border: 3px solid #241a3f;
   border-radius: 12px;
   padding: 5px 8px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 900;
   box-shadow: 0 3px 0 #241a3f;
 }
 
 .program {
-  min-height: 46px;
+  min-height: 42px;
 }
 
 .steps {
-  min-height: 46px;
-  max-height: 58px;
+  min-height: 42px;
+  max-height: 53px;
   overflow: hidden;
   background: white;
   border: 3px dashed #241a3f;
@@ -250,7 +284,7 @@ h1 {
 }
 
 .empty-state {
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 900;
   opacity: 0.55;
 }
@@ -260,21 +294,21 @@ h1 {
   color: white;
   border-radius: 10px;
   padding: 5px 8px;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 900;
 }
 
 .blocks {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 6px;
+  gap: 5px;
 }
 
 button {
   border: 0;
   border-radius: 12px;
-  padding: 11px 6px;
-  font-size: 23px;
+  padding: 9px 4px;
+  font-size: 21px;
   font-weight: 900;
   cursor: pointer;
   background: #e33a72;
@@ -288,8 +322,8 @@ button:active {
 }
 
 .small-reset {
-  width: 46px;
-  height: 46px;
+  width: 43px;
+  height: 43px;
   padding: 0;
   background: #666;
 }
@@ -299,105 +333,96 @@ button:active {
   color: #241a3f;
 }
 
+.smart {
+  background: #8de3ff;
+  color: #241a3f;
+}
+
 .play {
   background: #241a3f;
 }
 
 @keyframes lavaPulse {
-  from {
-    filter: brightness(1);
-  }
-
-  to {
-    filter: brightness(1.25);
-  }
+  from { filter: brightness(1); }
+  to { filter: brightness(1.25); }
 }
 
 @keyframes swampBubble {
-  from {
-    filter: brightness(1);
-  }
-
-  to {
-    filter: brightness(1.2);
-  }
+  from { filter: brightness(1); }
+  to { filter: brightness(1.2); }
 }
 
 @keyframes rockFall {
-  0% {
-    transform: translate(var(--rock-x), -120%);
-  }
-
-  75% {
-    transform: translate(var(--rock-x), var(--rock-y));
-  }
-
-  100% {
-    transform: translate(var(--rock-x), var(--rock-y)) scale(1.08);
-  }
+  0% { transform: translate(var(--rock-x), -120%); }
+  75% { transform: translate(var(--rock-x), var(--rock-y)); }
+  100% { transform: translate(var(--rock-x), var(--rock-y)) scale(1.08); }
 }
 
 @keyframes sinkCat {
-  0% {
-    opacity: 1;
-    scale: 1;
-  }
-
-  50% {
-    opacity: 0.45;
-    scale: 0.7;
-  }
-
-  100% {
-    opacity: 1;
-    scale: 1;
-  }
+  0% { opacity: 1; scale: 1; }
+  50% { opacity: 0.45; scale: 0.7; }
+  100% { opacity: 1; scale: 1; }
 }
 
-@media (max-height: 720px) {
+@keyframes danceCat {
+  0% { rotate: 0deg; scale: 1; }
+  25% { rotate: -12deg; scale: 1.1; }
+  50% { rotate: 12deg; scale: 1.1; }
+  75% { rotate: -12deg; scale: 1.1; }
+  100% { rotate: 0deg; scale: 1; }
+}
+
+@media (max-height: 730px) {
+  .app {
+    padding: 6px;
+    gap: 4px;
+  }
+
   h1 {
-    font-size: 18px;
-  }
-
-  .grid {
-    min-height: 210px;
-  }
-
-  .character {
-    font-size: 31px;
-  }
-
-  .fish {
-    font-size: 33px;
-  }
-
-  .rock {
-    font-size: 35px;
-  }
-
-  .cell {
-    font-size: 24px;
-  }
-
-  button {
-    font-size: 20px;
-    padding: 8px 4px;
-  }
-
-  .steps {
-    min-height: 40px;
-    max-height: 45px;
-  }
-
-  .message-card {
-    padding: 5px;
-  }
-
-  .message-card h2 {
     font-size: 16px;
   }
 
-  .message-card p {
-    font-size: 12px;
+  .grid {
+    min-height: 190px;
+  }
+
+  .character {
+    font-size: 29px;
+  }
+
+  .fish {
+    font-size: 31px;
+  }
+
+  .rock {
+    font-size: 33px;
+  }
+
+  .cell {
+    font-size: 22px;
+  }
+
+  button {
+    font-size: 18px;
+    padding: 6px 3px;
+  }
+
+  .steps {
+    min-height: 36px;
+    max-height: 40px;
+  }
+
+  .lesson-bar {
+    font-size: 11px;
+    padding: 4px 7px;
+  }
+
+  .world-picker button {
+    padding: 4px 3px;
+    font-size: 13px;
+  }
+
+  .world-picker button span {
+    font-size: 10px;
   }
 }
