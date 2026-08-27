@@ -13,25 +13,18 @@
 
     <header class="topbar">
       <div>
-        <p class="eyebrow" id="worldLabel">Wereld 1</p>
-        <h1 id="missionTitle">Breng de kat naar de vis</h1>
+        <p class="eyebrow" id="levelLabel">Level 1</p>
+        <h1 id="levelTitle">Breng de kat naar de vis</h1>
       </div>
       <button class="icon-button" onclick="resetGame()" aria-label="Opnieuw">↻</button>
     </header>
 
-    <section class="world-picker">
-      <button onclick="loadWorld(0)" id="worldButton0">
-        <strong>1</strong>
-        <span>Bewegen</span>
-      </button>
-      <button onclick="loadWorld(1)" id="worldButton1">
-        <strong>2</strong>
-        <span>Verhaal</span>
-      </button>
-      <button onclick="loadWorld(2)" id="worldButton2">
-        <strong>3</strong>
-        <span>Slim</span>
-      </button>
+    <section class="level-picker">
+      <button onclick="loadLevel(0)" id="levelButton0"><strong>1</strong><span>Start</span></button>
+      <button onclick="loadLevel(1)" id="levelButton1"><strong>2</strong><span>Verhaal</span></button>
+      <button onclick="loadLevel(2)" id="levelButton2"><strong>3</strong><span>Deur</span></button>
+      <button onclick="loadLevel(3)" id="levelButton3"><strong>4</strong><span>Vijver</span></button>
+      <button onclick="loadLevel(4)" id="levelButton4"><strong>5</strong><span>Doolhof</span></button>
     </section>
 
     <section class="lesson-card">
@@ -49,7 +42,7 @@
           <h2>Gelukt!</h2>
           <p id="successText">Je programma werkt.</p>
         </div>
-        <button class="next-button" onclick="nextWorld()">Verder</button>
+        <button class="next-button" onclick="nextLevel()">Verder</button>
       </div>
     </section>
 
