@@ -9,21 +9,60 @@
 <body>
   <main class="app">
     <header class="top">
-      <div><p class="brand">Mattís Code</p><h1 id="levelTitle">Level laden...</h1></div>
+      <div>
+        <p class="brand">Mattís Code</p>
+        <h1 id="levelTitle">Level laden...</h1>
+      </div>
       <button id="resetButton" class="round-button" type="button" aria-label="Opnieuw">↻</button>
     </header>
+
     <nav class="world-tabs" aria-label="Werelden">
       <button id="worldButton0" type="button" data-world="0"><span>🌍 1</span>Bewegen</button>
       <button id="worldButton1" type="button" data-world="1"><span>🌍 2</span>Verhalen</button>
       <button id="worldButton2" type="button" data-world="2"><span>🌍 3</span>Slim</button>
     </nav>
+
     <section class="level-strip" id="levelStrip" aria-label="Levels"></section>
-    <section class="mission-card"><div><span id="levelLabel">Level 1</span><p id="lessonText">Maak een programma met blokjes.</p></div><strong id="stepCounter">0/8</strong></section>
-    <section id="message" class="message hidden" aria-live="polite"><span id="messageIcon">✨</span><div><strong id="messageTitle">Gelukt!</strong><p id="messageText">Je programma werkt.</p></div><button id="nextButton" type="button">Verder</button></section>
-    <section class="stage-card"><div id="grid" class="grid"><div id="rock" class="rock hidden">🪨</div><div id="cat" class="sprite cat">🐱</div><div id="fish" class="sprite fish">🐟</div><div id="bubble" class="bubble hidden">Miauw!</div></div></section>
-    <section class="program-card"><div class="program-head"><strong>Mijn code</strong><button id="clearButton" type="button">Leeg</button></div><div id="program" class="program"><span class="empty">Tik blokjes hieronder.</span></div></section>
+
+    <section class="mission-card">
+      <div>
+        <span id="levelLabel">Level 1</span>
+        <p id="lessonText">Maak een programma met blokjes.</p>
+      </div>
+      <strong id="stepCounter">0/8</strong>
+    </section>
+
+    <section id="message" class="message hidden" aria-live="polite">
+      <span id="messageIcon">✨</span>
+      <div>
+        <strong id="messageTitle">Gelukt!</strong>
+        <p id="messageText">Je programma werkt.</p>
+      </div>
+      <button id="nextButton" type="button">Verder</button>
+    </section>
+
+    <section class="stage-card">
+      <div id="grid" class="grid">
+        <div id="rock" class="rock hidden">🪨</div>
+        <div id="cat" class="sprite cat">🐱</div>
+        <div id="fish" class="sprite fish">🐟</div>
+        <div id="bubble" class="bubble hidden">Miauw!</div>
+      </div>
+    </section>
+
+    <section class="program-card">
+      <div class="program-head">
+        <strong>Mijn code</strong>
+        <button id="clearButton" type="button">Leeg</button>
+      </div>
+      <div id="program" class="program">
+        <span class="empty">Tik blokjes hieronder.</span>
+      </div>
+    </section>
+
     <section id="blocks" class="blocks" aria-label="Codeblokjes"></section>
   </main>
+
   <script src="script.js"></script>
 </body>
 </html>
