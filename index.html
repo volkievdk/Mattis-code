@@ -8,76 +8,22 @@
 </head>
 <body>
   <main class="app">
-    <div class="background-orb orb-one"></div>
-    <div class="background-orb orb-two"></div>
-
-    <header class="topbar">
-      <div>
-        <p class="eyebrow" id="levelLabel">Level 1</p>
-        <h1 id="levelTitle">Breng de kat naar de vis</h1>
-      </div>
-      <button class="icon-button" onclick="resetGame()" aria-label="Opnieuw">↻</button>
+    <header class="top">
+      <div><p class="brand">Mattís Code</p><h1 id="levelTitle">Level laden...</h1></div>
+      <button id="resetButton" class="round-button" type="button" aria-label="Opnieuw">↻</button>
     </header>
-
-    <section class="level-picker">
-      <button onclick="loadLevel(0)" id="levelButton0"><strong>1</strong><span>Start</span></button>
-      <button onclick="loadLevel(1)" id="levelButton1"><strong>2</strong><span>Verhaal</span></button>
-      <button onclick="loadLevel(2)" id="levelButton2"><strong>3</strong><span>Deur</span></button>
-      <button onclick="loadLevel(3)" id="levelButton3"><strong>4</strong><span>Vijver</span></button>
-      <button onclick="loadLevel(4)" id="levelButton4"><strong>5</strong><span>Doolhof</span></button>
-    </section>
-
-    <section class="lesson-card">
-      <div>
-        <span class="lesson-label">Wat leer je?</span>
-        <p id="lessonText">Zet stappen achter elkaar.</p>
-      </div>
-      <strong id="stepCounter">0/8</strong>
-    </section>
-
-    <section class="message hidden" id="successMessage">
-      <div class="message-card success">
-        <div class="party">✨</div>
-        <div>
-          <h2>Gelukt!</h2>
-          <p id="successText">Je programma werkt.</p>
-        </div>
-        <button class="next-button" onclick="nextLevel()">Verder</button>
-      </div>
-    </section>
-
-    <section class="message hidden" id="dangerMessage">
-      <div class="message-card danger">
-        <div class="party" id="dangerIcon">🪨</div>
-        <div>
-          <h2>Oeps!</h2>
-          <p id="dangerText">Probeer opnieuw.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="playground">
-      <div class="grid" id="grid">
-        <div id="rock" class="rock hidden">🪨</div>
-        <div id="cat" class="character">🐱</div>
-        <div id="fish" class="fish">🐟</div>
-        <div id="speechBubble" class="speech-bubble hidden">Miauw!</div>
-      </div>
-    </section>
-
-    <section class="program-panel">
-      <div class="program-header">
-        <span>Mijn programma</span>
-        <button class="mini-button" onclick="clearProgram()">Leeg</button>
-      </div>
-      <div id="steps" class="steps">
-        <span class="empty-state">Kies blokjes.</span>
-      </div>
-    </section>
-
-    <section class="blocks" id="blocks"></section>
+    <nav class="world-tabs" aria-label="Werelden">
+      <button id="worldButton0" type="button" data-world="0"><span>🌍 1</span>Bewegen</button>
+      <button id="worldButton1" type="button" data-world="1"><span>🌍 2</span>Verhalen</button>
+      <button id="worldButton2" type="button" data-world="2"><span>🌍 3</span>Slim</button>
+    </nav>
+    <section class="level-strip" id="levelStrip" aria-label="Levels"></section>
+    <section class="mission-card"><div><span id="levelLabel">Level 1</span><p id="lessonText">Maak een programma met blokjes.</p></div><strong id="stepCounter">0/8</strong></section>
+    <section id="message" class="message hidden" aria-live="polite"><span id="messageIcon">✨</span><div><strong id="messageTitle">Gelukt!</strong><p id="messageText">Je programma werkt.</p></div><button id="nextButton" type="button">Verder</button></section>
+    <section class="stage-card"><div id="grid" class="grid"><div id="rock" class="rock hidden">🪨</div><div id="cat" class="sprite cat">🐱</div><div id="fish" class="sprite fish">🐟</div><div id="bubble" class="bubble hidden">Miauw!</div></div></section>
+    <section class="program-card"><div class="program-head"><strong>Mijn code</strong><button id="clearButton" type="button">Leeg</button></div><div id="program" class="program"><span class="empty">Tik blokjes hieronder.</span></div></section>
+    <section id="blocks" class="blocks" aria-label="Codeblokjes"></section>
   </main>
-
   <script src="script.js"></script>
 </body>
 </html>

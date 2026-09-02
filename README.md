@@ -1,42 +1,49 @@
-# Mattís Code
+# Mattís Code v1.0
 
-Een programmeerwebsite voor kinderen die werken met plaatjes in plaats van tekst.
+Een programmeer-app voor kinderen van ongeveer 7 jaar.
 
-## Versie
+## Strategische herbouw
 
-v0.8
+Deze versie is opnieuw opgebouwd als les-app, niet als los kattenspel.
 
-## Nieuw in v0.8
+Principes:
 
-- Er zijn nu 5 levels.
-- Level 4 heeft een groter vlak: 6×6.
-- Level 4 heeft een vijver waar de kat omheen moet lopen.
-- Level 5 is een groter doolhof.
-- De grid-size is nu per level instelbaar.
-- Nieuw blok: herhaal omlaag `🔁⬇️`.
+- één programmeerconcept per level
+- directe feedback
+- korte blokrijen
+- visuele code
+- maximaal aantal stappen
+- stoppen zodra het doel is gehaald
+- drie werelden: bewegen, verhalen, slim
 
-## Levels
+## 10 levels
 
-### Level 1 — Start
-Leer: stappen achter elkaar zetten.
+### Wereld 1 — Bewegen
 
-### Level 2 — Verhaal
-Leer: code kan ook geluid en beweging starten.
+1. Eerste stappen: volgorde
+2. Korter maken: herhaling
+3. Debug: lava ontwijken
+4. Vijver: grotere route plannen
 
-### Level 3 — Deur
-Leer: een als-dan-regel met een schakelaar.
+### Wereld 2 — Verhalen
 
-### Level 4 — Vijver
-Leer: route plannen op een groter speelveld.
+5. Miauw: actieblok
+6. Dans: meerdere acties combineren
+7. Ster: extra doel verzamelen
 
-### Level 5 — Doolhof
-Leer: eerst kijken, dan programmeren.
+### Wereld 3 — Slim
+
+8. Schakelaar: status verandert
+9. Als-dan: deur openen
+10. Eindbaas: alles samen
 
 ## Upload
 
-Upload deze bestanden naar GitHub:
+Upload naar GitHub:
 
 - `index.html`
 - `style.css`
 - `script.js`
 - `README.md`
+
+Daarna deployt Vercel automatisch opnieuw.
