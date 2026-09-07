@@ -1,8 +1,8 @@
-# Mattís Code v1.4
+# Mattís Code v1.5
 
 Een programmeer-app voor kinderen van ongeveer 7 jaar.
 
-## Nieuw in v1.4
+## Nieuw in v1.5
 
 De volgende stap is echte code schrijven.
 
@@ -57,3 +57,31 @@ Upload naar GitHub:
 - `style.css`
 - `script.js`
 - `README.md`
+
+
+## Nieuw in v1.5
+
+Mattís miste uitleg over hoe coderen echt werkt.
+
+Daarom is er nu een uitlegscherm met een knop:
+
+```text
+Lees uitleg voor 🔊
+```
+
+De app leest rustig uit:
+
+- wat code is
+- waarom volgorde belangrijk is
+- wat een regel code doet
+- waarom haakjes bij code horen
+- waarom foutjes normaal zijn
+- wat debuggen betekent
+
+Ook in Code Lab zit een kleine knop:
+
+```text
+Uitleg 🔊
+```
+
+Zo kan een kind blijven spelen en tegelijk beter begrijpen wat programmeren is.

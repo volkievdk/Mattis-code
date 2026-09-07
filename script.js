@@ -55,31 +55,42 @@ let isGameRunning = false;
 let codeX = 0;
 let codeY = 0;
 let isCodeRunning = false;
+let explanationIsPlaying = false;
+let explanationQueue = [];
 
 const $ = (id) => document.getElementById(id);
 const screens = {
   home: $("homeScreen"),
   map: $("mapScreen"),
   game: $("gameScreen"),
-  code: $("codeScreen")
+  code: $("codeScreen"),
+  explain: $("explainScreen")
 };
 
 function showScreen(name) {
+  if (name !== "explain") stopExplanation();
   Object.values(screens).forEach((screen) => screen.classList.add("hidden"));
   screens[name].classList.remove("hidden");
 }
 
 $("startBlocksButton").addEventListener("click", () => showScreen("map"));
 $("startCodeButton").addEventListener("click", openCodeLab);
+$("explainButton").addEventListener("click", openExplanation);
 $("codeLabButton").addEventListener("click", openCodeLab);
+$("explainCardButton").addEventListener("click", openExplanation);
 $("backHomeButton").addEventListener("click", () => showScreen("home"));
 $("backMapButton").addEventListener("click", () => showScreen("map"));
 $("backCodeButton").addEventListener("click", () => showScreen("map"));
+$("backExplainButton").addEventListener("click", () => showScreen("map"));
 $("resetGameButton").addEventListener("click", resetGame);
 $("clearGameButton").addEventListener("click", clearGameProgram);
 $("resetCodeButton").addEventListener("click", resetCodeLab);
 $("exampleButton").addEventListener("click", addExampleCode);
 $("runCodeButton").addEventListener("click", runTypedCode);
+$("readExplanationButton").addEventListener("click", readExplanationAloud);
+$("stopExplanationButton").addEventListener("click", stopExplanation);
+$("openCodeFromExplainButton").addEventListener("click", openCodeLab);
+$("codeExplainButton").addEventListener("click", readExplanationAloud);
 
 document.querySelectorAll("[data-level]").forEach((button) => {
   button.addEventListener("click", () => loadLevel(Number(button.dataset.level)));
@@ -300,6 +311,63 @@ function showGameMessage(type, title, text) {
 
 function hideGameMessage() {
   $("gameMessage").className = "message hidden";
+}
+
+
+function openExplanation() {
+  showScreen("explain");
+}
+
+function getExplanationText() {
+  return [
+    "Hoi Mattis. Coderen is eigenlijk een plan maken voor de computer.",
+    "Een computer kan niet raden wat jij bedoelt. Je moet heel precies vertellen wat hij moet doen.",
+    "Een programma bestaat uit kleine opdrachten. Bijvoorbeeld: rechts haakje open haakje dicht. Dan gaat je figuur naar rechts.",
+    "De volgorde is belangrijk. De computer leest van boven naar beneden. Eerst regel een. Dan regel twee. Dan regel drie.",
+    "Elke regel code doet een klein stukje van het plan. Rechts betekent een stap naar rechts. Omlaag betekent een stap omlaag. Praat betekent: zeg iets.",
+    "De haakjes horen bij code. Bij rechts met haakjes zeg je eigenlijk: voer deze opdracht nu uit.",
+    "Als je code niet doet wat je dacht, is dat niet erg. Dan heb je iets ontdekt. Je verandert een klein stukje en probeert opnieuw. Dat heet debuggen.",
+    "Zo programmeer je: bedenk wat je wilt maken, schrijf kleine stappen, druk op run, kijk wat er gebeurt, en verbeter je code.",
+    "Dat is programmeren. Jij bent de bedenker. De computer voert jouw plan uit."
+  ];
+}
+
+function readExplanationAloud() {
+  if (!("speechSynthesis" in window)) {
+    if (!screens.code.classList.contains("hidden")) {
+      showCodeMessage("warning", "Geen geluid", "Deze browser kan de uitleg niet voorlezen.");
+    }
+    return;
+  }
+
+  stopExplanation();
+  explanationIsPlaying = true;
+  explanationQueue = getExplanationText();
+  speakNextExplanationPart();
+}
+
+function speakNextExplanationPart() {
+  if (!explanationIsPlaying || explanationQueue.length === 0) {
+    explanationIsPlaying = false;
+    return;
+  }
+
+  const text = explanationQueue.shift();
+  const voice = new SpeechSynthesisUtterance(text);
+  voice.lang = "nl-NL";
+  voice.rate = 0.92;
+  voice.pitch = 1.08;
+  voice.volume = 1;
+  voice.onend = speakNextExplanationPart;
+  window.speechSynthesis.speak(voice);
+}
+
+function stopExplanation() {
+  explanationIsPlaying = false;
+  explanationQueue = [];
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+  }
 }
 
 function openCodeLab() {
