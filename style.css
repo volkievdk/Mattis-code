@@ -24,7 +24,7 @@ body {
 }
 
 .app {
-  width: min(100%, 660px);
+  width: min(100%, 680px);
   min-height: 100vh;
   margin: 0 auto;
   padding: 12px;
@@ -40,7 +40,7 @@ body {
 
 #homeScreen {
   align-content: center;
-  grid-template-rows: minmax(220px, 38vh) auto auto;
+  grid-template-rows: minmax(210px, 33vh) auto auto auto;
 }
 
 .hero {
@@ -97,14 +97,15 @@ body {
   font-weight: 950;
 }
 
-h1, h2 {
+h1, h2, h3 {
   margin: 0;
   line-height: .96;
   letter-spacing: -.055em;
 }
 
-h1 { font-size: clamp(38px, 10vw, 66px); }
+h1 { font-size: clamp(35px, 9vw, 62px); }
 h2 { font-size: clamp(21px, 5.4vw, 32px); }
+h3 { font-size: clamp(24px, 6vw, 38px); }
 
 .copy p:not(.pill) {
   margin: 12px 0 0;
@@ -114,36 +115,83 @@ h2 { font-size: clamp(21px, 5.4vw, 32px); }
   font-weight: 850;
 }
 
-.home-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.explain-button {
-  grid-column: 1 / -1;
-  min-height: 52px;
-  border: 3px solid var(--ink);
-  border-radius: 24px;
-  background: linear-gradient(135deg, var(--lime), #f8ffc0);
-  color: var(--ink);
-  box-shadow: 0 6px 0 var(--ink);
-  font-size: 18px;
-}
-
 button {
   font: inherit;
   font-weight: 950;
   cursor: pointer;
 }
 
+.name-card,
+.avatar-panel,
+.lesson,
+.message,
+.program-card,
+.editor-card,
+.card,
+.explain-card {
+  border: 2px solid var(--ink);
+  border-radius: 24px;
+  background: rgba(255,255,255,.78);
+  box-shadow: 0 5px 0 var(--ink);
+}
+
+.name-card {
+  padding: 12px;
+}
+
+.name-card label {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 13px;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  opacity: .7;
+}
+
+.name-card input {
+  width: 100%;
+  min-height: 52px;
+  border: 3px solid var(--ink);
+  border-radius: 18px;
+  padding: 0 14px;
+  background: white;
+  color: var(--ink);
+  box-shadow: 0 4px 0 var(--ink);
+  font-size: 22px;
+  font-weight: 950;
+  outline: none;
+}
+
+.name-card input:focus {
+  border-color: var(--pink);
+  box-shadow: 0 4px 0 var(--ink), 0 0 0 4px rgba(255,61,139,.18);
+}
+
+.name-card p {
+  margin: 9px 0 0;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.name-card.error {
+  background: linear-gradient(135deg, rgba(255,183,77,.94), rgba(255,255,255,.82));
+}
+
+.home-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
 .main-button,
-.alt-button {
-  min-height: 58px;
+.alt-button,
+.wide-button {
+  min-height: 56px;
   border: 3px solid var(--ink);
   border-radius: 24px;
   box-shadow: 0 6px 0 var(--ink);
-  font-size: 18px;
+  font-size: 17px;
 }
 
 .main-button {
@@ -153,6 +201,12 @@ button {
 
 .alt-button {
   background: linear-gradient(135deg, var(--blue), #dcf8ff);
+  color: var(--ink);
+}
+
+.wide-button {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, var(--lime), #f7ffb9);
   color: var(--ink);
 }
 
@@ -178,18 +232,48 @@ button {
   font-size: 24px;
 }
 
-.avatar-panel,
-.lesson,
-.message,
-.program-card,
-.editor-card,
-.explain-hero,
-.explain-list article,
-.card {
-  border: 2px solid var(--ink);
-  border-radius: 24px;
-  background: rgba(255,255,255,.78);
+.explain-card {
+  padding: 18px;
+  background:
+    radial-gradient(circle at 88% 12%, rgba(111,217,255,.55), transparent 24%),
+    rgba(255,255,255,.82);
+}
+
+.explain-card .big-icon {
+  display: grid;
+  place-items: center;
+  width: 70px;
+  height: 70px;
+  margin-bottom: 12px;
+  border: 3px solid var(--ink);
+  border-radius: 25px;
+  background: linear-gradient(135deg, var(--lime), var(--blue));
   box-shadow: 0 5px 0 var(--ink);
+  font-size: 36px;
+}
+
+.explain-card p,
+.explain-card li {
+  font-size: 16px;
+  line-height: 1.28;
+  font-weight: 830;
+}
+
+.explain-card ol {
+  margin: 14px 0 0;
+  padding-left: 22px;
+}
+
+.explain-card li {
+  margin: 10px 0;
+}
+
+code {
+  padding: 2px 6px;
+  border-radius: 8px;
+  background: #191329;
+  color: #f7fff0;
+  font-family: ui-monospace, Menlo, monospace;
 }
 
 .avatar-panel {
@@ -258,102 +342,9 @@ button {
   font-weight: 800;
 }
 
-.code-card {
+.code-card,
+.explain-card-small {
   background: linear-gradient(135deg, rgba(255,255,255,.85), rgba(220,247,95,.76));
-}
-
-.explain-card-link {
-  background: linear-gradient(135deg, rgba(255,255,255,.88), rgba(111,217,255,.62));
-}
-
-.explain-screen {
-  grid-template-rows: auto auto auto 1fr auto;
-}
-
-.explain-hero {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 12px;
-  padding: 13px;
-}
-
-.explain-face {
-  display: grid;
-  place-items: center;
-  width: 62px;
-  height: 62px;
-  border: 2px solid var(--ink);
-  border-radius: 22px;
-  background: linear-gradient(135deg, var(--lime), var(--blue));
-  box-shadow: 0 4px 0 var(--ink);
-  font-size: 31px;
-}
-
-.explain-hero span {
-  display: block;
-  font-size: 10px;
-  line-height: 1;
-  font-weight: 950;
-  opacity: .6;
-  text-transform: uppercase;
-  letter-spacing: .07em;
-}
-
-.explain-hero p {
-  margin: 4px 0 0;
-  font-size: 14px;
-  line-height: 1.2;
-  font-weight: 850;
-}
-
-.explain-actions {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 10px;
-}
-
-.explain-actions .main-button,
-.explain-actions .alt-button {
-  min-height: 48px;
-  font-size: 16px;
-}
-
-.explain-list {
-  display: grid;
-  gap: 9px;
-}
-
-.explain-list article {
-  padding: 12px;
-}
-
-.explain-list strong {
-  display: block;
-  font-size: 16px;
-}
-
-.explain-list p {
-  margin: 5px 0 0;
-  font-size: 14px;
-  line-height: 1.25;
-  font-weight: 820;
-}
-
-.listen-small {
-  border: 2px solid var(--ink);
-  border-radius: 999px;
-  padding: 6px 10px;
-  background: linear-gradient(135deg, var(--lime), #f8ffc0);
-  color: var(--ink);
-  box-shadow: 0 3px 0 var(--ink);
-  font-size: 12px;
-  white-space: nowrap;
-}
-
-.code-lesson {
-  display: grid;
-  grid-template-columns: 1fr auto auto;
 }
 
 .game-screen,
@@ -642,17 +633,14 @@ button:active {
   .app { padding: 6px; }
   .screen { gap: 6px; min-height: calc(100vh - 12px); }
   h1, h2 { font-size: 17px; }
-  #homeScreen { grid-template-rows: minmax(145px, 28vh) auto auto; }
+  #homeScreen { grid-template-rows: minmax(130px, 24vh) auto auto auto; }
   .hero-card { min-width: 58px; height: 58px; font-size: 25px; border-radius: 21px; }
   .hero-code { font-size: 17px; }
   .copy p:not(.pill) { font-size: 13px; margin-top: 6px; }
-  .main-button, .alt-button, .explain-button { min-height: 46px; font-size: 15px; }
-  .explain-hero, .explain-list article { padding: 8px; border-radius: 20px; }
-  .explain-face { width: 46px; height: 46px; font-size: 24px; border-radius: 18px; }
-  .explain-list p { font-size: 11px; }
-  .explain-list strong { font-size: 13px; }
-  .listen-small { font-size: 10px; padding: 4px 7px; }
-  .grid { min-height: 165px; }
+  .main-button, .alt-button, .wide-button { min-height: 44px; font-size: 14px; }
+  .name-card { padding: 8px; }
+  .name-card input { min-height: 42px; font-size: 17px; }
+  .grid { min-height: 155px; }
   .blocks button, .code-buttons button { min-height: 36px; font-size: 9px; }
-  textarea { min-height: 105px; font-size: 15px; }
+  textarea { min-height: 95px; font-size: 15px; }
 }

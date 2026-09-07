@@ -1,16 +1,54 @@
-# Mattís Code v1.5
+# Mattís Code v1.6
 
 Een programmeer-app voor kinderen van ongeveer 7 jaar.
 
-## Nieuw in v1.5
+## Nieuw in v1.6
 
-De volgende stap is echte code schrijven.
+De hardcoded begroeting is verwijderd.
 
-Naast de blokjeslevels is er nu een aparte route:
+De app vraagt nu in stap 0 op het openingsscherm:
+
+```text
+Mijn naam is ...
+```
+
+Die naam wordt gebruikt in:
+
+- de uitleg
+- de voorleesfunctie
+- Code Lab
+- succesfeedback
+
+Dus de app zegt niet meer standaard:
+
+```text
+Hoi Mattís
+```
+
+maar bijvoorbeeld:
+
+```text
+Hoi Noor
+Hoi Sam
+Hoi Cédric
+```
+
+## Voorleesbare uitleg
+
+De knop `Hoe werkt code? 🔊` gebruikt nu de ingevulde naam van het kind.
+
+De uitleg vertelt:
+
+- code is een plan
+- de computer leest van boven naar beneden
+- één regel code doet één ding
+- haakjes horen bij code
+- foutjes zijn normaal
+- verbeteren heet debuggen
 
 ## Code Lab
 
-Kinderen typen super eenvoudige code:
+Kinderen kunnen nog steeds echte code typen:
 
 ```js
 rechts()
@@ -18,35 +56,6 @@ rechts()
 omlaag()
 omlaag()
 praat()
-```
-
-Daarna drukken ze op:
-
-```text
-Run mijn code
-```
-
-De app voert de code regel voor regel uit.
-
-## Waarom dit belangrijk is
-
-Dit is de brug van plaatjes naar programmeren:
-
-- een regel code doet één actie
-- volgorde doet ertoe
-- haakjes horen bij code
-- fout geschreven code geeft feedback
-- kinderen zien direct wat hun code doet
-
-## Toegestane commando's
-
-```js
-rechts()
-links()
-omhoog()
-omlaag()
-praat()
-dans()
 ```
 
 ## Upload
@@ -57,31 +66,3 @@ Upload naar GitHub:
 - `style.css`
 - `script.js`
 - `README.md`
-
-
-## Nieuw in v1.5
-
-Mattís miste uitleg over hoe coderen echt werkt.
-
-Daarom is er nu een uitlegscherm met een knop:
-
-```text
-Lees uitleg voor 🔊
-```
-
-De app leest rustig uit:
-
-- wat code is
-- waarom volgorde belangrijk is
-- wat een regel code doet
-- waarom haakjes bij code horen
-- waarom foutjes normaal zijn
-- wat debuggen betekent
-
-Ook in Code Lab zit een kleine knop:
-
-```text
-Uitleg 🔊
-```
-
-Zo kan een kind blijven spelen en tegelijk beter begrijpen wat programmeren is.
