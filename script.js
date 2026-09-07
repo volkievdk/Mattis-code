@@ -1,51 +1,519 @@
 const levels = [
-  { world:0, label:'Level 1', name:'Eerste stappen', title:'Breng je figuur naar de vis 🐟', lesson:'Volgorde: eerst dit, dan dat.', success:'Je eerste programma werkt.', size:5, maxSteps:8, start:{x:0,y:0}, fish:{x:4,y:4}, walls:[], water:[], lava:[], switches:[], doors:[], stars:[], blocks:['up','down','left','right','play'] },
-  { world:0, label:'Level 2', name:'Korter maken', title:'Gebruik herhaal-blokjes 🔁', lesson:'Herhaling: één blokje kan veel stappen doen.', success:'Je gebruikte minder blokjes.', size:5, maxSteps:4, start:{x:0,y:0}, fish:{x:4,y:4}, walls:[], water:[], lava:[], switches:[], doors:[], stars:[], blocks:['right','down','repeatRight','repeatDown','play'] },
-  { world:0, label:'Level 3', name:'Debug', title:'Ontwijk de lava 🔥', lesson:'Debuggen: fout? Pas je code aan.', success:'Je vond de veilige route.', size:5, maxSteps:8, start:{x:0,y:0}, fish:{x:4,y:4}, walls:[{x:1,y:0},{x:1,y:1},{x:4,y:1},{x:1,y:3},{x:2,y:3}], water:[], lava:[{x:2,y:1},{x:4,y:2}], switches:[], doors:[], stars:[], blocks:['up','down','left','right','play'] },
-  { world:0, label:'Level 4', name:'Vijver', title:'Loop om de vijver heen 💧', lesson:'Planning: kijk eerst naar de route.', success:'Je bleef droog.', size:6, maxSteps:10, start:{x:0,y:0}, fish:{x:5,y:5}, walls:[], water:[{x:2,y:1},{x:3,y:1},{x:2,y:2},{x:3,y:2},{x:2,y:3},{x:3,y:3}], lava:[], switches:[], doors:[], stars:[], blocks:['up','down','left','right','repeatRight','repeatDown','play'] },
-  { world:1, label:'Level 5', name:'Praten', title:'Laat je figuur praten 🔊', lesson:'Acties: code kan ook geluid maken.', success:'Je figuur praatte én vond de vis.', size:5, maxSteps:9, start:{x:0,y:0}, fish:{x:4,y:4}, walls:[], water:[], lava:[], switches:[], doors:[], stars:[], requiredActions:['meow'], blocks:['right','down','repeatRight','repeatDown','meow','play'] },
-  { world:1, label:'Level 6', name:'Dans', title:'Maak een mini-verhaal 💃', lesson:'Creatie: combineer bewegen, geluid en dans.', success:'Je maakte een mini-verhaal.', size:5, maxSteps:10, start:{x:0,y:0}, fish:{x:4,y:4}, walls:[], water:[], lava:[], switches:[], doors:[], stars:[], requiredActions:['meow','dance'], blocks:['right','down','repeatRight','repeatDown','meow','dance','play'] },
-  { world:1, label:'Level 7', name:'Ster', title:'Pak de ster voor de vis ⭐', lesson:'Doelen: soms moet je eerst iets verzamelen.', success:'Ster gepakt. Vis gevonden.', size:6, maxSteps:10, start:{x:0,y:0}, fish:{x:5,y:5}, walls:[{x:1,y:1},{x:2,y:1},{x:4,y:1},{x:1,y:3},{x:3,y:3},{x:4,y:3}], water:[], lava:[], switches:[], doors:[], stars:[{x:5,y:0}], mustCollectStars:true, blocks:['up','down','left','right','repeatRight','repeatDown','meow','play'] },
-  { world:2, label:'Level 8', name:'Knop en deur', title:'Knop aan. Deur open. 🔘🚪', lesson:'Eerst de knop. Dan het als-dan-blok.', success:'Je opende de deur met een regel.', size:5, maxSteps:8, start:{x:0,y:2}, fish:{x:4,y:2}, walls:[{x:1,y:1},{x:1,y:3},{x:3,y:1},{x:3,y:3}], water:[], lava:[], switches:[{x:2,y:2}], doors:[{x:3,y:2}], stars:[], mustUseActions:['ifSwitchOpen'], blocks:['left','right','ifSwitchOpen','meow','play'] },
-  { world:2, label:'Level 9', name:'Als-dan', title:'Open de deur in het pad 🚪', lesson:'Een regel werkt pas als de voorwaarde waar is.', success:'Je gebruikte het als-dan-blok op het juiste moment.', size:6, maxSteps:11, start:{x:0,y:0}, fish:{x:5,y:5}, walls:[{x:1,y:0},{x:3,y:0},{x:1,y:1},{x:3,y:1},{x:1,y:3},{x:2,y:3},{x:4,y:3}], water:[], lava:[{x:2,y:4}], switches:[{x:2,y:1}], doors:[{x:4,y:2}], stars:[], blocks:['up','down','left','right','repeatRight','repeatDown','ifSwitchOpen','play'] },
-  { world:2, label:'Level 10', name:'Eindbaas', title:'Eindbaas: ster, knop, deur 🧠', lesson:'Alles samen: route, herhaling, verzamelen en regels.', success:'Eindbaas gehaald. Jij programmeert echt.', size:7, maxSteps:14, start:{x:0,y:0}, fish:{x:6,y:6}, walls:[{x:1,y:1},{x:2,y:1},{x:3,y:1},{x:5,y:1},{x:1,y:3},{x:3,y:3},{x:4,y:3},{x:5,y:3},{x:1,y:5},{x:2,y:5},{x:4,y:5},{x:5,y:5}], water:[{x:2,y:3}], lava:[{x:5,y:2}], switches:[{x:3,y:2}], doors:[{x:6,y:3}], stars:[{x:6,y:0}], mustCollectStars:true, mustUseActions:['ifSwitchOpen'], blocks:['up','down','left','right','repeatRight','repeatDown','ifSwitchOpen','meow','play'] }
+  {
+    label: "Level 1",
+    title: "Breng je figuur naar de vis 🐟",
+    lesson: "Volgorde: eerst dit, dan dat.",
+    maxSteps: 8,
+    start: { x: 0, y: 0 },
+    fish: { x: 4, y: 4 },
+    walls: [],
+    lava: [],
+    blocks: ["up", "down", "left", "right", "play"]
+  },
+  {
+    label: "Level 2",
+    title: "Gebruik herhaal-blokjes 🔁",
+    lesson: "Herhaling: één blokje kan veel stappen doen.",
+    maxSteps: 4,
+    start: { x: 0, y: 0 },
+    fish: { x: 4, y: 4 },
+    walls: [],
+    lava: [],
+    blocks: ["right", "down", "repeatRight", "repeatDown", "play"]
+  },
+  {
+    label: "Level 3",
+    title: "Ontwijk de lava 🔥",
+    lesson: "Debuggen: fout? Pas je code aan.",
+    maxSteps: 8,
+    start: { x: 0, y: 0 },
+    fish: { x: 4, y: 4 },
+    walls: [{x:1,y:0},{x:1,y:1},{x:4,y:1},{x:1,y:3},{x:2,y:3}],
+    lava: [{x:2,y:1},{x:4,y:2}],
+    blocks: ["up", "down", "left", "right", "play"]
+  }
 ];
-const blockData={up:{icon:'⬆️',label:'omhoog'},down:{icon:'⬇️',label:'omlaag'},left:{icon:'⬅️',label:'links'},right:{icon:'➡️',label:'rechts'},repeatRight:{icon:'🔁➡️',label:'4x rechts',kind:'smart'},repeatDown:{icon:'🔁⬇️',label:'4x omlaag',kind:'smart'},meow:{icon:'🔊',label:'praat',kind:'fun'},dance:{icon:'💃',label:'dans',kind:'fun'},ifSwitchOpen:{icon:'🔘?🚪',label:'als-dan',kind:'smart'},play:{icon:'▶️',label:'play',kind:'play'}};
-const worldNames=['Bewegen','Verhalen','Slimme regels'];
-let currentWorld=0,currentLevelIndex=0,selectedAvatar='🐱',selectedAvatarName='Kat',steps=[],catX=0,catY=0,isPlaying=false,switchOn=false,doorOpen=false,collectedStarKeys=new Set(),actionHistory=[],isGameOver=false;
-const $=(id)=>document.getElementById(id);const screens={home:$('home'),map:$('map'),levels:$('levels'),game:$('game')};
-const grid=$('grid'),hero=$('hero'),fish=$('fish'),rock=$('rock'),bubble=$('bubble'),program=$('program'),blocks=$('blocks'),message=$('message'),messageIcon=$('messageIcon'),messageTitle=$('messageTitle'),messageText=$('messageText'),nextButton=$('next');
-$('start').addEventListener('click',()=>showScreen('map'));$('homeBack').addEventListener('click',()=>showScreen('home'));$('worldBack').addEventListener('click',()=>showScreen('map'));$('levelBack').addEventListener('click',()=>showScreen('levels'));$('reset').addEventListener('click',resetGame);$('clear').addEventListener('click',clearProgram);nextButton.addEventListener('click',nextLevel);
-document.querySelectorAll('.world').forEach((b)=>b.addEventListener('click',()=>openWorld(Number(b.dataset.world))));
-document.querySelectorAll('.avatar').forEach((b)=>b.addEventListener('click',()=>{selectedAvatar=b.dataset.avatar;selectedAvatarName=b.dataset.name;hero.textContent=selectedAvatar;$('avatarName').textContent=selectedAvatarName;document.querySelectorAll('.avatar').forEach((x)=>x.classList.remove('active'));b.classList.add('active')}));
-function showScreen(name){Object.values(screens).forEach((s)=>s.classList.add('hidden'));screens[name].classList.remove('hidden')}
-function openWorld(world){currentWorld=world;$('worldLabel').textContent=`Wereld ${world+1}: ${worldNames[world]}`;renderLevelCards();showScreen('levels')}
-function renderLevelCards(){const list=$('levelCards');list.innerHTML='';levels.filter((l)=>l.world===currentWorld).forEach((level)=>{const index=levels.indexOf(level);const b=document.createElement('button');b.type='button';b.className='level-card';b.innerHTML=`<span class="badge">${index+1}</span><div><strong>${level.name}</strong><p>${level.lesson}</p></div><em>${level.maxSteps} blokjes</em>`;b.addEventListener('click',()=>loadLevel(index));list.appendChild(b)})}
-function loadLevel(index){if(isPlaying)return;currentLevelIndex=index;const level=getLevel();$('levelLabel').textContent=`${level.label}: ${level.name}`;$('levelTitle').textContent=level.title;$('lessonText').textContent=level.lesson;hero.textContent=selectedAvatar;renderBlocks();resetGame();showScreen('game')}
-function getLevel(){return levels[currentLevelIndex]}
-function renderBlocks(){blocks.innerHTML='';getLevel().blocks.forEach((name)=>{const data=blockData[name],b=document.createElement('button');b.type='button';b.className=data.kind||'';b.innerHTML=`<span>${data.icon}</span>${data.label}`;b.addEventListener('click',()=>name==='play'?playProgram():addStep(name));blocks.appendChild(b)})}
-function renderGrid(){const level=getLevel(),cell=100/level.size;grid.style.setProperty('--cell',`${cell}%`);grid.style.setProperty('--size',level.size);grid.querySelectorAll('.cell').forEach((n)=>n.remove());for(let y=0;y<level.size;y++){for(let x=0;x<level.size;x++){const tile=document.createElement('div');tile.className=`cell ${tileClass(x,y)}`;tile.style.transform=`translate(${x*100}%, ${y*100}%)`;grid.appendChild(tile)}}placeFish()}
-function tileClass(x,y){const l=getLevel();if(has(l.walls,x,y))return'wall';if(has(l.water,x,y))return'water';if(has(l.lava,x,y))return'lava';if(has(l.switches,x,y))return'switch';if(has(l.doors,x,y)&&!doorOpen)return'door';if(has(l.stars,x,y)&&!isStarCollected(x,y))return'star';return'path'}
-function addStep(name){if(isPlaying)return;if(isGameOver){hideMessage();hideRock();isGameOver=false}if(steps.length>=getLevel().maxSteps){showMessage('warning','✋','Vol','Je hebt genoeg blokjes. Druk op play of maak leeg.',false);return}steps.push(name);renderProgram()}
-function clearProgram(){if(isPlaying)return;steps=[];renderProgram();hideMessage()}
-function renderProgram(){$('stepCounter').textContent=`${steps.length}/${getLevel().maxSteps}`;program.innerHTML='';if(!steps.length){const e=document.createElement('span');e.className='empty';e.textContent='Tik blokjes hieronder.';program.appendChild(e);return}steps.forEach((name)=>{const s=document.createElement('span');s.className='step';s.textContent=blockData[name].icon;program.appendChild(s)})}
-async function playProgram(){if(isPlaying||!steps.length)return;isPlaying=true;isGameOver=false;resetRunState();hideMessage();hideBubble();hideRock();resetHero();renderGrid();await wait(160);for(const step of steps){if(hasWon())return finishLevel();await runStep(step);if(await checkDanger())return;await checkTileEffects();if(hasWon())return finishLevel()}showMessage('warning','🐟','Bijna','Nog niet bij de vis. Verbeter je code.',false);isPlaying=false}
-async function runStep(step){if(step==='meow')return meow();if(step==='dance')return dance();if(step==='repeatRight')return repeatMove('right');if(step==='repeatDown')return repeatMove('down');if(step==='ifSwitchOpen'){actionHistory.push('ifSwitchOpen');if(switchOn){doorOpen=true;renderGrid();await say('Deur open!')}else await say('Eerst knop!');return}moveHero(step);await wait(330)}
-async function repeatMove(direction){for(let i=0;i<4;i++){if(hasWon())return;moveHero(direction);await wait(270);if(await checkDanger())return;await checkTileEffects()}}
-function moveHero(direction){const next={x:catX,y:catY};if(direction==='up')next.y--;if(direction==='down')next.y++;if(direction==='left')next.x--;if(direction==='right')next.x++;if(isBlocked(next.x,next.y)){bumpHero();return}catX=next.x;catY=next.y;updateHero()}
-function isBlocked(x,y){const l=getLevel();return x<0||y<0||x>=l.size||y>=l.size||has(l.walls,x,y)||(has(l.doors,x,y)&&!doorOpen)}
-async function checkDanger(){const l=getLevel();if(has(l.lava,catX,catY)){await fail('Lava! Probeer opnieuw.');return true}if(has(l.water,catX,catY)){await fail('Plons! Probeer opnieuw.');return true}return false}
-async function checkTileEffects(){const l=getLevel();if(has(l.switches,catX,catY)&&!switchOn){switchOn=true;renderGrid();await say('Klik!')}if(has(l.stars,catX,catY)&&!isStarCollected(catX,catY)){collectedStarKeys.add(starKey(catX,catY));renderGrid();await say('Ster!')}}
-function finishLevel(){const l=getLevel();if(l.requiredActions&&l.requiredActions.some((a)=>!actionHistory.includes(a))){showMessage('warning','🎭','Nog iets','Gebruik ook de verhaal-blokjes.',false);isPlaying=false;return}if(l.mustUseActions&&l.mustUseActions.some((a)=>!actionHistory.includes(a))){showMessage('warning','🔘','Regel vergeten','Gebruik ook het als-dan-blok.',false);isPlaying=false;return}if(l.mustCollectStars&&collectedStarKeys.size<l.stars.length){showMessage('warning','⭐','Ster vergeten','Pak eerst de ster, dan de vis.',false);isPlaying=false;return}showMessage('success','✨','Gelukt!',l.success,true);isPlaying=false}
-async function fail(text){isGameOver=true;showRock();showMessage('fail','🪨','Oeps',text,false);await wait(800);steps=[];renderProgram();resetRunState();resetHero();renderGrid();isPlaying=false}
-function resetRunState(){switchOn=false;doorOpen=false;collectedStarKeys=new Set();actionHistory=[]}
-function showMessage(type,icon,title,text,showNext){message.className=`message ${type}`;messageIcon.textContent=icon;messageTitle.textContent=title;messageText.textContent=text;nextButton.classList.toggle('hidden',!showNext)}function hideMessage(){message.className='message hidden'}
-function showRock(){rock.classList.remove('hidden','falling');const x=`${catX*100}%`,y=`${catY*100}%`;rock.style.setProperty('--rock-x',x);rock.style.setProperty('--rock-y',y);rock.style.transform=`translate(${x}, -130%)`;void rock.offsetWidth;rock.classList.add('falling')}function hideRock(){rock.classList.add('hidden');rock.classList.remove('falling')}
-async function meow(){actionHistory.push('meow');const word=selectedAvatar==='🤖'?'Biep!':selectedAvatar==='🦄'?'Sparkle!':'Miauw!';await say(word);if('speechSynthesis'in window){window.speechSynthesis.cancel();const sound=new SpeechSynthesisUtterance(word.replace('!',''));sound.lang='nl-NL';sound.rate=1.15;sound.pitch=1.7;window.speechSynthesis.speak(sound)}}
-async function dance(){actionHistory.push('dance');hero.classList.add('dance');await wait(580);hero.classList.remove('dance')}async function say(text){bubble.textContent=text;bubble.classList.remove('hidden');moveBubble();await wait(620);hideBubble()}function hideBubble(){bubble.classList.add('hidden')}
-function resetHero(){catX=getLevel().start.x;catY=getLevel().start.y;updateHero()}function updateHero(){hero.style.transform=`translate(${catX*100}%, ${catY*100}%)`;moveBubble()}function moveBubble(){bubble.style.transform=`translate(${catX*100}%, ${catY*100}%)`}
-function placeFish(){const x=`${getLevel().fish.x*100}%`,y=`${getLevel().fish.y*100}%`;fish.style.setProperty('--fish-x',x);fish.style.setProperty('--fish-y',y);fish.style.transform=`translate(${x}, ${y})`}
-function resetGame(){if(isPlaying)return;steps=[];isGameOver=false;resetRunState();hideMessage();hideBubble();hideRock();renderProgram();resetHero();renderGrid()}function nextLevel(){const next=currentLevelIndex+1;if(next<levels.length)loadLevel(next);else showScreen('map')}
-function bumpHero(){hero.animate([{transform:`translate(${catX*100}%, ${catY*100}%) rotate(0deg)`},{transform:`translate(${catX*100}%, ${catY*100}%) rotate(-8deg)`},{transform:`translate(${catX*100}%, ${catY*100}%) rotate(8deg)`},{transform:`translate(${catX*100}%, ${catY*100}%) rotate(0deg)`}],{duration:220,iterations:1})}
-function has(list,x,y){return list.some((i)=>i.x===x&&i.y===y)}function hasWon(){return catX===getLevel().fish.x&&catY===getLevel().fish.y}function starKey(x,y){return`${x},${y}`}function isStarCollected(x,y){return collectedStarKeys.has(starKey(x,y))}function wait(ms){return new Promise((r)=>setTimeout(r,ms))}
-showScreen('home');
+
+const blockData = {
+  up: { icon: "⬆️", label: "omhoog" },
+  down: { icon: "⬇️", label: "omlaag" },
+  left: { icon: "⬅️", label: "links" },
+  right: { icon: "➡️", label: "rechts" },
+  repeatRight: { icon: "🔁➡️", label: "4x rechts", kind: "smart" },
+  repeatDown: { icon: "🔁⬇️", label: "4x omlaag", kind: "smart" },
+  play: { icon: "▶️", label: "play", kind: "play" }
+};
+
+let selectedAvatar = "🐱";
+let selectedAvatarName = "Kat";
+let currentLevelIndex = 0;
+let steps = [];
+let gameX = 0;
+let gameY = 0;
+let isGameRunning = false;
+
+let codeX = 0;
+let codeY = 0;
+let isCodeRunning = false;
+
+const $ = (id) => document.getElementById(id);
+const screens = {
+  home: $("homeScreen"),
+  map: $("mapScreen"),
+  game: $("gameScreen"),
+  code: $("codeScreen")
+};
+
+function showScreen(name) {
+  Object.values(screens).forEach((screen) => screen.classList.add("hidden"));
+  screens[name].classList.remove("hidden");
+}
+
+$("startBlocksButton").addEventListener("click", () => showScreen("map"));
+$("startCodeButton").addEventListener("click", openCodeLab);
+$("codeLabButton").addEventListener("click", openCodeLab);
+$("backHomeButton").addEventListener("click", () => showScreen("home"));
+$("backMapButton").addEventListener("click", () => showScreen("map"));
+$("backCodeButton").addEventListener("click", () => showScreen("map"));
+$("resetGameButton").addEventListener("click", resetGame);
+$("clearGameButton").addEventListener("click", clearGameProgram);
+$("resetCodeButton").addEventListener("click", resetCodeLab);
+$("exampleButton").addEventListener("click", addExampleCode);
+$("runCodeButton").addEventListener("click", runTypedCode);
+
+document.querySelectorAll("[data-level]").forEach((button) => {
+  button.addEventListener("click", () => loadLevel(Number(button.dataset.level)));
+});
+
+document.querySelectorAll(".avatar").forEach((button) => {
+  button.addEventListener("click", () => {
+    selectedAvatar = button.dataset.avatar;
+    selectedAvatarName = button.dataset.name;
+    $("selectedAvatarLabel").textContent = selectedAvatarName;
+
+    document.querySelectorAll(".avatar").forEach((avatar) => avatar.classList.remove("active"));
+    button.classList.add("active");
+  });
+});
+
+document.querySelectorAll("[data-code]").forEach((button) => {
+  button.addEventListener("click", () => insertCode(button.dataset.code));
+});
+
+$("codeEditor").addEventListener("input", updateLineCounter);
+
+function loadLevel(index) {
+  currentLevelIndex = index;
+  const level = getLevel();
+
+  $("gameLabel").textContent = level.label;
+  $("gameTitle").textContent = level.title;
+  $("lessonText").textContent = level.lesson;
+  $("gameHero").textContent = selectedAvatar;
+
+  renderGameBlocks();
+  resetGame();
+  showScreen("game");
+}
+
+function getLevel() {
+  return levels[currentLevelIndex];
+}
+
+function renderGameBlocks() {
+  const blocks = $("blocks");
+  blocks.innerHTML = "";
+
+  getLevel().blocks.forEach((name) => {
+    const data = blockData[name];
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = data.kind || "";
+    button.innerHTML = `<span>${data.icon}</span>${data.label}`;
+    button.addEventListener("click", () => {
+      if (name === "play") playGameProgram();
+      else addGameStep(name);
+    });
+    blocks.appendChild(button);
+  });
+}
+
+function addGameStep(name) {
+  if (isGameRunning) return;
+
+  if (steps.length >= getLevel().maxSteps) {
+    showGameMessage("warning", "Vol", "Je hebt genoeg blokjes. Druk op play of maak leeg.");
+    return;
+  }
+
+  steps.push(name);
+  renderGameProgram();
+}
+
+function clearGameProgram() {
+  if (isGameRunning) return;
+  steps = [];
+  renderGameProgram();
+  hideGameMessage();
+}
+
+function renderGameProgram() {
+  $("stepCounter").textContent = `${steps.length}/${getLevel().maxSteps}`;
+  const program = $("program");
+  program.innerHTML = "";
+
+  if (steps.length === 0) {
+    const empty = document.createElement("span");
+    empty.className = "empty";
+    empty.textContent = "Tik blokjes hieronder.";
+    program.appendChild(empty);
+    return;
+  }
+
+  steps.forEach((name) => {
+    const step = document.createElement("span");
+    step.className = "step";
+    step.textContent = blockData[name].icon;
+    program.appendChild(step);
+  });
+}
+
+function drawGameGrid() {
+  const grid = $("gameGrid");
+  grid.querySelectorAll(".cell").forEach((cell) => cell.remove());
+
+  for (let y = 0; y < 5; y++) {
+    for (let x = 0; x < 5; x++) {
+      const cell = document.createElement("div");
+      cell.className = `cell ${getGameTileClass(x, y)}`;
+      cell.style.transform = `translate(${x * 100}%, ${y * 100}%)`;
+      grid.appendChild(cell);
+    }
+  }
+
+  $("gameFish").style.setProperty("--fish-x", `${getLevel().fish.x * 100}%`);
+  $("gameFish").style.setProperty("--fish-y", `${getLevel().fish.y * 100}%`);
+  $("gameFish").style.transform = `translate(${getLevel().fish.x * 100}%, ${getLevel().fish.y * 100}%)`;
+}
+
+function getGameTileClass(x, y) {
+  const level = getLevel();
+
+  if (has(level.walls, x, y)) return "wall";
+  if (has(level.lava, x, y)) return "lava";
+
+  return "path";
+}
+
+async function playGameProgram() {
+  if (isGameRunning || steps.length === 0) return;
+
+  isGameRunning = true;
+  hideGameMessage();
+  resetGameHero();
+
+  await wait(200);
+
+  for (const step of steps) {
+    if (hasGameWon()) break;
+
+    if (step === "repeatRight") await repeatGameMove("right");
+    else if (step === "repeatDown") await repeatGameMove("down");
+    else {
+      moveGameHero(step);
+      await wait(330);
+    }
+
+    if (has(getLevel().lava, gameX, gameY)) {
+      showGameMessage("fail", "Oeps", "Lava! Probeer opnieuw.");
+      steps = [];
+      renderGameProgram();
+      resetGameHero();
+      isGameRunning = false;
+      return;
+    }
+
+    if (hasGameWon()) break;
+  }
+
+  if (hasGameWon()) showGameMessage("success", "Gelukt!", "Je programma werkt.");
+  else showGameMessage("warning", "Bijna", "Nog niet bij de vis. Verbeter je code.");
+
+  isGameRunning = false;
+}
+
+async function repeatGameMove(direction) {
+  for (let i = 0; i < 4; i++) {
+    if (hasGameWon()) return;
+    moveGameHero(direction);
+    await wait(270);
+  }
+}
+
+function moveGameHero(direction) {
+  const next = { x: gameX, y: gameY };
+
+  if (direction === "up") next.y--;
+  if (direction === "down") next.y++;
+  if (direction === "left") next.x--;
+  if (direction === "right") next.x++;
+
+  if (next.x < 0 || next.y < 0 || next.x > 4 || next.y > 4 || has(getLevel().walls, next.x, next.y)) {
+    bump($("gameHero"), gameX, gameY);
+    return;
+  }
+
+  gameX = next.x;
+  gameY = next.y;
+  updateGameHero();
+}
+
+function resetGame() {
+  steps = [];
+  renderGameProgram();
+  hideGameMessage();
+  drawGameGrid();
+  resetGameHero();
+}
+
+function resetGameHero() {
+  gameX = getLevel().start.x;
+  gameY = getLevel().start.y;
+  updateGameHero();
+}
+
+function updateGameHero() {
+  $("gameHero").style.transform = `translate(${gameX * 100}%, ${gameY * 100}%)`;
+  $("gameBubble").style.transform = `translate(${gameX * 100}%, ${gameY * 100}%)`;
+}
+
+function hasGameWon() {
+  return gameX === getLevel().fish.x && gameY === getLevel().fish.y;
+}
+
+function showGameMessage(type, title, text) {
+  const message = $("gameMessage");
+  message.className = `message ${type}`;
+  $("gameMessageTitle").textContent = title;
+  $("gameMessageText").textContent = text;
+}
+
+function hideGameMessage() {
+  $("gameMessage").className = "message hidden";
+}
+
+function openCodeLab() {
+  $("codeHero").textContent = selectedAvatar;
+  resetCodeLab();
+  showScreen("code");
+}
+
+function resetCodeLab() {
+  codeX = 0;
+  codeY = 0;
+  isCodeRunning = false;
+  hideCodeMessage();
+  hideBubble($("codeBubble"));
+  drawCodeGrid();
+  updateCodeHero();
+  updateLineCounter();
+}
+
+function drawCodeGrid() {
+  const grid = $("codeGrid");
+  grid.querySelectorAll(".cell").forEach((cell) => cell.remove());
+
+  for (let y = 0; y < 5; y++) {
+    for (let x = 0; x < 5; x++) {
+      const cell = document.createElement("div");
+      cell.className = "cell path";
+      cell.style.transform = `translate(${x * 100}%, ${y * 100}%)`;
+      grid.appendChild(cell);
+    }
+  }
+
+  $("codeFish").style.setProperty("--fish-x", "400%");
+  $("codeFish").style.setProperty("--fish-y", "400%");
+  $("codeFish").style.transform = "translate(400%, 400%)";
+}
+
+function addExampleCode() {
+  $("codeEditor").value = "rechts()\nrechts()\nomlaag()\nomlaag()\npraat()";
+  updateLineCounter();
+  $("codeEditor").focus();
+}
+
+function insertCode(command) {
+  const editor = $("codeEditor");
+  const value = editor.value.trimEnd();
+
+  editor.value = value ? `${value}\n${command}` : command;
+  updateLineCounter();
+  editor.focus();
+}
+
+function getCodeLines() {
+  return $("codeEditor").value
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+}
+
+function updateLineCounter() {
+  $("lineCounter").textContent = `${getCodeLines().length}/10`;
+}
+
+async function runTypedCode() {
+  if (isCodeRunning) return;
+
+  const parsed = parseCode(getCodeLines());
+
+  if (!parsed.ok) {
+    showCodeMessage("warning", "Check je code", parsed.message);
+    return;
+  }
+
+  isCodeRunning = true;
+  codeX = 0;
+  codeY = 0;
+  hideCodeMessage();
+  hideBubble($("codeBubble"));
+  updateCodeHero();
+
+  await wait(180);
+
+  for (const command of parsed.commands) {
+    if (hasCodeWon()) break;
+
+    if (command === "praat") await talk($("codeBubble"));
+    else if (command === "dans") await dance($("codeHero"));
+    else {
+      moveCodeHero(command);
+      await wait(330);
+    }
+
+    if (hasCodeWon()) break;
+  }
+
+  if (hasCodeWon()) showCodeMessage("success", "Gelukt!", "Je hebt echte code geschreven.");
+  else showCodeMessage("warning", "Bijna", "Je code werkt, maar je bent nog niet bij de vis.");
+
+  isCodeRunning = false;
+}
+
+function parseCode(lines) {
+  const allowed = {
+    "rechts()": "right",
+    "links()": "left",
+    "omhoog()": "up",
+    "omlaag()": "down",
+    "praat()": "praat",
+    "dans()": "dans"
+  };
+
+  if (lines.length === 0) {
+    return { ok: false, message: "Typ eerst een regel code." };
+  }
+
+  if (lines.length > 10) {
+    return { ok: false, message: "Gebruik maximaal 10 regels." };
+  }
+
+  const commands = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    if (!allowed[lines[i]]) {
+      return { ok: false, message: `Regel ${i + 1} snap ik nog niet.` };
+    }
+
+    commands.push(allowed[lines[i]]);
+  }
+
+  return { ok: true, commands };
+}
+
+function moveCodeHero(direction) {
+  const next = { x: codeX, y: codeY };
+
+  if (direction === "up") next.y--;
+  if (direction === "down") next.y++;
+  if (direction === "left") next.x--;
+  if (direction === "right") next.x++;
+
+  if (next.x < 0 || next.y < 0 || next.x > 4 || next.y > 4) {
+    bump($("codeHero"), codeX, codeY);
+    return;
+  }
+
+  codeX = next.x;
+  codeY = next.y;
+  updateCodeHero();
+}
+
+function updateCodeHero() {
+  $("codeHero").style.transform = `translate(${codeX * 100}%, ${codeY * 100}%)`;
+  $("codeBubble").style.transform = `translate(${codeX * 100}%, ${codeY * 100}%)`;
+}
+
+function hasCodeWon() {
+  return codeX === 4 && codeY === 4;
+}
+
+function showCodeMessage(type, title, text) {
+  const message = $("codeMessage");
+  message.className = `message ${type}`;
+  $("codeMessageTitle").textContent = title;
+  $("codeMessageText").textContent = text;
+}
+
+function hideCodeMessage() {
+  $("codeMessage").className = "message hidden";
+}
+
+async function talk(targetBubble) {
+  const text = selectedAvatar === "🤖" ? "Biep!" : selectedAvatar === "🦄" ? "Sparkle!" : "Miauw!";
+
+  targetBubble.textContent = text;
+  targetBubble.classList.remove("hidden");
+
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+    const sound = new SpeechSynthesisUtterance(text);
+    sound.lang = "nl-NL";
+    sound.rate = 1.15;
+    sound.pitch = 1.7;
+    window.speechSynthesis.speak(sound);
+  }
+
+  await wait(620);
+  hideBubble(targetBubble);
+}
+
+async function dance(node) {
+  node.classList.add("dance");
+  await wait(580);
+  node.classList.remove("dance");
+}
+
+function hideBubble(targetBubble) {
+  targetBubble.classList.add("hidden");
+}
+
+function bump(node, x, y) {
+  node.animate([
+    { transform: `translate(${x * 100}%, ${y * 100}%) rotate(0deg)` },
+    { transform: `translate(${x * 100}%, ${y * 100}%) rotate(-8deg)` },
+    { transform: `translate(${x * 100}%, ${y * 100}%) rotate(8deg)` },
+    { transform: `translate(${x * 100}%, ${y * 100}%) rotate(0deg)` }
+  ], { duration: 220, iterations: 1 });
+}
+
+function has(list, x, y) {
+  return list.some((item) => item.x === x && item.y === y);
+}
+
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+showScreen("home");
