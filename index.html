@@ -3,12 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mattís Code v1.6</title>
+  <title>Mattís Code v1.7</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <main class="app">
-    <section id="homeScreen" class="screen">
+    <section id="homeScreen" class="screen home-screen">
+      <section class="name-card">
+        <label for="childNameInput">Stap 0 — hoe heet jij?</label>
+        <input id="childNameInput" type="text" maxlength="18" autocomplete="given-name" placeholder="Typ je naam" />
+        <p id="nameHelp">Dan kan de app jou persoonlijk uitleg geven.</p>
+      </section>
+
       <div class="hero">
         <div class="hero-grid"></div>
         <div class="hero-card hero-cat">🐱</div>
@@ -17,20 +23,14 @@
       </div>
 
       <div class="copy">
-        <p class="pill">Stap 0: wie speelt er?</p>
+        <p class="pill">Voor kinderen vanaf 7 jaar</p>
         <h1>Programmeren met plaatjes én code</h1>
-        <p>Vul eerst je naam in. Dan legt de app het speciaal aan jou uit.</p>
+        <p>Begin met blokjes. Schrijf daarna je eerste echte code.</p>
       </div>
 
-      <section class="name-card">
-        <label for="childNameInput">Mijn naam is</label>
-        <input id="childNameInput" type="text" maxlength="18" autocomplete="given-name" placeholder="bijvoorbeeld Mattís" />
-        <p id="nameHelp">Typ je naam en kies daarna wat je wilt doen.</p>
-      </section>
-
       <div class="home-actions">
-        <button id="startBlocksButton" class="main-button" type="button">Start met blokjes</button>
-        <button id="startCodeButton" class="alt-button" type="button">Schrijf code</button>
+        <button id="startBlocksButton" class="main-button" type="button">Blokjes</button>
+        <button id="startCodeButton" class="alt-button" type="button">Code Lab</button>
         <button id="explainButton" class="wide-button" type="button">Hoe werkt code? 🔊</button>
       </div>
     </section>
@@ -113,8 +113,11 @@
       </section>
 
       <section id="gameMessage" class="message hidden">
-        <b id="gameMessageTitle">Gelukt!</b>
-        <p id="gameMessageText">Je programma werkt.</p>
+        <div>
+          <b id="gameMessageTitle">Gelukt!</b>
+          <p id="gameMessageText">Je programma werkt.</p>
+        </div>
+        <button id="nextLevelButton" class="next-button" type="button">Volgende level ➜</button>
       </section>
 
       <section class="stage">
@@ -190,7 +193,7 @@ praat()</textarea>
       </section>
 
       <div class="home-actions">
-        <button id="runCodeButton" class="main-button" type="button">Run mijn code ▶️</button>
+        <button id="runCodeButton" class="main-button" type="button">Run ▶️</button>
         <button id="codeExplainButton" class="alt-button" type="button">Uitleg 🔊</button>
       </div>
     </section>

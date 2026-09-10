@@ -105,7 +105,7 @@ function updatePersonalText() {
 $("childNameInput").addEventListener("input", () => {
   readChildName();
   document.querySelector(".name-card").classList.remove("error");
-  $("nameHelp").textContent = childName ? `Hoi ${childName}. Kies wat je wilt doen.` : "Typ je naam en kies daarna wat je wilt doen.";
+  $("nameHelp").textContent = childName ? `Hoi ${childName}. Kies wat je wilt doen.` : "Dan kan de app jou persoonlijk uitleg geven.";
   updatePersonalText();
 });
 
@@ -142,6 +142,7 @@ $("backMapButton").addEventListener("click", () => showScreen("map"));
 $("backCodeButton").addEventListener("click", () => showScreen("map"));
 $("resetGameButton").addEventListener("click", resetGame);
 $("clearGameButton").addEventListener("click", clearGameProgram);
+$("nextLevelButton").addEventListener("click", nextLevel);
 $("resetCodeButton").addEventListener("click", resetCodeLab);
 $("exampleButton").addEventListener("click", addExampleCode);
 $("runCodeButton").addEventListener("click", runTypedCode);
@@ -250,7 +251,7 @@ function addGameStep(name) {
   if (isGameRunning) return;
 
   if (steps.length >= getLevel().maxSteps) {
-    showGameMessage("warning", "Vol", "Je hebt genoeg blokjes. Druk op play of maak leeg.");
+    showGameMessage("warning", "Vol", "Druk op play of maak leeg.");
     return;
   }
 
@@ -329,7 +330,7 @@ async function playGameProgram() {
     else if (step === "repeatDown") await repeatGameMove("down");
     else {
       moveGameHero(step);
-      await wait(330);
+      await wait(300);
     }
 
     if (has(getLevel().lava, gameX, gameY)) {
@@ -354,7 +355,7 @@ async function repeatGameMove(direction) {
   for (let i = 0; i < 4; i++) {
     if (hasGameWon()) return;
     moveGameHero(direction);
-    await wait(270);
+    await wait(240);
   }
 }
 
@@ -397,6 +398,12 @@ function updateGameHero() {
 
 function hasGameWon() {
   return gameX === getLevel().fish.x && gameY === getLevel().fish.y;
+}
+
+function nextLevel() {
+  const next = currentLevelIndex + 1;
+  if (next < levels.length) loadLevel(next);
+  else showScreen("map");
 }
 
 function showGameMessage(type, title, text) {
@@ -499,7 +506,7 @@ async function runTypedCode() {
     else if (command === "dans") await dance($("codeHero"));
     else {
       moveCodeHero(command);
-      await wait(330);
+      await wait(300);
     }
 
     if (hasCodeWon()) break;

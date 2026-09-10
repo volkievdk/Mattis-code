@@ -11,6 +11,12 @@
 
 * { box-sizing: border-box; }
 
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -25,7 +31,7 @@ body {
 
 .app {
   width: min(100%, 680px);
-  min-height: 100vh;
+  height: 100svh;
   margin: 0 auto;
   padding: 12px;
 }
@@ -643,4 +649,208 @@ button:active {
   .grid { min-height: 155px; }
   .blocks button, .code-buttons button { min-height: 36px; font-size: 9px; }
   textarea { min-height: 95px; font-size: 15px; }
+}
+
+
+/* v1.7 compact one-screen refinements */
+.screen {
+  height: calc(100svh - 16px);
+  min-height: 0;
+  gap: 7px;
+  overflow: hidden;
+}
+
+.home-screen {
+  grid-template-rows: auto minmax(90px, 1fr) auto auto;
+  align-content: stretch;
+}
+
+.name-card {
+  order: -10;
+  padding: 10px;
+  background: linear-gradient(135deg, rgba(255,255,255,.94), rgba(220,247,95,.78));
+}
+
+.name-card label {
+  margin-bottom: 6px;
+  font-size: 15px;
+  letter-spacing: .04em;
+}
+
+.name-card input {
+  min-height: 58px;
+  font-size: clamp(28px, 8vw, 42px);
+  border-radius: 18px;
+}
+
+.name-card p {
+  margin-top: 7px;
+  font-size: 13px;
+}
+
+.hero {
+  min-height: 90px;
+  border-radius: 26px;
+  box-shadow: 0 12px 25px rgba(33,22,54,.18), 0 5px 0 var(--ink);
+}
+
+.hero-card {
+  min-width: 58px;
+  height: 58px;
+  border-radius: 20px;
+  font-size: 27px;
+}
+
+.hero-code {
+  font-size: 18px;
+}
+
+.pill,
+.brand {
+  margin-bottom: 4px;
+  padding: 3px 9px;
+  font-size: 10px;
+}
+
+h1 { font-size: clamp(23px, 7vw, 42px); }
+h2 { font-size: clamp(17px, 5vw, 28px); }
+
+.copy p:not(.pill) {
+  margin-top: 5px;
+  font-size: 13px;
+  line-height: 1.18;
+}
+
+.main-button,
+.alt-button,
+.wide-button {
+  min-height: 46px;
+  border-radius: 18px;
+  font-size: 15px;
+}
+
+.round {
+  width: 42px;
+  height: 42px;
+  border-radius: 15px;
+  font-size: 22px;
+}
+
+.map-screen {
+  grid-template-rows: auto auto 1fr;
+}
+
+.card {
+  padding: 10px 12px;
+  border-radius: 18px;
+}
+
+.card b { font-size: 17px; }
+.card span { font-size: 12px; }
+
+.game-screen,
+.code-screen {
+  grid-template-rows: auto auto auto minmax(145px, 1fr) auto auto;
+}
+
+.lesson {
+  padding: 7px 9px;
+}
+
+.lesson p {
+  font-size: 11px;
+}
+
+.message {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+}
+
+.message b { font-size: 15px; }
+.message p { font-size: 12px; }
+
+.next-button {
+  display: none;
+  min-height: 42px;
+  border: 3px solid var(--ink);
+  border-radius: 16px;
+  padding: 0 13px;
+  background: linear-gradient(135deg, var(--pink), #ff83b2);
+  color: white;
+  box-shadow: 0 4px 0 var(--ink);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.message.success .next-button {
+  display: block;
+}
+
+.stage {
+  padding: 7px;
+  border-radius: 24px;
+  box-shadow: 0 10px 22px rgba(33,22,54,.18), 0 5px 0 var(--ink);
+}
+
+.grid {
+  min-height: 145px;
+  border-radius: 18px;
+}
+
+.sprite { font-size: 33px; }
+.cell { font-size: 24px; }
+
+.program {
+  min-height: 34px;
+  max-height: 40px;
+  overflow: hidden;
+}
+
+.blocks button,
+.code-buttons button {
+  min-height: 40px;
+  border-radius: 15px;
+  font-size: 10px;
+}
+
+.blocks button span { font-size: 18px; }
+
+textarea {
+  min-height: 95px;
+  max-height: 115px;
+  resize: none;
+  font-size: 15px;
+  line-height: 1.32;
+}
+
+@media (max-height: 720px) {
+  .app { padding: 5px; }
+  .screen { height: calc(100svh - 10px); gap: 4px; }
+  .name-card { padding: 7px; }
+  .name-card label { font-size: 12px; margin-bottom: 4px; }
+  .name-card input { min-height: 44px; font-size: 24px; }
+  .name-card p { font-size: 11px; margin-top: 4px; }
+  .hero { min-height: 68px; border-radius: 20px; }
+  .hero-card { min-width: 46px; height: 46px; font-size: 21px; border-radius: 16px; }
+  .hero-code { font-size: 14px; }
+  h1, h2 { font-size: 16px; }
+  .copy p:not(.pill) { font-size: 11px; margin-top: 3px; }
+  .pill, .brand { margin-bottom: 2px; padding: 2px 7px; font-size: 9px; }
+  .main-button, .alt-button, .wide-button { min-height: 37px; font-size: 12px; border-radius: 15px; }
+  .round { width: 35px; height: 35px; font-size: 18px; }
+  .avatar-panel, .lesson, .message { padding: 5px; }
+  .avatar { width: 35px; height: 35px; font-size: 19px; }
+  .card { padding: 7px 9px; border-radius: 16px; }
+  .card b { font-size: 14px; }
+  .card span { font-size: 10px; }
+  .grid { min-height: 115px; }
+  .sprite { font-size: 27px; }
+  .cell { font-size: 19px; }
+  .blocks button, .code-buttons button { min-height: 32px; font-size: 8px; }
+  .blocks button span { font-size: 15px; }
+  .program { min-height: 29px; max-height: 33px; }
+  textarea { min-height: 73px; max-height: 85px; font-size: 13px; padding: 7px; }
 }

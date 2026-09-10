@@ -1,62 +1,59 @@
-# Mattís Code v1.6
+# Mattís Code v1.7
 
 Een programmeer-app voor kinderen van ongeveer 7 jaar.
 
-## Nieuw in v1.6
+## Nieuw in v1.7
 
-De hardcoded begroeting is verwijderd.
+### 1. Naamveld duidelijker
 
-De app vraagt nu in stap 0 op het openingsscherm:
-
-```text
-Mijn naam is ...
-```
-
-Die naam wordt gebruikt in:
-
-- de uitleg
-- de voorleesfunctie
-- Code Lab
-- succesfeedback
-
-Dus de app zegt niet meer standaard:
+Het naamveld staat nu bovenaan het openingsscherm en is veel groter.
 
 ```text
-Hoi Mattís
+Stap 0 — hoe heet jij?
 ```
 
-maar bijvoorbeeld:
+### 2. Duidelijke volgende-knop
+
+Na het afronden van een level verschijnt nu een grote knop:
 
 ```text
-Hoi Noor
-Hoi Sam
-Hoi Cédric
+Volgende level ➜
 ```
 
-## Voorleesbare uitleg
+Die knop is alleen zichtbaar bij succes.
 
-De knop `Hoe werkt code? 🔊` gebruikt nu de ingevulde naam van het kind.
+### 3. Alles in één scherm
 
-De uitleg vertelt:
+De layout is compacter gemaakt:
 
-- code is een plan
-- de computer leest van boven naar beneden
-- één regel code doet één ding
-- haakjes horen bij code
-- foutjes zijn normaal
-- verbeteren heet debuggen
+- vaste app-hoogte
+- geen pagina-scroll
+- compactere hero
+- compactere kaarten
+- kortere teksten
+- kleiner codeveld
+- compactere knoppen
 
-## Code Lab
+### 4. Idee voor Code Lab v1.8
 
-Kinderen kunnen nog steeds echte code typen:
+De volgende verbetering is: blokjes automatisch vertalen naar echte code.
+
+Voorbeeld:
+
+```text
+➡️ ➡️ ⬇️ 🔊
+```
+
+wordt:
 
 ```js
 rechts()
 rechts()
 omlaag()
-omlaag()
 praat()
 ```
+
+Daarna mag het kind één regel zelf aanpassen. Dat maakt de brug van plaatjes naar echte code veel sterker.
 
 ## Upload
 
