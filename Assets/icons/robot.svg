@@ -1,1 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="14" y="22" width="72" height="65" rx="18" fill="#EAE4FF" stroke="#2C2140" stroke-width="6"/><path d="M50 22V10" stroke="#2C2140" stroke-width="6" stroke-linecap="round"/><circle cx="50" cy="9" r="7" fill="#D9F26A" stroke="#2C2140" stroke-width="5"/><rect x="30" y="44" width="13" height="13" rx="4" fill="#5BB8FF" stroke="#2C2140" stroke-width="4"/><rect x="57" y="44" width="13" height="13" rx="4" fill="#5BB8FF" stroke="#2C2140" stroke-width="4"/><path d="M35 69h30" stroke="#2C2140" stroke-width="6" stroke-linecap="round"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160" role="img" aria-label="Robot">
+  <rect x="8" y="8" width="144" height="144" rx="36" fill="#5BB8FF" stroke="#2C2140" stroke-width="6"/>
+  <text x="80" y="96" text-anchor="middle" font-family="Arial, sans-serif" font-size="64">🤖</text>
+</svg>
