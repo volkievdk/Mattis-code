@@ -1,39 +1,16 @@
 {
-  "name": "Mattís Code 2.0 Studio Build",
-  "canva_folder": "https://www.canva.com/folder/FAHU0xsNj3U",
-  "canva_design_reference": "https://www.canva.com/d/ho6tdaG8LfrKXPf",
+  "name": "Mattís Code 2.0",
+  "version": "2.0-canva-redesign",
+  "description": "Content-complete static app redesign with Canva design studio assets.",
+  "canva": {
+    "folder": "https://www.canva.com/folder/FAHU1NYc-HI",
+    "design": "https://www.canva.com/d/qpGe36hxM79H6sU"
+  },
   "assets": {
-    "brand": [
-      "tokens.css",
-      "visual-system.md"
-    ],
-    "icons": [
-      "arrow-down.svg",
-      "arrow-left.svg",
-      "arrow-right.svg",
-      "arrow-up.svg",
-      "cat.svg",
-      "code.svg",
-      "dance.svg",
-      "fish.svg",
-      "play.svg",
-      "repeat-down.svg",
-      "repeat-right.svg",
-      "robot.svg",
-      "sound.svg",
-      "sparkle.svg",
-      "unicorn.svg"
-    ],
-    "patterns": [
-      "app-grid.svg",
-      "confetti.svg"
-    ],
-    "mockups": [
-      "start-screen.svg",
-      "block-level.svg",
-      "success-state.svg",
-      "debug-state.svg",
-      "code-lab.svg"
-    ]
+    "brand": 2,
+    "icons": 18,
+    "patterns": 2,
+    "content": 5,
+    "mockups": 6
   }
 }
