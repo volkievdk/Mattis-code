@@ -1,46 +1,51 @@
-# Mattís Code 2.0 Studio Build
+# Mattís Code 2.0 — Canva Redesign Build
 
-Dit is een complete statische webapp voor Mattís Code.
+Dit is een content-complete herbouw van Mattís Code als statische webapp.
 
-## Wat is anders
+## Belangrijk
 
-Deze versie is niet meer alleen `index.html` met wat CSS. De app heeft nu een echte projectstructuur met een `assets/` folder:
+De app is niet meer alleen één HTML-demo. De projectmap bevat nu een echte `assets/`-laag met:
+
+- brand tokens
+- SVG iconen
+- patterns
+- mockups
+- contentbestanden
+- voorleesscript
+- levelcontent
+- Canva-referentie
+
+## Bestanden
 
 ```text
+index.html
+style.css
+script.js
+README.md
 assets/
   brand/
   icons/
   patterns/
+  content/
   mockups/
   canva/
 ```
 
-De redesign-richting is opgezet met Canva als visual design studio en daarna vertaald naar werkende HTML/CSS/JS.
+## Wat zit in de app
 
-## Canva
+- Stap 0: groot naamveld bovenaan
+- Character picker: kat, robot, eenhoorn
+- Uitlegscherm met voorlezen
+- 8 levels
+- Blokjes programmeren
+- Programma afspelen
+- Vriendelijke debug-feedback
+- Succes met grote knop `Volgende level ➜`
+- Blokjes naar echte code vertalen
+- Knop `Probeer in Code Lab`
+- Code Lab met veilige whitelist-parser
 
-Canva folder:
-https://www.canva.com/folder/FAHU0xsNj3U
-
-Canva design reference:
-https://www.canva.com/d/ho6tdaG8LfrKXPf
-
-## App-flow
-
-1. Naam invullen.
-2. Figuur kiezen.
-3. Level kiezen.
-4. Met blokjes programmeren.
-5. Programma afspelen.
-6. Foutjes verbeteren.
-7. Blokjes als echte code bekijken.
-8. Code openen in Code Lab.
-9. Zelf eenvoudige code typen.
-10. Code uitvoeren.
-
-## Code Lab
-
-Toegestane commando's:
+## Code Lab commando's
 
 ```js
 rechts()
@@ -49,18 +54,21 @@ omhoog()
 omlaag()
 praat()
 dans()
+openDeur()
 ```
 
-Er wordt geen echte JavaScript uitgevoerd. De editor gebruikt een veilige whitelist-parser. Geen `eval`.
+Er wordt geen `eval` gebruikt. De code-editor voert geen echte JavaScript uit.
+
+## Canva
+
+Zie `assets/canva/canva-reference.md` voor de Canva redesign-link en ontwerpnotities.
 
 ## Upload naar GitHub/Vercel
 
-Upload de volledige inhoud van deze map naar je repository.
+Upload de volledige mapinhoud naar de root van de GitHub repository.
 
-Belangrijk: `index.html` moet in de root staan.
-
-## Commit message
+Commit message:
 
 ```text
-Build Mattis Code 2.0 studio redesign
+Build Mattis Code 2.0 Canva redesign
 ```
