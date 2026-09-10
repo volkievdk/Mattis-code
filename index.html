@@ -3,202 +3,214 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mattís Code v1.7</title>
+  <title>Mattís Code 2.0</title>
+  <link rel="stylesheet" href="assets/brand/tokens.css" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="app">
-    <section id="homeScreen" class="screen home-screen">
-      <section class="name-card">
-        <label for="childNameInput">Stap 0 — hoe heet jij?</label>
-        <input id="childNameInput" type="text" maxlength="18" autocomplete="given-name" placeholder="Typ je naam" />
-        <p id="nameHelp">Dan kan de app jou persoonlijk uitleg geven.</p>
+  <main class="app-shell" aria-live="polite">
+    <section id="screen-start" class="screen screen-start is-active">
+      <section class="name-panel glass-card">
+        <p class="eyebrow">Stap 0</p>
+        <label for="child-name">Hoe heet jij?</label>
+        <input id="child-name" type="text" maxlength="18" placeholder="Typ je naam" autocomplete="given-name" />
+        <p id="name-hint" class="hint">Dan kan de app jou persoonlijk uitleg geven.</p>
       </section>
 
-      <div class="hero">
+      <section class="studio-hero glass-card" aria-label="Mattís Code hero">
         <div class="hero-grid"></div>
-        <div class="hero-card hero-cat">🐱</div>
-        <div class="hero-card hero-code">code</div>
-        <div class="hero-card hero-play">▶️</div>
-      </div>
+        <div class="floating-tile tile-cat"><img src="assets/icons/cat.svg" alt="Kat" /></div>
+        <div class="floating-tile tile-code">code</div>
+        <div class="floating-tile tile-play"><img src="assets/icons/play.svg" alt="Play" /></div>
+      </section>
 
-      <div class="copy">
+      <section class="intro-copy">
         <p class="pill">Voor kinderen vanaf 7 jaar</p>
         <h1>Programmeren met plaatjes én code</h1>
-        <p>Begin met blokjes. Schrijf daarna je eerste echte code.</p>
-      </div>
-
-      <div class="home-actions">
-        <button id="startBlocksButton" class="main-button" type="button">Blokjes</button>
-        <button id="startCodeButton" class="alt-button" type="button">Code Lab</button>
-        <button id="explainButton" class="wide-button" type="button">Hoe werkt code? 🔊</button>
-      </div>
-    </section>
-
-    <section id="explainScreen" class="screen hidden">
-      <header class="top">
-        <div>
-          <p class="brand">Mattís Code</p>
-          <h2 id="explainTitle">Hoe werkt code?</h2>
-        </div>
-        <button id="backExplainButton" class="round" type="button">←</button>
-      </header>
-
-      <section class="explain-card">
-        <span class="big-icon">🧠</span>
-        <h3>Code is een plan voor de computer</h3>
-        <p id="explainIntro">De computer leest jouw code van boven naar beneden.</p>
-
-        <ol>
-          <li><strong>Eén regel doet één ding.</strong><br><code>rechts()</code> betekent: ga één stap naar rechts.</li>
-          <li><strong>De volgorde is belangrijk.</strong><br>De computer doet eerst regel 1, daarna regel 2.</li>
-          <li><strong>Haakjes horen bij code.</strong><br>Daarmee zeg je: doe deze actie nu.</li>
-          <li><strong>Foutjes zijn normaal.</strong><br>Je probeert, kijkt wat er gebeurt en verbetert je code.</li>
-        </ol>
+        <p>Code is een plan voor de computer. Jij geeft de stapjes.</p>
       </section>
 
-      <div class="home-actions">
-        <button id="readExplainButton" class="main-button" type="button">Lees uitleg voor 🔊</button>
-        <button id="stopExplainButton" class="alt-button" type="button">Stop</button>
-        <button id="explainToCodeButton" class="wide-button" type="button">Probeer Code Lab ⌨️</button>
-      </div>
-    </section>
-
-    <section id="mapScreen" class="screen hidden">
-      <header class="top">
+      <section class="character-panel glass-card">
         <div>
-          <p class="brand">Mattís Code</p>
-          <h2 id="mapTitle">Kies je wereld</h2>
+          <p class="eyebrow">Kies je figuur</p>
+          <strong id="character-name">Kat</strong>
         </div>
-        <button id="backHomeButton" class="round" type="button">←</button>
-      </header>
-
-      <section class="avatar-panel">
-        <div>
-          <span>Jouw figuur</span>
-          <strong id="selectedAvatarLabel">Kat</strong>
-        </div>
-        <div class="avatars">
-          <button class="avatar active" type="button" data-avatar="🐱" data-name="Kat">🐱</button>
-          <button class="avatar" type="button" data-avatar="🤖" data-name="Robot">🤖</button>
-          <button class="avatar" type="button" data-avatar="🦄" data-name="Eenhoorn">🦄</button>
+        <div class="character-picker" role="group" aria-label="Kies een figuur">
+          <button class="character-button is-active" type="button" data-character="cat" aria-label="Kat"><img src="assets/icons/cat.svg" alt="" /></button>
+          <button class="character-button" type="button" data-character="robot" aria-label="Robot"><img src="assets/icons/robot.svg" alt="" /></button>
+          <button class="character-button" type="button" data-character="unicorn" aria-label="Eenhoorn"><img src="assets/icons/unicorn.svg" alt="" /></button>
         </div>
       </section>
 
-      <section class="cards">
-        <button class="card" type="button" data-level="0"><b>🐾 Level 1</b><span>Blokjes: breng je figuur naar de vis.</span></button>
-        <button class="card" type="button" data-level="1"><b>🔁 Level 2</b><span>Blokjes: gebruik herhaling.</span></button>
-        <button class="card" type="button" data-level="2"><b>🔥 Level 3</b><span>Blokjes: ontwijk lava.</span></button>
-        <button class="card code-card" id="codeLabButton" type="button"><b>⌨️ Code Lab</b><span>Typ echte code zoals rechts().</span></button>
-        <button class="card explain-card-small" id="mapExplainButton" type="button"><b>🔊 Uitleg</b><span>Laat de app nog eens uitleggen hoe programmeren werkt.</span></button>
+      <nav class="action-grid" aria-label="Start acties">
+        <button id="start-levels" class="button button-primary" type="button">Start met blokjes</button>
+        <button id="start-code" class="button button-secondary" type="button">Code Lab</button>
+        <button id="start-explain" class="button button-wide button-read" type="button">Hoe werkt code? 🔊</button>
+      </nav>
+    </section>
+
+    <section id="screen-explain" class="screen screen-explain">
+      <header class="topbar">
+        <button class="icon-button" type="button" data-go="start" aria-label="Terug">←</button>
+        <div>
+          <p class="eyebrow">Uitleg</p>
+          <h2 id="explain-title">Zo werkt code</h2>
+        </div>
+      </header>
+
+      <section class="explain-board glass-card">
+        <div class="explain-icon"><img src="assets/icons/code.svg" alt="" /></div>
+        <h3>Code is een plan</h3>
+        <p id="explain-line">De computer leest jouw code van boven naar beneden.</p>
+        <div class="explain-steps">
+          <p><b>1</b><span>Eén regel doet één ding.</span></p>
+          <p><b>2</b><span>De volgorde is belangrijk.</span></p>
+          <p><b>3</b><span>Foutje? Dan debug je.</span></p>
+          <p><b>4</b><span>Blokjes kunnen echte code worden.</span></p>
+        </div>
+      </section>
+
+      <section class="action-grid">
+        <button id="read-explain" class="button button-primary" type="button">Lees voor 🔊</button>
+        <button id="stop-explain" class="button button-secondary" type="button">Stop</button>
+        <button id="explain-to-code" class="button button-wide" type="button">Probeer Code Lab ⌨️</button>
       </section>
     </section>
 
-    <section id="gameScreen" class="screen hidden">
-      <header class="top game-top">
-        <button id="backMapButton" class="round" type="button">←</button>
+    <section id="screen-levels" class="screen screen-levels">
+      <header class="topbar">
+        <button class="icon-button" type="button" data-go="start" aria-label="Terug">←</button>
         <div>
-          <p class="brand" id="gameLabel">Level 1</p>
-          <h2 id="gameTitle">Breng je figuur naar de vis</h2>
+          <p class="eyebrow">Blokjes</p>
+          <h2 id="levels-title">Kies een level</h2>
         </div>
-        <button id="resetGameButton" class="round" type="button">↻</button>
       </header>
 
-      <section class="lesson">
+      <section id="level-list" class="level-list" aria-label="Levels"></section>
+
+      <section class="mini-nav glass-card">
+        <button id="levels-to-code" class="mini-link" type="button">⌨️ Code Lab</button>
+        <button id="levels-to-explain" class="mini-link" type="button">🔊 Uitleg</button>
+      </section>
+    </section>
+
+    <section id="screen-game" class="screen screen-game">
+      <header class="topbar game-topbar">
+        <button class="icon-button" type="button" data-go="levels" aria-label="Terug">←</button>
         <div>
-          <span>Wat leer je?</span>
-          <p id="lessonText">Volgorde: eerst dit, dan dat.</p>
+          <p id="level-kicker" class="eyebrow">Level</p>
+          <h2 id="level-title">Level laden</h2>
         </div>
-        <strong id="stepCounter">0/8</strong>
-      </section>
+        <button id="reset-level" class="icon-button" type="button" aria-label="Reset">↻</button>
+      </header>
 
-      <section id="gameMessage" class="message hidden">
+      <section class="lesson-strip glass-card">
         <div>
-          <b id="gameMessageTitle">Gelukt!</b>
-          <p id="gameMessageText">Je programma werkt.</p>
+          <p class="eyebrow">Wat leer je?</p>
+          <strong id="lesson-text">Code gaat stap voor stap.</strong>
         </div>
-        <button id="nextLevelButton" class="next-button" type="button">Volgende level ➜</button>
+        <span id="step-count" class="counter">0/8</span>
       </section>
 
-      <section class="stage">
-        <div id="gameGrid" class="grid">
-          <div id="gameRock" class="rock hidden">🪨</div>
-          <div id="gameHero" class="sprite">🐱</div>
-          <div id="gameFish" class="sprite fish">🐟</div>
-          <div id="gameBubble" class="bubble hidden">Miauw!</div>
+      <section id="game-feedback" class="feedback-card glass-card is-hidden">
+        <div>
+          <strong id="game-feedback-title">Gelukt!</strong>
+          <p id="game-feedback-text">Je programma werkt.</p>
+        </div>
+        <button id="next-level" class="button-next" type="button">Volgende level ➜</button>
+      </section>
+
+      <section class="stage-card">
+        <div id="grid" class="grid" aria-label="Speelveld">
+          <img id="player" class="sprite player" src="assets/icons/cat.svg" alt="Speler" />
+          <img id="goal" class="sprite goal" src="assets/icons/fish.svg" alt="Vis" />
+          <div id="speech-bubble" class="speech-bubble is-hidden">Miauw!</div>
+          <div id="confetti" class="confetti is-hidden"></div>
         </div>
       </section>
 
-      <section class="program-card">
-        <div class="program-head">
+      <section class="program-card glass-card">
+        <div class="program-header">
           <strong>Mijn blokjes</strong>
-          <button id="clearGameButton" type="button">Leeg</button>
+          <button id="clear-program" type="button">Leeg</button>
         </div>
-        <div id="program" class="program"></div>
+        <div id="program-tray" class="program-tray"><span class="empty-state">Tik blokjes.</span></div>
       </section>
 
-      <section id="blocks" class="blocks"></section>
+      <section class="code-preview-card glass-card">
+        <div class="program-header">
+          <strong>Mijn blokjes als code</strong>
+          <button id="send-to-code" type="button">Probeer in Code Lab</button>
+        </div>
+        <pre id="translated-code" class="translated-code">// Kies eerst blokjes</pre>
+      </section>
+
+      <section id="block-bar" class="block-bar" aria-label="Codeblokjes"></section>
     </section>
 
-    <section id="codeScreen" class="screen hidden">
-      <header class="top game-top">
-        <button id="backCodeButton" class="round" type="button">←</button>
+    <section id="screen-code" class="screen screen-code">
+      <header class="topbar game-topbar">
+        <button class="icon-button" type="button" data-go="start" aria-label="Terug">←</button>
         <div>
-          <p class="brand">Code Lab</p>
-          <h2 id="codeTitle">Schrijf je eerste code</h2>
+          <p class="eyebrow">Code Lab</p>
+          <h2 id="code-title">Schrijf je eerste code</h2>
         </div>
-        <button id="resetCodeButton" class="round" type="button">↻</button>
+        <button id="reset-code" class="icon-button" type="button" aria-label="Reset">↻</button>
       </header>
 
-      <section class="lesson">
+      <section class="lesson-strip glass-card">
         <div>
-          <span>Wat leer je?</span>
-          <p>Elke regel code doet één actie.</p>
+          <p class="eyebrow">Wat leer je?</p>
+          <strong>Elke regel code doet één actie.</strong>
         </div>
-        <strong id="lineCounter">0/10</strong>
+        <span id="line-count" class="counter">0/10</span>
       </section>
 
-      <section id="codeMessage" class="message hidden">
-        <b id="codeMessageTitle">Code</b>
-        <p id="codeMessageText">Probeer het uit.</p>
-      </section>
-
-      <section class="stage">
-        <div id="codeGrid" class="grid">
-          <div id="codeHero" class="sprite">🐱</div>
-          <div id="codeFish" class="sprite fish">🐟</div>
-          <div id="codeBubble" class="bubble hidden">Hoi!</div>
+      <section id="code-feedback" class="feedback-card glass-card is-hidden">
+        <div>
+          <strong id="code-feedback-title">Code</strong>
+          <p id="code-feedback-text">Probeer het uit.</p>
         </div>
       </section>
 
-      <section class="editor-card">
-        <div class="program-head">
+      <section class="stage-card">
+        <div id="code-grid" class="grid" aria-label="Code Lab speelveld">
+          <img id="code-player" class="sprite player" src="assets/icons/cat.svg" alt="Speler" />
+          <img id="code-goal" class="sprite goal" src="assets/icons/fish.svg" alt="Vis" />
+          <div id="code-bubble" class="speech-bubble is-hidden">Miauw!</div>
+        </div>
+      </section>
+
+      <section class="editor-card glass-card">
+        <div class="program-header">
           <strong>Echte code</strong>
-          <button id="exampleButton" type="button">Voorbeeld</button>
+          <button id="example-code" type="button">Voorbeeld</button>
         </div>
-        <textarea id="codeEditor" spellcheck="false">rechts()
+        <textarea id="code-editor" spellcheck="false" aria-label="Code editor">rechts()
+rechts()
+rechts()
 rechts()
 omlaag()
 omlaag()
-praat()</textarea>
+omlaag()
+omlaag()</textarea>
       </section>
 
-      <section class="code-buttons">
-        <button type="button" data-code="rechts()">rechts()</button>
-        <button type="button" data-code="omlaag()">omlaag()</button>
-        <button type="button" data-code="links()">links()</button>
-        <button type="button" data-code="omhoog()">omhoog()</button>
-        <button type="button" data-code="praat()">praat()</button>
-        <button type="button" data-code="dans()">dans()</button>
+      <section class="command-chips" aria-label="Code hulpknoppen">
+        <button type="button" data-insert="rechts()">rechts()</button>
+        <button type="button" data-insert="omlaag()">omlaag()</button>
+        <button type="button" data-insert="links()">links()</button>
+        <button type="button" data-insert="omhoog()">omhoog()</button>
+        <button type="button" data-insert="praat()">praat()</button>
+        <button type="button" data-insert="dans()">dans()</button>
       </section>
 
-      <div class="home-actions">
-        <button id="runCodeButton" class="main-button" type="button">Run ▶️</button>
-        <button id="codeExplainButton" class="alt-button" type="button">Uitleg 🔊</button>
-      </div>
+      <section class="action-grid code-actions">
+        <button id="run-code" class="button button-primary" type="button">Run ▶️</button>
+        <button id="code-explain" class="button button-secondary" type="button">Uitleg 🔊</button>
+      </section>
     </section>
   </main>
-
   <script src="script.js"></script>
 </body>
 </html>

@@ -1,65 +1,66 @@
-# Mattís Code v1.7
+# Mattís Code 2.0 Studio Build
 
-Een programmeer-app voor kinderen van ongeveer 7 jaar.
+Dit is een complete statische webapp voor Mattís Code.
 
-## Nieuw in v1.7
+## Wat is anders
 
-### 1. Naamveld duidelijker
-
-Het naamveld staat nu bovenaan het openingsscherm en is veel groter.
+Deze versie is niet meer alleen `index.html` met wat CSS. De app heeft nu een echte projectstructuur met een `assets/` folder:
 
 ```text
-Stap 0 — hoe heet jij?
+assets/
+  brand/
+  icons/
+  patterns/
+  mockups/
+  canva/
 ```
 
-### 2. Duidelijke volgende-knop
+De redesign-richting is opgezet met Canva als visual design studio en daarna vertaald naar werkende HTML/CSS/JS.
 
-Na het afronden van een level verschijnt nu een grote knop:
+## Canva
 
-```text
-Volgende level ➜
-```
+Canva folder:
+https://www.canva.com/folder/FAHU0xsNj3U
 
-Die knop is alleen zichtbaar bij succes.
+Canva design reference:
+https://www.canva.com/d/ho6tdaG8LfrKXPf
 
-### 3. Alles in één scherm
+## App-flow
 
-De layout is compacter gemaakt:
+1. Naam invullen.
+2. Figuur kiezen.
+3. Level kiezen.
+4. Met blokjes programmeren.
+5. Programma afspelen.
+6. Foutjes verbeteren.
+7. Blokjes als echte code bekijken.
+8. Code openen in Code Lab.
+9. Zelf eenvoudige code typen.
+10. Code uitvoeren.
 
-- vaste app-hoogte
-- geen pagina-scroll
-- compactere hero
-- compactere kaarten
-- kortere teksten
-- kleiner codeveld
-- compactere knoppen
+## Code Lab
 
-### 4. Idee voor Code Lab v1.8
-
-De volgende verbetering is: blokjes automatisch vertalen naar echte code.
-
-Voorbeeld:
-
-```text
-➡️ ➡️ ⬇️ 🔊
-```
-
-wordt:
+Toegestane commando's:
 
 ```js
 rechts()
-rechts()
+links()
+omhoog()
 omlaag()
 praat()
+dans()
 ```
 
-Daarna mag het kind één regel zelf aanpassen. Dat maakt de brug van plaatjes naar echte code veel sterker.
+Er wordt geen echte JavaScript uitgevoerd. De editor gebruikt een veilige whitelist-parser. Geen `eval`.
 
-## Upload
+## Upload naar GitHub/Vercel
 
-Upload naar GitHub:
+Upload de volledige inhoud van deze map naar je repository.
 
-- `index.html`
-- `style.css`
-- `script.js`
-- `README.md`
+Belangrijk: `index.html` moet in de root staan.
+
+## Commit message
+
+```text
+Build Mattis Code 2.0 studio redesign
+```

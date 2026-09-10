@@ -1,177 +1,183 @@
+const characters = {
+  cat: { name: "Kat", icon: "assets/icons/cat.svg", sound: "Miauw!", spoken: "miauw" },
+  robot: { name: "Robot", icon: "assets/icons/robot.svg", sound: "Biep!", spoken: "biep" },
+  unicorn: { name: "Eenhoorn", icon: "assets/icons/unicorn.svg", sound: "Sparkle!", spoken: "sparkle" }
+};
+
+const blockLibrary = {
+  up: { icon: "assets/icons/arrow-up.svg", label: "omhoog", code: ["omhoog()"] },
+  down: { icon: "assets/icons/arrow-down.svg", label: "omlaag", code: ["omlaag()"] },
+  left: { icon: "assets/icons/arrow-left.svg", label: "links", code: ["links()"] },
+  right: { icon: "assets/icons/arrow-right.svg", label: "rechts", code: ["rechts()"] },
+  repeatRight: { icon: "assets/icons/repeat-right.svg", label: "4x rechts", kind: "smart", code: ["rechts()", "rechts()", "rechts()", "rechts()"] },
+  repeatDown: { icon: "assets/icons/repeat-down.svg", label: "4x omlaag", kind: "smart", code: ["omlaag()", "omlaag()", "omlaag()", "omlaag()"] },
+  talk: { icon: "assets/icons/sound.svg", label: "praat", kind: "fun", code: ["praat()"] },
+  dance: { icon: "assets/icons/dance.svg", label: "dans", kind: "fun", code: ["dans()"] },
+  play: { icon: "assets/icons/play.svg", label: "play", kind: "play", code: [] }
+};
+
 const levels = [
   {
-    label: "Level 1",
-    title: "Breng je figuur naar de vis 🐟",
-    lesson: "Volgorde: eerst dit, dan dat.",
-    maxSteps: 8,
-    start: { x: 0, y: 0 },
-    fish: { x: 4, y: 4 },
-    walls: [],
-    lava: [],
-    blocks: ["up", "down", "left", "right", "play"]
+    icon: "🐾", title: "Volgorde", lesson: "Code gaat stap voor stap.",
+    start: { x: 0, y: 0 }, goal: { x: 4, y: 4 }, maxSteps: 8,
+    walls: [], lava: [], water: [], stars: [], mustUse: [], mustCollectStar: false,
+    blocks: ["right", "down", "left", "up", "play"],
+    hint: "Ga naar rechts en daarna omlaag."
   },
   {
-    label: "Level 2",
-    title: "Gebruik herhaal-blokjes 🔁",
-    lesson: "Herhaling: één blokje kan veel stappen doen.",
-    maxSteps: 4,
-    start: { x: 0, y: 0 },
-    fish: { x: 4, y: 4 },
-    walls: [],
-    lava: [],
-    blocks: ["right", "down", "repeatRight", "repeatDown", "play"]
+    icon: "🔁", title: "Herhalen", lesson: "Herhaling maakt code korter.",
+    start: { x: 0, y: 0 }, goal: { x: 4, y: 4 }, maxSteps: 2,
+    walls: [], lava: [], water: [], stars: [], mustUse: ["repeatRight", "repeatDown"], mustCollectStar: false,
+    blocks: ["repeatRight", "repeatDown", "right", "down", "play"],
+    hint: "Eén herhaalblok doet vier stappen."
   },
   {
-    label: "Level 3",
-    title: "Ontwijk de lava 🔥",
-    lesson: "Debuggen: fout? Pas je code aan.",
-    maxSteps: 8,
-    start: { x: 0, y: 0 },
-    fish: { x: 4, y: 4 },
-    walls: [{x:1,y:0},{x:1,y:1},{x:4,y:1},{x:1,y:3},{x:2,y:3}],
-    lava: [{x:2,y:1},{x:4,y:2}],
-    blocks: ["up", "down", "left", "right", "play"]
+    icon: "🔥", title: "Debuggen", lesson: "Foutje? Kijk en verbeter.",
+    start: { x: 0, y: 0 }, goal: { x: 4, y: 4 }, maxSteps: 8,
+    walls: [], lava: [{ x: 2, y: 0 }, { x: 2, y: 1 }, { x: 2, y: 2 }, { x: 3, y: 2 }], water: [], stars: [], mustUse: [], mustCollectStar: false,
+    blocks: ["right", "down", "left", "up", "play"],
+    hint: "Onderlangs is veilig."
+  },
+  {
+    icon: "🎭", title: "Acties", lesson: "Code kan iets laten gebeuren.",
+    start: { x: 0, y: 0 }, goal: { x: 3, y: 3 }, maxSteps: 10,
+    walls: [{ x: 2, y: 1 }, { x: 1, y: 2 }], lava: [], water: [], stars: [], mustUse: ["talk", "dance"], mustCollectStar: false,
+    blocks: ["right", "down", "talk", "dance", "play"],
+    hint: "Gebruik ook praat en dans."
+  },
+  {
+    icon: "⌨️", title: "Blokjes worden code", lesson: "Een blokje kan een coderegel zijn.",
+    start: { x: 0, y: 0 }, goal: { x: 2, y: 2 }, maxSteps: 6,
+    walls: [], lava: [], water: [], stars: [], mustUse: ["talk"], mustCollectStar: false,
+    blocks: ["right", "down", "talk", "dance", "play"],
+    hint: "Kijk naar Mijn blokjes als code."
+  },
+  {
+    icon: "⭐", title: "Eerst de ster", lesson: "Soms moet je eerst iets verzamelen.",
+    start: { x: 0, y: 0 }, goal: { x: 4, y: 4 }, maxSteps: 9,
+    walls: [{ x: 1, y: 1 }, { x: 2, y: 1 }, { x: 1, y: 3 }, { x: 3, y: 3 }], lava: [], water: [], stars: [{ x: 4, y: 0 }], mustUse: [], mustCollectStar: true,
+    blocks: ["right", "down", "left", "up", "play"],
+    hint: "Pak eerst de ster bovenin."
   }
 ];
 
-const blockData = {
-  up: { icon: "⬆️", label: "omhoog" },
-  down: { icon: "⬇️", label: "omlaag" },
-  left: { icon: "⬅️", label: "links" },
-  right: { icon: "➡️", label: "rechts" },
-  repeatRight: { icon: "🔁➡️", label: "4x rechts", kind: "smart" },
-  repeatDown: { icon: "🔁⬇️", label: "4x omlaag", kind: "smart" },
-  play: { icon: "▶️", label: "play", kind: "play" }
+const $ = (id) => document.getElementById(id);
+const screens = {
+  start: $("screen-start"),
+  explain: $("screen-explain"),
+  levels: $("screen-levels"),
+  game: $("screen-game"),
+  code: $("screen-code")
 };
 
 let childName = "";
-let selectedAvatar = "🐱";
-let selectedAvatarName = "Kat";
+let selectedCharacter = "cat";
 let currentLevelIndex = 0;
-let steps = [];
-let gameX = 0;
-let gameY = 0;
-let isGameRunning = false;
-
-let codeX = 0;
-let codeY = 0;
-let isCodeRunning = false;
-
-const $ = (id) => document.getElementById(id);
-const screens = {
-  home: $("homeScreen"),
-  explain: $("explainScreen"),
-  map: $("mapScreen"),
-  game: $("gameScreen"),
-  code: $("codeScreen")
-};
+let program = [];
+let player = { x: 0, y: 0 };
+let codePlayer = { x: 0, y: 0 };
+let codeScenario = { start: { x: 0, y: 0 }, goal: { x: 4, y: 4 }, walls: [], lava: [], water: [], stars: [] };
+let collectedStar = false;
+let isRunning = false;
+let codeRunning = false;
 
 function showScreen(name) {
-  Object.values(screens).forEach((screen) => screen.classList.add("hidden"));
-  screens[name].classList.remove("hidden");
+  Object.values(screens).forEach((screen) => screen.classList.remove("is-active"));
+  screens[name].classList.add("is-active");
 }
 
-function readChildName() {
-  childName = $("childNameInput").value.trim().replace(/\s+/g, " ");
+function readName() {
+  childName = $("child-name").value.trim().replace(/\s+/g, " ");
   return childName;
 }
 
 function requireName() {
-  const name = readChildName();
-  const card = document.querySelector(".name-card");
-  const help = $("nameHelp");
-
+  const name = readName();
+  const panel = document.querySelector(".name-panel");
+  const hint = $("name-hint");
   if (!name) {
-    card.classList.add("error");
-    help.textContent = "Typ eerst je naam. Dan kan de app tegen jou praten.";
-    $("childNameInput").focus();
+    panel.classList.add("is-error");
+    hint.textContent = "Typ eerst je naam. Dan kan de app tegen jou praten.";
+    $("child-name").focus();
     return false;
   }
-
-  card.classList.remove("error");
-  help.textContent = `Hoi ${name}. Kies wat je wilt doen.`;
-  updatePersonalText();
+  panel.classList.remove("is-error");
+  hint.textContent = `Hoi ${name}. Kies wat je wilt doen.`;
+  updatePersonalCopy();
   return true;
 }
 
-function updatePersonalText() {
+function updatePersonalCopy() {
   const name = childName || "programmeur";
-  $("mapTitle").textContent = `${name}, kies je wereld`;
-  $("explainTitle").textContent = `${name}, zo werkt code`;
-  $("codeTitle").textContent = `${name}, schrijf je eerste code`;
-  $("explainIntro").textContent = `${name}, de computer leest jouw code van boven naar beneden.`;
+  $("levels-title").textContent = `${name}, kies een level`;
+  $("explain-title").textContent = `${name}, zo werkt code`;
+  $("explain-line").textContent = `${name}, de computer leest jouw code van boven naar beneden.`;
+  $("code-title").textContent = `${name}, schrijf je eerste code`;
 }
 
-$("childNameInput").addEventListener("input", () => {
-  readChildName();
-  document.querySelector(".name-card").classList.remove("error");
-  $("nameHelp").textContent = childName ? `Hoi ${childName}. Kies wat je wilt doen.` : "Dan kan de app jou persoonlijk uitleg geven.";
-  updatePersonalText();
-});
+function currentCharacter() {
+  return characters[selectedCharacter];
+}
 
-$("childNameInput").addEventListener("keydown", (event) => {
-  if (event.key === "Enter" && requireName()) {
-    showScreen("map");
-  }
-});
-
-$("startBlocksButton").addEventListener("click", () => {
-  if (requireName()) showScreen("map");
-});
-
-$("startCodeButton").addEventListener("click", () => {
-  if (requireName()) openCodeLab();
-});
-
-$("explainButton").addEventListener("click", () => {
-  if (requireName()) showScreen("explain");
-});
-
-$("readExplainButton").addEventListener("click", () => {
-  if (requireName()) speakCodingExplanation();
-});
-
-$("stopExplainButton").addEventListener("click", stopSpeaking);
-$("explainToCodeButton").addEventListener("click", openCodeLab);
-$("mapExplainButton").addEventListener("click", () => showScreen("explain"));
-
-$("codeLabButton").addEventListener("click", openCodeLab);
-$("backHomeButton").addEventListener("click", () => showScreen("home"));
-$("backExplainButton").addEventListener("click", () => showScreen("home"));
-$("backMapButton").addEventListener("click", () => showScreen("map"));
-$("backCodeButton").addEventListener("click", () => showScreen("map"));
-$("resetGameButton").addEventListener("click", resetGame);
-$("clearGameButton").addEventListener("click", clearGameProgram);
-$("nextLevelButton").addEventListener("click", nextLevel);
-$("resetCodeButton").addEventListener("click", resetCodeLab);
-$("exampleButton").addEventListener("click", addExampleCode);
-$("runCodeButton").addEventListener("click", runTypedCode);
-$("codeExplainButton").addEventListener("click", speakCodingExplanation);
-
-document.querySelectorAll("[data-level]").forEach((button) => {
-  button.addEventListener("click", () => loadLevel(Number(button.dataset.level)));
-});
-
-document.querySelectorAll(".avatar").forEach((button) => {
-  button.addEventListener("click", () => {
-    selectedAvatar = button.dataset.avatar;
-    selectedAvatarName = button.dataset.name;
-    $("selectedAvatarLabel").textContent = selectedAvatarName;
-
-    document.querySelectorAll(".avatar").forEach((avatar) => avatar.classList.remove("active"));
-    button.classList.add("active");
+function setCharacter(key) {
+  selectedCharacter = key;
+  const character = currentCharacter();
+  $("character-name").textContent = character.name;
+  document.querySelectorAll(".character-button").forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.character === key);
   });
-});
+  $("player").src = character.icon;
+  $("code-player").src = character.icon;
+}
 
-document.querySelectorAll("[data-code]").forEach((button) => {
-  button.addEventListener("click", () => insertCode(button.dataset.code));
-});
+function setupStart() {
+  $("child-name").addEventListener("input", () => {
+    readName();
+    document.querySelector(".name-panel").classList.remove("is-error");
+    $("name-hint").textContent = childName ? `Hoi ${childName}. Kies wat je wilt doen.` : "Dan kan de app jou persoonlijk uitleg geven.";
+    updatePersonalCopy();
+  });
 
-$("codeEditor").addEventListener("input", updateLineCounter);
+  $("child-name").addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && requireName()) {
+      renderLevels();
+      showScreen("levels");
+    }
+  });
 
-function speakCodingExplanation() {
-  const name = childName || readChildName() || "programmeur";
+  document.querySelectorAll(".character-button").forEach((button) => {
+    button.addEventListener("click", () => setCharacter(button.dataset.character));
+  });
 
+  $("start-levels").addEventListener("click", () => {
+    if (requireName()) {
+      renderLevels();
+      showScreen("levels");
+    }
+  });
+
+  $("start-code").addEventListener("click", () => {
+    if (requireName()) openCodeLab();
+  });
+
+  $("start-explain").addEventListener("click", () => {
+    if (requireName()) showScreen("explain");
+  });
+
+  document.querySelectorAll("[data-go]").forEach((button) => {
+    button.addEventListener("click", () => showScreen(button.dataset.go));
+  });
+}
+
+function setupExplain() {
+  $("read-explain").addEventListener("click", speakExplanation);
+  $("stop-explain").addEventListener("click", stopSpeaking);
+  $("explain-to-code").addEventListener("click", openCodeLab);
+  $("levels-to-explain").addEventListener("click", () => showScreen("explain"));
+}
+
+function speakExplanation() {
+  const name = childName || readName() || "programmeur";
   const text = [
     `Hoi ${name}. Ik leg uit hoe coderen werkt.`,
     "Code is een plan voor de computer.",
@@ -179,449 +185,465 @@ function speakCodingExplanation() {
     "Eén regel code doet één ding.",
     "Rechts met haakjes betekent: ga één stap naar rechts.",
     "Omlaag met haakjes betekent: ga één stap omlaag.",
-    "De volgorde is belangrijk. Eerst doet de computer regel één. Daarna regel twee.",
-    "Als je code niet doet wat je dacht, is dat niet erg.",
-    "Dan kijk je wat er gebeurt, verander je één stukje, en probeer je opnieuw.",
-    "Dat heet debuggen. Zo leer je programmeren."
+    "De volgorde is belangrijk.",
+    "Foutjes zijn normaal.",
+    "Dan verander je één stukje en probeer je opnieuw.",
+    "Dat heet debuggen."
   ].join(" ");
-
-  speak(text);
+  speak(text, 0.9, 1.2);
 }
 
-function speak(text) {
+function speak(text, rate = 1, pitch = 1.2) {
   if (!("speechSynthesis" in window)) {
     alert("Voorlezen werkt niet in deze browser.");
     return;
   }
-
   window.speechSynthesis.cancel();
-
   const voice = new SpeechSynthesisUtterance(text);
   voice.lang = "nl-NL";
-  voice.rate = 0.9;
-  voice.pitch = 1.25;
-  voice.volume = 1;
-
+  voice.rate = rate;
+  voice.pitch = pitch;
   window.speechSynthesis.speak(voice);
 }
 
 function stopSpeaking() {
-  if ("speechSynthesis" in window) {
-    window.speechSynthesis.cancel();
-  }
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+}
+
+function renderLevels() {
+  const list = $("level-list");
+  list.innerHTML = "";
+  levels.forEach((level, index) => {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "level-card";
+    card.innerHTML = `
+      <span class="level-icon">${level.icon}</span>
+      <span><strong>Level ${index + 1}: ${level.title}</strong><span>${level.lesson}</span></span>
+      <em>${level.maxSteps} blokjes</em>
+    `;
+    card.addEventListener("click", () => loadLevel(index));
+    list.appendChild(card);
+  });
 }
 
 function loadLevel(index) {
   currentLevelIndex = index;
-  const level = getLevel();
-
-  $("gameLabel").textContent = level.label;
-  $("gameTitle").textContent = level.title;
-  $("lessonText").textContent = level.lesson;
-  $("gameHero").textContent = selectedAvatar;
-
-  renderGameBlocks();
-  resetGame();
+  const level = levels[index];
+  $("level-kicker").textContent = `Level ${index + 1}`;
+  $("level-title").textContent = `${level.icon} ${level.title}`;
+  $("lesson-text").textContent = level.lesson;
+  $("player").src = currentCharacter().icon;
+  program = [];
+  resetLevelState();
+  renderGrid($("grid"), level);
+  renderBlockBar(level);
+  renderProgram();
+  hideGameFeedback();
   showScreen("game");
 }
 
-function getLevel() {
+function currentLevel() {
   return levels[currentLevelIndex];
 }
 
-function renderGameBlocks() {
-  const blocks = $("blocks");
-  blocks.innerHTML = "";
-
-  getLevel().blocks.forEach((name) => {
-    const data = blockData[name];
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = data.kind || "";
-    button.innerHTML = `<span>${data.icon}</span>${data.label}`;
-    button.addEventListener("click", () => {
-      if (name === "play") playGameProgram();
-      else addGameStep(name);
-    });
-    blocks.appendChild(button);
-  });
+function resetLevelState() {
+  const level = currentLevel();
+  player = { ...level.start };
+  collectedStar = false;
+  updatePlayerPosition($("player"), player);
+  moveBubble($("speech-bubble"), player);
+  hideBubble($("speech-bubble"));
+  $("confetti").classList.add("is-hidden");
 }
 
-function addGameStep(name) {
-  if (isGameRunning) return;
-
-  if (steps.length >= getLevel().maxSteps) {
-    showGameMessage("warning", "Vol", "Druk op play of maak leeg.");
-    return;
-  }
-
-  steps.push(name);
-  renderGameProgram();
-}
-
-function clearGameProgram() {
-  if (isGameRunning) return;
-  steps = [];
-  renderGameProgram();
-  hideGameMessage();
-}
-
-function renderGameProgram() {
-  $("stepCounter").textContent = `${steps.length}/${getLevel().maxSteps}`;
-  const program = $("program");
-  program.innerHTML = "";
-
-  if (steps.length === 0) {
-    const empty = document.createElement("span");
-    empty.className = "empty";
-    empty.textContent = "Tik blokjes hieronder.";
-    program.appendChild(empty);
-    return;
-  }
-
-  steps.forEach((name) => {
-    const step = document.createElement("span");
-    step.className = "step";
-    step.textContent = blockData[name].icon;
-    program.appendChild(step);
-  });
-}
-
-function drawGameGrid() {
-  const grid = $("gameGrid");
+function renderGrid(grid, level, codeMode = false) {
+  grid.style.setProperty("--cell", `${100 / 5}%`);
   grid.querySelectorAll(".cell").forEach((cell) => cell.remove());
-
   for (let y = 0; y < 5; y++) {
     for (let x = 0; x < 5; x++) {
       const cell = document.createElement("div");
-      cell.className = `cell ${getGameTileClass(x, y)}`;
+      cell.className = `cell ${tileClass(level, x, y)}`;
       cell.style.transform = `translate(${x * 100}%, ${y * 100}%)`;
       grid.appendChild(cell);
     }
   }
-
-  $("gameFish").style.setProperty("--fish-x", `${getLevel().fish.x * 100}%`);
-  $("gameFish").style.setProperty("--fish-y", `${getLevel().fish.y * 100}%`);
-  $("gameFish").style.transform = `translate(${getLevel().fish.x * 100}%, ${getLevel().fish.y * 100}%)`;
+  const goal = codeMode ? $("code-goal") : $("goal");
+  const goalX = `${level.goal.x * 100}%`;
+  const goalY = `${level.goal.y * 100}%`;
+  goal.style.setProperty("--goal-x", goalX);
+  goal.style.setProperty("--goal-y", goalY);
+  goal.style.transform = `translate(${goalX}, ${goalY})`;
 }
 
-function getGameTileClass(x, y) {
-  const level = getLevel();
-
+function tileClass(level, x, y) {
   if (has(level.walls, x, y)) return "wall";
   if (has(level.lava, x, y)) return "lava";
-
+  if (has(level.water, x, y)) return "water";
+  if (has(level.stars, x, y) && !collectedStar) return "star";
   return "path";
 }
 
-async function playGameProgram() {
-  if (isGameRunning || steps.length === 0) return;
+function renderBlockBar(level) {
+  const bar = $("block-bar");
+  bar.innerHTML = "";
+  level.blocks.forEach((name) => {
+    const block = blockLibrary[name];
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `block-button ${block.kind || ""}`;
+    button.innerHTML = `<img src="${block.icon}" alt="" />${block.label}`;
+    button.addEventListener("click", () => name === "play" ? playProgram() : addBlock(name));
+    bar.appendChild(button);
+  });
+}
 
-  isGameRunning = true;
-  hideGameMessage();
-  resetGameHero();
+function addBlock(name) {
+  if (isRunning) return;
+  if (program.length >= currentLevel().maxSteps) {
+    showGameFeedback("warning", "Vol", "Druk op play of maak leeg.");
+    return;
+  }
+  program.push(name);
+  renderProgram();
+  hideGameFeedback();
+}
 
-  await wait(200);
+function renderProgram() {
+  $("step-count").textContent = `${program.length}/${currentLevel().maxSteps}`;
+  const tray = $("program-tray");
+  tray.innerHTML = "";
+  if (program.length === 0) {
+    tray.innerHTML = `<span class="empty-state">Tik blokjes.</span>`;
+  } else {
+    program.forEach((name) => {
+      const block = blockLibrary[name];
+      const item = document.createElement("span");
+      item.className = "program-step";
+      item.innerHTML = `<img src="${block.icon}" alt="" />${block.label}`;
+      tray.appendChild(item);
+    });
+  }
+  renderTranslatedCode();
+}
 
-  for (const step of steps) {
-    if (hasGameWon()) break;
+function blocksToCode() {
+  return program.flatMap((name) => blockLibrary[name].code);
+}
 
-    if (step === "repeatRight") await repeatGameMove("right");
-    else if (step === "repeatDown") await repeatGameMove("down");
-    else {
-      moveGameHero(step);
-      await wait(300);
-    }
+function renderTranslatedCode() {
+  const code = blocksToCode();
+  $("translated-code").textContent = code.length ? code.join("\n") : "// Kies eerst blokjes";
+  $("send-to-code").disabled = code.length === 0;
+}
 
-    if (has(getLevel().lava, gameX, gameY)) {
-      showGameMessage("fail", "Oeps", "Lava! Probeer opnieuw.");
-      steps = [];
-      renderGameProgram();
-      resetGameHero();
-      isGameRunning = false;
+async function playProgram() {
+  if (isRunning || program.length === 0) return;
+  isRunning = true;
+  resetLevelState();
+  hideGameFeedback();
+  await wait(120);
+  for (const block of program) {
+    if (isAtGoal(player, currentLevel().goal)) break;
+    await runBlock(block);
+    if (await checkTileTrouble()) {
+      isRunning = false;
       return;
     }
-
-    if (hasGameWon()) break;
+    checkCollectibles();
+    if (isAtGoal(player, currentLevel().goal)) break;
   }
-
-  if (hasGameWon()) showGameMessage("success", "Gelukt!", `Goed gedaan ${childName || ""}. Je programma werkt.`);
-  else showGameMessage("warning", "Bijna", "Nog niet bij de vis. Verbeter je code.");
-
-  isGameRunning = false;
+  finishProgram();
+  isRunning = false;
 }
 
-async function repeatGameMove(direction) {
+async function runBlock(block) {
+  if (block === "repeatRight") return repeatMove("right");
+  if (block === "repeatDown") return repeatMove("down");
+  if (block === "talk") return talk($("speech-bubble"));
+  if (block === "dance") return dance($("player"));
+  movePlayer(block);
+  await wait(280);
+}
+
+async function repeatMove(direction) {
   for (let i = 0; i < 4; i++) {
-    if (hasGameWon()) return;
-    moveGameHero(direction);
-    await wait(240);
+    if (isAtGoal(player, currentLevel().goal)) return;
+    movePlayer(direction);
+    await wait(220);
+    if (await checkTileTrouble()) return;
+    checkCollectibles();
   }
 }
 
-function moveGameHero(direction) {
-  const next = { x: gameX, y: gameY };
-
+function movePlayer(direction) {
+  const next = { ...player };
   if (direction === "up") next.y--;
   if (direction === "down") next.y++;
   if (direction === "left") next.x--;
   if (direction === "right") next.x++;
-
-  if (next.x < 0 || next.y < 0 || next.x > 4 || next.y > 4 || has(getLevel().walls, next.x, next.y)) {
-    bump($("gameHero"), gameX, gameY);
+  if (isBlocked(next, currentLevel())) {
+    bump($("player"), player);
     return;
   }
-
-  gameX = next.x;
-  gameY = next.y;
-  updateGameHero();
+  player = next;
+  updatePlayerPosition($("player"), player);
+  moveBubble($("speech-bubble"), player);
 }
 
-function resetGame() {
-  steps = [];
-  renderGameProgram();
-  hideGameMessage();
-  drawGameGrid();
-  resetGameHero();
+function isBlocked(pos, level) {
+  return pos.x < 0 || pos.y < 0 || pos.x > 4 || pos.y > 4 || has(level.walls, pos.x, pos.y);
 }
 
-function resetGameHero() {
-  gameX = getLevel().start.x;
-  gameY = getLevel().start.y;
-  updateGameHero();
+async function checkTileTrouble() {
+  const level = currentLevel();
+  if (has(level.lava, player.x, player.y)) {
+    showGameFeedback("soft-error", "Oeps", "Lava! Probeer een andere route.");
+    program = [];
+    renderProgram();
+    resetLevelState();
+    return true;
+  }
+  return false;
 }
 
-function updateGameHero() {
-  $("gameHero").style.transform = `translate(${gameX * 100}%, ${gameY * 100}%)`;
-  $("gameBubble").style.transform = `translate(${gameX * 100}%, ${gameY * 100}%)`;
+function checkCollectibles() {
+  const level = currentLevel();
+  if (has(level.stars, player.x, player.y) && !collectedStar) {
+    collectedStar = true;
+    renderGrid($("grid"), level);
+    say($("speech-bubble"), "Ster!");
+  }
 }
 
-function hasGameWon() {
-  return gameX === getLevel().fish.x && gameY === getLevel().fish.y;
+function finishProgram() {
+  const level = currentLevel();
+  if (!isAtGoal(player, level.goal)) {
+    showGameFeedback("warning", "Bijna", "Kijk wat er gebeurde. Verander één stukje.");
+    return;
+  }
+  if (level.mustCollectStar && !collectedStar) {
+    showGameFeedback("warning", "Ster vergeten", "Pak eerst de ster en probeer opnieuw.");
+    return;
+  }
+  const missing = level.mustUse.filter((name) => !program.includes(name));
+  if (missing.length) {
+    showGameFeedback("warning", "Nog iets", `Gebruik ook ${blockLibrary[missing[0]].label}.`);
+    return;
+  }
+  showGameFeedback("success", "Gelukt!", `Goed gedaan ${childName}. Je programma werkt.`);
+  $("confetti").classList.remove("is-hidden");
+}
+
+function showGameFeedback(type, title, text) {
+  const card = $("game-feedback");
+  card.className = `feedback-card glass-card ${type}`;
+  $("game-feedback-title").textContent = title;
+  $("game-feedback-text").textContent = text;
+}
+
+function hideGameFeedback() {
+  $("game-feedback").className = "feedback-card glass-card is-hidden";
 }
 
 function nextLevel() {
   const next = currentLevelIndex + 1;
   if (next < levels.length) loadLevel(next);
-  else showScreen("map");
+  else showScreen("levels");
 }
 
-function showGameMessage(type, title, text) {
-  const message = $("gameMessage");
-  message.className = `message ${type}`;
-  $("gameMessageTitle").textContent = title;
-  $("gameMessageText").textContent = text;
+function clearProgram() {
+  if (isRunning) return;
+  program = [];
+  renderProgram();
+  hideGameFeedback();
+  resetLevelState();
 }
 
-function hideGameMessage() {
-  $("gameMessage").className = "message hidden";
+function setupGame() {
+  $("reset-level").addEventListener("click", () => {
+    if (!isRunning) {
+      resetLevelState();
+      hideGameFeedback();
+    }
+  });
+  $("clear-program").addEventListener("click", clearProgram);
+  $("next-level").addEventListener("click", nextLevel);
+  $("send-to-code").addEventListener("click", () => {
+    const code = blocksToCode();
+    if (code.length) openCodeLab(code.join("\n"), currentLevel());
+  });
+  $("levels-to-code").addEventListener("click", openCodeLab);
 }
 
-function openCodeLab() {
-  if (!childName) readChildName();
-  updatePersonalText();
-  $("codeHero").textContent = selectedAvatar;
-  resetCodeLab();
+function openCodeLab(prefill, scenario) {
+  if (!childName) readName();
+  updatePersonalCopy();
+  codeScenario = scenario
+    ? { start: { ...scenario.start }, goal: { ...scenario.goal }, walls: scenario.walls || [], lava: scenario.lava || [], water: scenario.water || [], stars: [] }
+    : { start: { x: 0, y: 0 }, goal: { x: 4, y: 4 }, walls: [], lava: [], water: [], stars: [] };
+  $("code-player").src = currentCharacter().icon;
+  renderGrid($("code-grid"), codeScenario, true);
+  if (typeof prefill === "string") $("code-editor").value = prefill;
+  resetCodeRunner(false);
   showScreen("code");
 }
 
-function resetCodeLab() {
-  codeX = 0;
-  codeY = 0;
-  isCodeRunning = false;
-  hideCodeMessage();
-  hideBubble($("codeBubble"));
-  drawCodeGrid();
-  updateCodeHero();
-  updateLineCounter();
+function resetCodeRunner(clearFeedback = true) {
+  codePlayer = { ...codeScenario.start };
+  updatePlayerPosition($("code-player"), codePlayer);
+  moveBubble($("code-bubble"), codePlayer);
+  hideBubble($("code-bubble"));
+  if (clearFeedback) hideCodeFeedback();
+  updateLineCount();
 }
 
-function drawCodeGrid() {
-  const grid = $("codeGrid");
-  grid.querySelectorAll(".cell").forEach((cell) => cell.remove());
-
-  for (let y = 0; y < 5; y++) {
-    for (let x = 0; x < 5; x++) {
-      const cell = document.createElement("div");
-      cell.className = "cell path";
-      cell.style.transform = `translate(${x * 100}%, ${y * 100}%)`;
-      grid.appendChild(cell);
-    }
-  }
-
-  $("codeFish").style.setProperty("--fish-x", "400%");
-  $("codeFish").style.setProperty("--fish-y", "400%");
-  $("codeFish").style.transform = "translate(400%, 400%)";
+function setupCodeLab() {
+  $("reset-code").addEventListener("click", () => resetCodeRunner());
+  $("example-code").addEventListener("click", () => {
+    $("code-editor").value = "rechts()\nrechts()\nrechts()\nrechts()\nomlaag()\nomlaag()\nomlaag()\nomlaag()";
+    updateLineCount();
+    $("code-editor").focus();
+  });
+  $("run-code").addEventListener("click", runCode);
+  $("code-explain").addEventListener("click", speakExplanation);
+  $("code-editor").addEventListener("input", updateLineCount);
+  document.querySelectorAll("[data-insert]").forEach((button) => {
+    button.addEventListener("click", () => insertCodeLine(button.dataset.insert));
+  });
 }
 
-function addExampleCode() {
-  $("codeEditor").value = "rechts()\nrechts()\nomlaag()\nomlaag()\npraat()";
-  updateLineCounter();
-  $("codeEditor").focus();
-}
-
-function insertCode(command) {
-  const editor = $("codeEditor");
+function insertCodeLine(line) {
+  const editor = $("code-editor");
   const value = editor.value.trimEnd();
-
-  editor.value = value ? `${value}\n${command}` : command;
-  updateLineCounter();
+  editor.value = value ? `${value}\n${line}` : line;
+  updateLineCount();
   editor.focus();
 }
 
-function getCodeLines() {
-  return $("codeEditor").value
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean);
+function codeLines() {
+  return $("code-editor").value.split("\n").map((line) => line.trim()).filter(Boolean);
 }
 
-function updateLineCounter() {
-  $("lineCounter").textContent = `${getCodeLines().length}/10`;
+function updateLineCount() {
+  $("line-count").textContent = `${codeLines().length}/10`;
 }
 
-async function runTypedCode() {
-  if (isCodeRunning) return;
-
-  const parsed = parseCode(getCodeLines());
-
-  if (!parsed.ok) {
-    showCodeMessage("warning", "Check je code", parsed.message);
-    return;
-  }
-
-  isCodeRunning = true;
-  codeX = 0;
-  codeY = 0;
-  hideCodeMessage();
-  hideBubble($("codeBubble"));
-  updateCodeHero();
-
-  await wait(180);
-
-  for (const command of parsed.commands) {
-    if (hasCodeWon()) break;
-
-    if (command === "praat") await talk($("codeBubble"));
-    else if (command === "dans") await dance($("codeHero"));
-    else {
-      moveCodeHero(command);
-      await wait(300);
-    }
-
-    if (hasCodeWon()) break;
-  }
-
-  if (hasCodeWon()) showCodeMessage("success", "Gelukt!", `${childName}, je hebt echte code geschreven.`);
-  else showCodeMessage("warning", "Bijna", "Je code werkt, maar je bent nog niet bij de vis.");
-
-  isCodeRunning = false;
-}
-
-function parseCode(lines) {
+function parseCode() {
   const allowed = {
     "rechts()": "right",
     "links()": "left",
     "omhoog()": "up",
     "omlaag()": "down",
-    "praat()": "praat",
-    "dans()": "dans"
+    "praat()": "talk",
+    "dans()": "dance"
   };
-
-  if (lines.length === 0) {
-    return { ok: false, message: "Typ eerst een regel code." };
-  }
-
-  if (lines.length > 10) {
-    return { ok: false, message: "Gebruik maximaal 10 regels." };
-  }
-
+  const lines = codeLines();
+  if (!lines.length) return { ok: false, message: "Typ eerst een regel code." };
+  if (lines.length > 10) return { ok: false, message: "Gebruik maximaal 10 regels." };
   const commands = [];
-
   for (let i = 0; i < lines.length; i++) {
-    if (!allowed[lines[i]]) {
-      return { ok: false, message: `Regel ${i + 1} snap ik nog niet.` };
-    }
-
+    if (!allowed[lines[i]]) return { ok: false, message: `Regel ${i + 1} snap ik nog niet.` };
     commands.push(allowed[lines[i]]);
   }
-
   return { ok: true, commands };
 }
 
-function moveCodeHero(direction) {
-  const next = { x: codeX, y: codeY };
+async function runCode() {
+  if (codeRunning) return;
+  const parsed = parseCode();
+  if (!parsed.ok) {
+    showCodeFeedback("warning", "Check je code", parsed.message);
+    return;
+  }
+  codeRunning = true;
+  codePlayer = { ...codeScenario.start };
+  updatePlayerPosition($("code-player"), codePlayer);
+  moveBubble($("code-bubble"), codePlayer);
+  hideBubble($("code-bubble"));
+  renderGrid($("code-grid"), codeScenario, true);
+  hideCodeFeedback();
+  await wait(120);
+  for (const command of parsed.commands) {
+    if (isAtGoal(codePlayer, codeScenario.goal)) break;
+    if (command === "talk") await talk($("code-bubble"));
+    else if (command === "dance") await dance($("code-player"));
+    else {
+      moveCodePlayer(command);
+      await wait(280);
+    }
+  }
+  if (isAtGoal(codePlayer, codeScenario.goal)) {
+    showCodeFeedback("success", "Gelukt!", `${childName}, je hebt echte code geschreven.`);
+  } else {
+    showCodeFeedback("warning", "Bijna", "Je code werkt, maar je bent nog niet bij de vis.");
+  }
+  codeRunning = false;
+}
 
+function moveCodePlayer(direction) {
+  const next = { ...codePlayer };
   if (direction === "up") next.y--;
   if (direction === "down") next.y++;
   if (direction === "left") next.x--;
   if (direction === "right") next.x++;
-
-  if (next.x < 0 || next.y < 0 || next.x > 4 || next.y > 4) {
-    bump($("codeHero"), codeX, codeY);
+  if (next.x < 0 || next.y < 0 || next.x > 4 || next.y > 4 || has(codeScenario.walls, next.x, next.y)) {
+    bump($("code-player"), codePlayer);
     return;
   }
-
-  codeX = next.x;
-  codeY = next.y;
-  updateCodeHero();
+  codePlayer = next;
+  updatePlayerPosition($("code-player"), codePlayer);
+  moveBubble($("code-bubble"), codePlayer);
 }
 
-function updateCodeHero() {
-  $("codeHero").style.transform = `translate(${codeX * 100}%, ${codeY * 100}%)`;
-  $("codeBubble").style.transform = `translate(${codeX * 100}%, ${codeY * 100}%)`;
+function showCodeFeedback(type, title, text) {
+  const card = $("code-feedback");
+  card.className = `feedback-card glass-card ${type}`;
+  $("code-feedback-title").textContent = title;
+  $("code-feedback-text").textContent = text;
 }
 
-function hasCodeWon() {
-  return codeX === 4 && codeY === 4;
+function hideCodeFeedback() {
+  $("code-feedback").className = "feedback-card glass-card is-hidden";
 }
 
-function showCodeMessage(type, title, text) {
-  const message = $("codeMessage");
-  message.className = `message ${type}`;
-  $("codeMessageTitle").textContent = title;
-  $("codeMessageText").textContent = text;
+async function talk(bubble) {
+  const character = currentCharacter();
+  await say(bubble, character.sound);
+  speak(character.spoken, 1.12, 1.6);
 }
 
-function hideCodeMessage() {
-  $("codeMessage").className = "message hidden";
+async function say(bubble, text) {
+  bubble.textContent = text;
+  bubble.classList.remove("is-hidden");
+  await wait(520);
+  hideBubble(bubble);
 }
 
-async function talk(targetBubble) {
-  const text = selectedAvatar === "🤖" ? "Biep!" : selectedAvatar === "🦄" ? "Sparkle!" : "Miauw!";
-
-  targetBubble.textContent = text;
-  targetBubble.classList.remove("hidden");
-
-  if ("speechSynthesis" in window) {
-    window.speechSynthesis.cancel();
-    const sound = new SpeechSynthesisUtterance(text);
-    sound.lang = "nl-NL";
-    sound.rate = 1.15;
-    sound.pitch = 1.7;
-    window.speechSynthesis.speak(sound);
-  }
-
-  await wait(620);
-  hideBubble(targetBubble);
+function hideBubble(bubble) {
+  bubble.classList.add("is-hidden");
 }
 
-async function dance(node) {
-  node.classList.add("dance");
-  await wait(580);
-  node.classList.remove("dance");
+async function dance(sprite) {
+  sprite.classList.add("is-dancing");
+  await wait(540);
+  sprite.classList.remove("is-dancing");
 }
 
-function hideBubble(targetBubble) {
-  targetBubble.classList.add("hidden");
+function updatePlayerPosition(sprite, position) {
+  sprite.style.transform = `translate(${position.x * 100}%, ${position.y * 100}%)`;
 }
 
-function bump(node, x, y) {
-  node.animate([
-    { transform: `translate(${x * 100}%, ${y * 100}%) rotate(0deg)` },
-    { transform: `translate(${x * 100}%, ${y * 100}%) rotate(-8deg)` },
-    { transform: `translate(${x * 100}%, ${y * 100}%) rotate(8deg)` },
-    { transform: `translate(${x * 100}%, ${y * 100}%) rotate(0deg)` }
+function moveBubble(bubble, position) {
+  bubble.style.transform = `translate(${position.x * 100}%, ${position.y * 100}%)`;
+}
+
+function bump(sprite, position) {
+  sprite.animate([
+    { transform: `translate(${position.x * 100}%, ${position.y * 100}%) rotate(0deg)` },
+    { transform: `translate(${position.x * 100}%, ${position.y * 100}%) rotate(-8deg)` },
+    { transform: `translate(${position.x * 100}%, ${position.y * 100}%) rotate(8deg)` },
+    { transform: `translate(${position.x * 100}%, ${position.y * 100}%) rotate(0deg)` }
   ], { duration: 220, iterations: 1 });
 }
 
@@ -629,8 +651,20 @@ function has(list, x, y) {
   return list.some((item) => item.x === x && item.y === y);
 }
 
+function isAtGoal(position, goal) {
+  return position.x === goal.x && position.y === goal.y;
+}
+
 function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-showScreen("home");
+setupStart();
+setupExplain();
+setupGame();
+setupCodeLab();
+setCharacter("cat");
+renderLevels();
+renderGrid($("code-grid"), codeScenario, true);
+resetCodeRunner();
+showScreen("start");
