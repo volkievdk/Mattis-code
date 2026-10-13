@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-rounded: 'Fredoka', ui-rounded, 'Nunito', system-ui, sans-serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-code: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  body {
+    font-family: var(--font-body);
+    min-height: 100vh;
+    background: radial-gradient(circle at 10% 10%, rgba(254, 240, 138, 0.45) 0%, transparent 40%),
+                radial-gradient(circle at 90% 15%, rgba(186, 230, 253, 0.55) 0%, transparent 40%),
+                radial-gradient(circle at 50% 90%, rgba(251, 207, 232, 0.4) 0%, transparent 50%),
+                #fffcf8;
+    color: #1e1b4b;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-rounded);
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Animations */
+@keyframes fishWiggle {
+  0% { transform: translateY(0) rotate(0deg) scale(1); }
+  50% { transform: translateY(-4px) rotate(4deg) scale(1.05); }
+  100% { transform: translateY(0) rotate(0deg) scale(1); }
+}
+
+@keyframes gentleBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes heroDance {
+  0% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.15) rotate(-14deg); }
+  50% { transform: scale(1.15) rotate(14deg); }
+  75% { transform: scale(1.15) rotate(-8deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes bumpThud {
+  0% { transform: scale(1); }
+  25% { transform: scale(0.9) rotate(-12deg); }
+  50% { transform: scale(1.1) rotate(10deg); }
+  75% { transform: scale(0.95) rotate(-4deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes starGlow {
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(250, 204, 21, 0.6)); transform: scale(1); }
+  50% { filter: drop-shadow(0 0 10px rgba(250, 204, 21, 0.95)); transform: scale(1.1); }
+}
+
+.animate-fish {
+  animation: fishWiggle 1.6s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: gentleBounce 2.4s ease-in-out infinite;
+}
+
+.animate-dance {
+  animation: heroDance 0.55s ease-in-out;
+}
+
+.animate-bump {
+  animation: bumpThud 0.28s ease-in-out;
+}
+
+.animate-star {
+  animation: starGlow 1.8s ease-in-out infinite;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.4);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.6);
+}
